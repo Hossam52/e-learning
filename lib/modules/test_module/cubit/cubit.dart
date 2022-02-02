@@ -148,9 +148,14 @@ class TestCubit extends Cubit<TestStates> {
     uploadTestButtonState = ButtonState.loading;
     emit(AddTestLoadingState());
     try {
-      FormData formData = await generateTestFormData(testDataModel, groupId: groupId, testId: testId);
+      FormData formData = await generateTestFormData(testDataModel,
+          groupId: groupId, testId: testId);
       Response response = await DioHelper.postFormData(
-        url: groupId != null ? TEACHER_ADD_HOMEWORK : isEdit ? TEACHER_EDIT_TEST : TEACHER_ADD_TEST,
+        url: groupId != null
+            ? TEACHER_ADD_HOMEWORK
+            : isEdit
+                ? TEACHER_EDIT_TEST
+                : TEACHER_ADD_TEST,
         token: teacherToken,
         formData: formData,
       );
@@ -223,7 +228,8 @@ class TestCubit extends Cubit<TestStates> {
 
   ///
 
-  Future<FormData> generateTestFormData(TestDataModel testDataModel, {int? groupId, int? testId}) async {
+  Future<FormData> generateTestFormData(TestDataModel testDataModel,
+      {int? groupId, int? testId}) async {
     File file = await _localFile;
     FormData formData = FormData.fromMap({
       'name': testDataModel.name,
@@ -232,9 +238,8 @@ class TestCubit extends Cubit<TestStates> {
       'term_id': testDataModel.termId,
       'subject_id': testDataModel.subjectId,
       'minute_num': testDataModel.minuteNumber,
-      if(groupId != null)
-        'group_id' : groupId,
-      'test_id' : testId,
+      if (groupId != null) 'group_id': groupId,
+      'test_id': testId,
       'question_text[]': List.generate(testDataModel.questionDataModel.length,
           (index) => testDataModel.questionDataModel[index].questionText),
       'question_image[]': List.generate(
@@ -414,7 +419,9 @@ class TestCubit extends Cubit<TestStates> {
 
   ///
   void endStudentTest(
-      {required BuildContext context, required Test test, required isChampion}) async {
+      {required BuildContext context,
+      required Test test,
+      required isChampion}) async {
     final progress = ProgressHUD.of(context);
     testStudentTimer!.cancel();
     correctionStudentTest(test.questions!);
@@ -439,7 +446,8 @@ class TestCubit extends Cubit<TestStates> {
   void correctionStudentTest(List<Question> questions) {
     testCorrectionStudent.clear();
     wrongQuestionsIndex.clear();
-    elapsedTime = maxTestTime.inMinutes - testTime.inMinutes;
+    // elapsedTime = maxTestTime.inMinutes - testTime.inMinutes;
+    elapsedTime = maxTestTime.inSeconds - testTime.inSeconds;
     addTestResults(questions);
   }
 
@@ -477,12 +485,14 @@ class TestCubit extends Cubit<TestStates> {
     var progress,
     bool isTryAgain = false,
   }) async {
-    if(isTryAgain == false) progress!.show();
+    if (isTryAgain == false) progress!.show();
     hasStudentEndTestError = false;
     emit(StudentTestEndLoadingState());
     try {
       Response response = await DioHelper.postFormData(
-        url: isChampion ? STUDENT_SEND_CHAMPION_RESULT : STUDENT_SEND_TEST_RESULT,
+        url: isChampion
+            ? STUDENT_SEND_CHAMPION_RESULT
+            : STUDENT_SEND_TEST_RESULT,
         token: studentToken,
         formData: FormData.fromMap({
           'test_id': test.id,
@@ -492,16 +502,16 @@ class TestCubit extends Cubit<TestStates> {
       );
       print(response.data);
       if (response.data['status']) {
-        if(isTryAgain == false) progress.dismiss();
+        if (isTryAgain == false) progress.dismiss();
         hasStudentEndTestError = false;
         navigateToAndFinish(
             context,
             isChampion
                 ? ChampionEndScreen(testName: test.name!)
                 : StudentTestResultScreen(
-              test: test,
-              cubit: TestCubit.get(context),
-            ));
+                    test: test,
+                    cubit: TestCubit.get(context),
+                  ));
         emit(StudentTestEndSuccessState());
       } else {
         hasStudentEndTestError = true;
@@ -516,7 +526,7 @@ class TestCubit extends Cubit<TestStates> {
   }
 
   void changeTestCounter(bool isChampion) {
-    if(isChampion) {
+    if (isChampion) {
       challengesCounter = challengesCounter + 1;
       CacheHelper.saveData(key: 'challengesCounter', value: challengesCounter);
     } else {
@@ -524,6 +534,7 @@ class TestCubit extends Cubit<TestStates> {
       CacheHelper.saveData(key: 'testCounter', value: testCounter);
     }
   }
+
   @override
   Future<void> close() {
     studentQuestionController.dispose();

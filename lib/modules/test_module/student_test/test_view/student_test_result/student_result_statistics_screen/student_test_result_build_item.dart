@@ -4,7 +4,8 @@ import 'package:e_learning/shared/styles/styles.dart';
 import 'package:flutter/material.dart';
 
 class StudentTestResultBuildItem extends StatelessWidget {
-  const StudentTestResultBuildItem({Key? key,
+  const StudentTestResultBuildItem({
+    Key? key,
     required this.deviceInfo,
     required this.icon,
     required this.color,
@@ -30,7 +31,7 @@ class StudentTestResultBuildItem extends StatelessWidget {
             color: Colors.grey.withOpacity(0.2),
             spreadRadius: 0,
             blurRadius: 5,
-            offset: Offset(0,5), // changes position of shadow
+            offset: Offset(0, 5), // changes position of shadow
           ),
         ],
         color: Colors.white,
@@ -41,13 +42,12 @@ class StudentTestResultBuildItem extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(7.0),
               child: Container(
-                padding: EdgeInsets.all(7),
-                decoration: BoxDecoration(
-                  color: color,
-                  borderRadius: BorderRadius.circular(7),
-                ),
-                child: icon
-              ),
+                  padding: EdgeInsets.all(7),
+                  decoration: BoxDecoration(
+                    color: color,
+                    borderRadius: BorderRadius.circular(7),
+                  ),
+                  child: icon),
             ),
             VerticalDivider(
               thickness: 1,

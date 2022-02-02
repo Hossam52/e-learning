@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:e_learning/models/enums/enums.dart';
 import 'package:e_learning/models/teacher/groups/in_group/post_response_model.dart';
+import 'package:e_learning/modules/auth/cubit/cubit.dart';
 import 'package:e_learning/modules/groups/cubit/cubit.dart';
 import 'package:e_learning/modules/groups/student/group_view/home_tab/post_button.dart';
 import 'package:e_learning/modules/groups/teacher/group_view/post_comments/comment_modal_sheet.dart';
@@ -91,15 +92,22 @@ class PostBuildItem extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  width: deviceInfo.screenwidth * 0.13,
-                  height: deviceInfo.screenwidth * 0.13,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(color: primaryColor, width: 1.5),
-                    image: DecorationImage(
-                      image: CachedNetworkImageProvider('$image'),
-                      fit: BoxFit.cover,
+                GestureDetector(
+                  onTap: () {
+                    print('Tapped');
+                    // AuthCubit.get(context).getPro
+                    // cubit.getTeacherDataById(teacherId, type)
+                  },
+                  child: Container(
+                    width: deviceInfo.screenwidth * 0.13,
+                    height: deviceInfo.screenwidth * 0.13,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(color: primaryColor, width: 1.5),
+                      image: DecorationImage(
+                        image: CachedNetworkImageProvider('$image'),
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
                 ),

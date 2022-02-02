@@ -45,8 +45,8 @@ class StudentResultsCardBuildItem extends StatelessWidget {
           defaultDivider(),
           Expanded(
             child: AnimationLimiter(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+              child: ListView(
+                // mainAxisAlignment: MainAxisAlignment.center,
                 children: AnimationConfiguration.toStaggeredList(
                   duration: const Duration(milliseconds: 375),
                   childAnimationBuilder: (widget) => SlideAnimation(
@@ -86,16 +86,16 @@ class StudentResultsCardBuildItem extends StatelessWidget {
                       height: 10.h,
                     ),
                     StudentTestResultBuildItem(
-                      deviceInfo: deviceInfo,
-                      icon: Icon(
-                        Icons.access_time_outlined,
-                        color: Colors.white,
-                      ),
-                      color: thirdColor,
-                      title: 'المده المستغرق',
-                      result:
-                          '${cubit.elapsedTime} دقائق',
-                    ),
+                        deviceInfo: deviceInfo,
+                        icon: Icon(
+                          Icons.access_time_outlined,
+                          color: Colors.white,
+                        ),
+                        color: thirdColor,
+                        title: 'المده المستغرق',
+                        result: _mapTime(cubit.elapsedTime)
+                        // '${cubit.elapsedTime} دقائق',
+                        ),
                     SizedBox(
                       height: 10.h,
                     ),
@@ -146,5 +146,24 @@ class StudentResultsCardBuildItem extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  String _mapTime(int ellapsedTime) {
+    final minutes = _mapMinutes(ellapsedTime);
+    final seconds = _mapSeconds(ellapsedTime);
+    if (minutes == 0)
+      return '$seconds seconds';
+    else
+      return '$minutes Minute $seconds Second';
+  }
+
+  int? _mapSeconds(int ellapsedTime) {
+    final seconds = ellapsedTime % 60;
+    return seconds;
+  }
+
+  int _mapMinutes(int ellapsedTime) {
+    final minutes = ellapsedTime / 60;
+    return minutes.toInt();
   }
 }

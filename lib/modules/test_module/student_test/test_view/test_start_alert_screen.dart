@@ -13,7 +13,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'student_test_quetion.dart';
 
 class TestStartAlertScreen extends StatelessWidget {
-  const TestStartAlertScreen({Key? key,
+  const TestStartAlertScreen({
+    Key? key,
     required this.test,
   }) : super(key: key);
 
@@ -35,7 +36,7 @@ class TestStartAlertScreen extends StatelessWidget {
             fallbackBuilder: (context) => ExpiredWidget(),
             widgetBuilder: (context) => Padding(
               padding: const EdgeInsets.all(20.0),
-              child: Column(
+              child: ListView(
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(30.0),

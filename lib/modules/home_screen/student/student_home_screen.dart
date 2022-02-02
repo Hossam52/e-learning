@@ -207,7 +207,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                                                       navigateTo(
                                                           context,
                                                           StudentProfileView(
-                                                            isFriend: false,
+                                                            isFriend: true,
                                                             student: student,
                                                           ));
                                                     },
