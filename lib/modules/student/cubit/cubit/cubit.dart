@@ -204,7 +204,7 @@ class StudentCubit extends Cubit<StudentStates> {
         url: STUDENT_SEARCH_IN_TEACHERS,
         formData: FormData.fromMap({'search': value}),
       );
-      if(response.data['status']) {
+      if (response.data['status']) {
         teacherSearchModel = TeachersResponseModel.fromJson(response.data);
         emit(SearchInTeachersSuccessState());
       } else {
@@ -217,11 +217,26 @@ class StudentCubit extends Cubit<StudentStates> {
   }
 
   SearchModel? searchModel;
-  void searchStudent(String value) async{
+  void searchStudent(String value) async {
     try {
       emit(SearchStudentLoadingState());
       searchModel = await StudentServices.searchStudent(value);
-      if(searchModel!.status!) {
+      if (searchModel!.status!) {
+        emit(SearchStudentSuccessState());
+      } else {
+        emit(SearchStudentNoDataState());
+      }
+    } catch (e) {
+      emit(SearchStudentErrorState());
+      throw e;
+    }
+  }
+
+  void rateTeacher(int rate, String teacherId) async {
+    try {
+      emit(SearchStudentLoadingState());
+      // searchModel = await StudentServices.searchStudent(value);
+      if (searchModel!.status!) {
         emit(SearchStudentSuccessState());
       } else {
         emit(SearchStudentNoDataState());

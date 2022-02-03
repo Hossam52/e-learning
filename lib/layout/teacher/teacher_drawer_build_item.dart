@@ -1,4 +1,6 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:e_learning/layout/teacher/cubit/cubit.dart';
+import 'package:e_learning/modules/auth/cubit/cubit.dart';
 import 'package:e_learning/modules/best_student_list/best_student_list_screen.dart';
 import 'package:e_learning/modules/settings_screen/settings_screen.dart';
 import 'package:e_learning/shared/componants/componants.dart';
@@ -9,13 +11,15 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class TeacherDrawerBuildItem extends StatelessWidget {
-  const TeacherDrawerBuildItem({Key? key, required this.appCubit}) : super(key: key);
+  const TeacherDrawerBuildItem({Key? key, required this.appCubit})
+      : super(key: key);
 
   final TeacherLayoutCubit appCubit;
   @override
   Widget build(BuildContext context) {
     var text = AppLocalizations.of(context);
-
+    final teacher = AuthCubit.get(context).teacherProfileModel!.teacher!;
+    print(teacher.name);
     return Container(
       color: Color(0xffEFF0FC),
       child: Column(
@@ -43,21 +47,19 @@ class TeacherDrawerBuildItem extends StatelessWidget {
                   child: Padding(
                     padding: EdgeInsetsDirectional.only(top: 30),
                     child: Container(
-                      height:
-                      MediaQuery.of(context).size.height * 0.15,
+                      height: MediaQuery.of(context).size.height * 0.15,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           CircleAvatar(
-                            backgroundImage: AssetImage(
-                                'assets/images/logo.png'),
-                            radius:
-                            MediaQuery.of(context).size.width *
-                                0.11,
+                            backgroundImage: CachedNetworkImageProvider(
+                              teacher.image!,
+                            ),
+                            radius: MediaQuery.of(context).size.width * 0.11,
                           ),
                           SizedBox(height: 5),
                           Text(
-                            'احمد محمد السالم',
+                            teacher.name!,
                           ),
                         ],
                       ),
@@ -78,30 +80,29 @@ class TeacherDrawerBuildItem extends StatelessWidget {
                   Column(
                     children: [
                       Padding(
-                        padding:
-                        EdgeInsets.symmetric(horizontal: 20),
+                        padding: EdgeInsets.symmetric(horizontal: 20),
                         child: Row(
                           children: [
                             Image.asset('assets/images/points.png'),
                             SizedBox(width: 30),
                             RichText(
                                 text: TextSpan(children: [
-                                  TextSpan(
-                                      text: '${text!.my_points} :  ',
-                                      style: TextStyle(
-                                          color: Colors.black87,
-                                          fontWeight: FontWeight.w800,
-                                          fontSize: 15
-                                        // fontSize: 20
+                              TextSpan(
+                                  text: '${text!.my_points} :  ',
+                                  style: TextStyle(
+                                      color: Colors.black87,
+                                      fontWeight: FontWeight.w800,
+                                      fontSize: 15
+                                      // fontSize: 20
                                       )),
-                                  TextSpan(
-                                      text: '290',
-                                      style: TextStyle(
-                                        color: Colors.lightBlue,
-                                        fontWeight: FontWeight.bold,
-                                        // fontSize: 20
-                                      )),
-                                ]))
+                              TextSpan(
+                                  text: '290',
+                                  style: TextStyle(
+                                    color: Colors.lightBlue,
+                                    fontWeight: FontWeight.bold,
+                                    // fontSize: 20
+                                  )),
+                            ]))
                           ],
                         ),
                       ),
@@ -118,8 +119,7 @@ class TeacherDrawerBuildItem extends StatelessWidget {
                         title: text.list_of_the_best,
                         onTap: () {
                           Navigator.pop(context);
-                          navigateTo(
-                              context, BestStudentListScreen());
+                          navigateTo(context, BestStudentListScreen());
                         },
                       ),
                     ],

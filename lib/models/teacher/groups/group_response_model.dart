@@ -30,20 +30,21 @@ class Group {
   String? date;
   Teacher? teacher;
   bool? isJoined;
+  int? studentCount;
 
-  Group({
-    this.id,
-    this.title,
-    this.description,
-    this.subject,
-    this.stage,
-    this.classroom,
-    this.term,
-    this.type,
-    this.teacher,
-    this.date,
-    this.isJoined,
-  });
+  Group(
+      {this.id,
+      this.title,
+      this.description,
+      this.subject,
+      this.stage,
+      this.classroom,
+      this.term,
+      this.type,
+      this.teacher,
+      this.date,
+      this.isJoined,
+      this.studentCount});
 
   Group.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -56,7 +57,8 @@ class Group {
     type = json['type'];
     date = json['date'];
     isJoined = json['authStJoin'];
-    if(json['teacher'] != null) {
+    studentCount = json['studentCount'];
+    if (json['teacher'] != null) {
       teacher = Teacher.fromJson(json['teacher']);
     }
   }

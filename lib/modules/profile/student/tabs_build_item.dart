@@ -6,6 +6,7 @@ import 'package:e_learning/modules/profile/student/profile_tabs/friend_request_t
 import 'package:e_learning/modules/profile/student/profile_tabs/profile_posts_tab.dart';
 import 'package:e_learning/shared/styles/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TabsBuildItem extends StatefulWidget {
   const TabsBuildItem({Key? key, required this.student}) : super(key: key);
@@ -15,8 +16,8 @@ class TabsBuildItem extends StatefulWidget {
   _TabsBuildItemState createState() => _TabsBuildItemState();
 }
 
-class _TabsBuildItemState extends State<TabsBuildItem> with
-    SingleTickerProviderStateMixin{
+class _TabsBuildItemState extends State<TabsBuildItem>
+    with SingleTickerProviderStateMixin {
   TabController? _tabController;
 
   int index = 0;
@@ -25,6 +26,7 @@ class _TabsBuildItemState extends State<TabsBuildItem> with
     _tabController = new TabController(length: 3, vsync: this);
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -35,9 +37,8 @@ class _TabsBuildItemState extends State<TabsBuildItem> with
             decoration: BoxDecoration(
                 color: Colors.grey[200],
                 border: Border(
-                bottom: BorderSide(color: Colors.black),
-              )
-            ),
+                  bottom: BorderSide(color: Colors.black),
+                )),
             child: TabBar(
               controller: _tabController,
               unselectedLabelColor: Colors.black,
@@ -49,6 +50,8 @@ class _TabsBuildItemState extends State<TabsBuildItem> with
               indicator: BoxDecoration(
                 color: thirdColor,
               ),
+              unselectedLabelStyle:
+                  TextStyle(fontSize: 13.sp, fontFamily: 'NeoSansArabic'),
               tabs: [
                 Tab(text: 'حسابي'),
                 Tab(text: 'طلبات الصداقه'),
@@ -61,6 +64,7 @@ class _TabsBuildItemState extends State<TabsBuildItem> with
       ),
     );
   }
+
   Widget generateStudentProfileTab(int index) {
     List<Widget> widgets = [
       EditProfileTab(student: widget.student),

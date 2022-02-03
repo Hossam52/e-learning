@@ -43,15 +43,9 @@ class ProfileScreen extends StatelessWidget {
                                 /// Profile info
                                 StudentProfileInfoBuild(
                                   deviceInfo: deviceInfo,
-                                  name:
-                                      cubit.studentProfileModel!.student!.name!,
-                                  image: cubit
-                                      .studentProfileModel!.student!.image!,
-                                  code:
-                                      cubit.studentProfileModel!.student!.code!,
-                                  points:
-                                      "${cubit.studentProfileModel!.student!.points}",
                                   authType: authType,
+                                  student: cubit.studentProfileModel!.student!,
+                                  isMe: true,
                                 ),
 
                                 /// Tabs

@@ -151,6 +151,7 @@ class AuthCubit extends Cubit<AuthStates> {
   void onChangeClass(dynamic value) {
     selectedClassIndex =
         classesNameList.indexWhere((element) => element == value);
+    print(classesNameList);
     selectedClassId = getAllCountriesAndStagesModel!
         .countries![(selectedCountryIndex)!]
         .stages![(selectedStageIndex)!]
@@ -292,7 +293,8 @@ class AuthCubit extends Cubit<AuthStates> {
           'country_id': model.countryId,
           'classroom_id': model.classroomId,
           'avatar': model.avatar != null
-              ? MultipartFile.fromFileSync(model.avatar!.path) : null,
+              ? MultipartFile.fromFileSync(model.avatar!.path)
+              : null,
         });
         break;
     }
@@ -377,7 +379,8 @@ class AuthCubit extends Cubit<AuthStates> {
           'country_id': model.countryId,
           'subjects[]': model.subjects,
           'avatar': model.avatar != null
-              ? MultipartFile.fromFileSync(model.avatar!.path) : null,
+              ? MultipartFile.fromFileSync(model.avatar!.path)
+              : null,
         });
         break;
     }
@@ -636,7 +639,8 @@ class AuthCubit extends Cubit<AuthStates> {
         url: isStudent ? STUDENT_GET_PROFILE : TEACHER_GET_PROFILE,
         token: isStudent ? studentToken : teacherToken,
       );
-      addProfileData(response: response, isStudent: isStudent, isGeneral: false);
+      addProfileData(
+          response: response, isStudent: isStudent, isGeneral: false);
     } catch (e) {
       noProfileData = true;
       emit(GetProfileErrorState());

@@ -249,10 +249,18 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
                                                         date: "${comment.date}",
                                                         isStudent: true,
                                                         image: comment.images,
-                                                        isStudentComment: comment.student != null ? true : false,
+                                                        profileImage: comment
+                                                            .studentImage,
+                                                        isStudentComment:
+                                                            comment.student !=
+                                                                    null
+                                                                ? true
+                                                                : false,
                                                         isMe: widget.isStudent
-                                                            ? comment.studentComment!
-                                                            : comment.teacherComment!,
+                                                            ? comment
+                                                                .studentComment!
+                                                            : comment
+                                                                .teacherComment!,
                                                       );
                                                     },
                                                   ),

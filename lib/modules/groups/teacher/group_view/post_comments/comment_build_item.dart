@@ -46,7 +46,8 @@ class CommentBuildItem extends StatelessWidget {
           decoration: BoxDecoration(
             shape: BoxShape.circle,
           ),
-          child: DefaultCachedNetworkImage(imageUrl: '$profileImage', fit: BoxFit.cover),
+          child: DefaultCachedNetworkImage(
+              imageUrl: '$profileImage', fit: BoxFit.cover),
         ),
         SizedBox(width: 4),
         Expanded(
@@ -77,11 +78,21 @@ class CommentBuildItem extends StatelessWidget {
                   ),
                   if (isMe || isStudent == false)
                     DefaultPopupMenu(
-                      items: isStudent ? ['تعديل', 'مسح'] : isStudentComment ? ['حذر'] : ['تعديل', 'مسح'],
+                      items: isStudent
+                          ? ['تعديل', 'مسح']
+                          : isStudentComment
+                              ? ['حذر']
+                              : ['تعديل', 'مسح'],
                       icons: isStudent
                           ? [Icons.edit, Icons.delete]
-                          : isStudentComment ? [Icons.block] : [Icons.edit, Icons.delete],
-                      values: isStudent ? ['edit', 'delete'] : isStudentComment ? ['block'] : ['edit', 'delete'],
+                          : isStudentComment
+                              ? [Icons.block]
+                              : [Icons.edit, Icons.delete],
+                      values: isStudent
+                          ? ['edit', 'delete']
+                          : isStudentComment
+                              ? ['block']
+                              : ['edit', 'delete'],
                       onSelected: onSelected,
                     ),
                 ],
@@ -110,7 +121,7 @@ class CommentBuildItem extends StatelessWidget {
                 ),
               SizedBox(height: 10),
               Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
                     GroupCubit.get(context).convertDate(date),

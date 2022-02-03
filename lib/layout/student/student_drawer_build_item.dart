@@ -1,3 +1,5 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:e_learning/modules/auth/cubit/cubit.dart';
 import 'package:e_learning/modules/best_student_list/best_student_list_screen.dart';
 import 'package:e_learning/modules/following_list/following_list_screen.dart';
 import 'package:e_learning/modules/settings_screen/settings_screen.dart';
@@ -5,6 +7,7 @@ import 'package:e_learning/modules/student/my_friend_list/my_friend_list_screen.
 import 'package:e_learning/shared/componants/componants.dart';
 import 'package:e_learning/shared/componants/constants.dart';
 import 'package:e_learning/shared/componants/home_components.dart';
+import 'package:e_learning/shared/componants/widgets/default_cached_image.dart';
 import 'package:e_learning/shared/cubit/cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -20,6 +23,9 @@ class StudentDrawerBuildItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authCubit = AuthCubit.get(context);
+    final studentModel = authCubit.studentProfileModel!.student!;
+    print('-------------${authCubit.studentProfileModel!.student!.name}');
     return Container(
       color: Color(0xffEFF0FC),
       child: Column(
@@ -52,14 +58,13 @@ class StudentDrawerBuildItem extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           CircleAvatar(
-                            backgroundImage:
-                                AssetImage('assets/images/logo.png'),
-                            radius: MediaQuery.of(context).size.width * 0.11,
+                            backgroundImage: CachedNetworkImageProvider(
+                              studentModel.image!,
+                            ),
+                            radius: MediaQuery.of(context).size.width * 0.1,
                           ),
                           SizedBox(height: 5),
-                          Text(
-                            'احمد محمد السالم',
-                          ),
+                          Text(studentModel.name!),
                         ],
                       ),
                     ),
@@ -80,8 +85,11 @@ class StudentDrawerBuildItem extends StatelessWidget {
                         children: [
                           Expanded(
                             child: TextButton(
-                              style: TextButton.styleFrom(primary: Colors.black87),
-                              child: Text('الصف التاسع'),
+                              style:
+                                  TextButton.styleFrom(primary: Colors.black87),
+                              child: Text(studentModel.classroom!
+                                  // 'الصف التاسع',
+                                  ),
                               onPressed: () {
                                 Navigator.pop(context);
                                 appCubit.changeBottomNav(3);
@@ -91,7 +99,8 @@ class StudentDrawerBuildItem extends StatelessWidget {
                           VerticalDivider(thickness: 1),
                           Expanded(
                             child: TextButton(
-                              style: TextButton.styleFrom(primary: Colors.black87),
+                              style:
+                                  TextButton.styleFrom(primary: Colors.black87),
                               child: Text('الترم التاني'),
                               onPressed: () {
                                 Navigator.pop(context);
@@ -125,7 +134,7 @@ class StudentDrawerBuildItem extends StatelessWidget {
                                       // fontSize: 20
                                       )),
                               TextSpan(
-                                  text: '290',
+                                  text: studentModel.points,
                                   style: TextStyle(
                                     color: Colors.lightBlue,
                                     fontWeight: FontWeight.bold,

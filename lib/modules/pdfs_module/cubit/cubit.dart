@@ -55,6 +55,7 @@ class FilesCubit extends Cubit<FilesStates> {
           'type': type,
         }),
       );
+      print(response.data);
       if (response.data['status']) {
         addFileButtonState = ButtonState.success;
         filePostDataModel = FilePostDataModel.fromJson(response.data);
@@ -63,13 +64,14 @@ class FilesCubit extends Cubit<FilesStates> {
       } else {
         addFileButtonState = ButtonState.fail;
         showSnackBar(context: context, text: response.data['message']);
-        if(response.data['message'] == 'site.Url Is Not Valid') {
+        if (response.data['message'] == 'site.Url Is Not Valid') {
           hasFileError = true;
         }
         emit(FilePostErrorState());
       }
     } catch (e) {
       addFileButtonState = ButtonState.fail;
+      print(e);
       emit(FilePostErrorState());
       throw e;
     }
@@ -149,7 +151,8 @@ class FilesCubit extends Cubit<FilesStates> {
     try {
       emit(FileDownloadLoadingState());
       final newDirectory =
-      await Directory('/storage/emulated/0/Download/e-learning').create(recursive: true);
+          await Directory('/storage/emulated/0/Download/e-learning')
+              .create(recursive: true);
       final File file = File('${newDirectory.path}/$fileName.pdf');
 
       document = await http.readBytes(Uri.parse(url));
@@ -164,6 +167,7 @@ class FilesCubit extends Cubit<FilesStates> {
       throw e;
     }
   }
+
   void changeFileCounter() {
     filesCounter = filesCounter + 1;
     CacheHelper.saveData(key: 'filesCounter', value: filesCounter);

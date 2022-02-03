@@ -25,9 +25,10 @@ class GroupInfoTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textDirection = Directionality.of(context);
     return BlocConsumer<GroupCubit, GroupStates>(
       listener: (context, state) {
-        if(state is GroupStudentToggleJoinSuccessState) {
+        if (state is GroupStudentToggleJoinSuccessState) {
           navigateToAndFinish(context, StudentLayout());
         }
       },
@@ -66,8 +67,8 @@ class GroupInfoTab extends StatelessWidget {
                         decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             image: DecorationImage(
-                              image:
-                              AssetImage('assets/images/teacher_profile.png'),
+                              image: AssetImage(
+                                  'assets/images/teacher_profile.png'),
                               fit: BoxFit.cover,
                             )),
                       ),
@@ -113,24 +114,27 @@ class GroupInfoTab extends StatelessWidget {
                         ),
                       ],
                     ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'وصف المجموعه',
-                          style: secondaryTextStyle(deviceInfo),
-                        ),
-                        SizedBox(
-                          height: deviceInfo.screenHeight * 0.04,
-                        ),
-                        Text(
-                          groupDesc,
-                          style: thirdTextStyle(deviceInfo),
-                        ),
-                        SizedBox(
-                          height: deviceInfo.screenHeight * 0.08,
-                        ),
-                      ],
+                    child: Directionality(
+                      textDirection: textDirection,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'وصف المجموعه',
+                            style: secondaryTextStyle(deviceInfo),
+                          ),
+                          SizedBox(
+                            height: deviceInfo.screenHeight * 0.04,
+                          ),
+                          Text(
+                            groupDesc,
+                            style: thirdTextStyle(deviceInfo),
+                          ),
+                          SizedBox(
+                            height: deviceInfo.screenHeight * 0.08,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),

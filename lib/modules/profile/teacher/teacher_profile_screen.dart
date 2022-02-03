@@ -29,7 +29,7 @@ class TeacherProfileScreen extends StatelessWidget {
                 widgetBuilder: (context) => cubit.noProfileData
                     ? NoDataWidget(onPressed: () => cubit.getProfile(false))
                     : SingleChildScrollView(
-                      child: Column(
+                        child: Column(
                           children: [
                             /// Profile info
                             TeacherProfileInfoBuild(
@@ -41,8 +41,8 @@ class TeacherProfileScreen extends StatelessWidget {
                                       .length,
                                   (index) => cubit.teacherProfileModel!.teacher!
                                       .subjects![index].name!),
-                              rate: cubit
-                                  .teacherProfileModel!.teacher!.authStudentRate!
+                              rate: cubit.teacherProfileModel!.teacher!
+                                  .authStudentRate!
                                   .toDouble(),
                               isStudent: false,
                               isLiked: false,
@@ -58,7 +58,7 @@ class TeacherProfileScreen extends StatelessWidget {
                             ),
                           ],
                         ),
-                    ),
+                      ),
               ),
             ),
           );

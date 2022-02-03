@@ -78,7 +78,10 @@ class StudentSearchScreen extends StatelessWidget {
                                         var teacher =
                                             cubit.searchModel!.teachers![index];
                                         return SizedBox(
-                                          width: MediaQuery.of(context).size.width * 0.7,
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.7,
                                           child: TeachersBuildItem(
                                             image: teacher.image!,
                                             name: teacher.name!,
@@ -90,13 +93,17 @@ class StudentSearchScreen extends StatelessWidget {
                                             country: teacher.country!,
                                             rate: teacher.authStudentRate!
                                                 .toDouble(),
-                                            onTap: () {
-                                              navigateTo(context,
+                                            onTap: () async {
+                                              await navigateTo(
+                                                  context,
                                                   TeacherProfileView(
                                                     teacher: teacher,
                                                     isAdd: true,
                                                     cubit: cubit,
                                                   ));
+                                              cubit.searchStudent(
+                                                  searchController.text);
+                                              print('After navigation');
                                             },
                                           ),
                                         );
@@ -127,7 +134,8 @@ class StudentSearchScreen extends StatelessWidget {
                                             group.type == 'free' ? true : false,
                                         isJoined: group.isJoined!,
                                         onTap: () {
-                                          navigateTo(context, GroupInfoScreen(group: group));
+                                          navigateTo(context,
+                                              GroupInfoScreen(group: group));
                                         },
                                       );
                                     },

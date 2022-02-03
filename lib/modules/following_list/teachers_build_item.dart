@@ -6,7 +6,8 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TeachersBuildItem extends StatelessWidget {
-  const TeachersBuildItem({Key? key,
+  const TeachersBuildItem({
+    Key? key,
     required this.isAdd,
     required this.onTap,
     required this.name,
@@ -52,45 +53,54 @@ class TeachersBuildItem extends StatelessWidget {
                 ),
               ),
               SizedBox(width: 15.w),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    name,
-                    style: thirdTextStyle(null),
-                  ),
-                  SizedBox(height: 4.h),
-                  Text(
-                    country,
-                    style: subTextStyle(null),
-                  ),
-                  SizedBox(height: 4.h),
-                  DefaultTeacherSubjectsWrap(subjects: subjects),
-                  Row(
-                    children: [
-                      RatingBar.builder(
-                        initialRating: rate,
-                        minRating: 1,
-                        direction: Axis.horizontal,
-                        allowHalfRating: true,
-                        itemCount: 5,
-                        itemSize: 18.w,
-                        itemBuilder: (context, _) => Icon(
-                          Icons.star,
-                          color: Colors.amber,
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      name,
+                      style: thirdTextStyle(null),
+                    ),
+                    SizedBox(height: 4.h),
+                    Text(
+                      country,
+                      style: subTextStyle(null),
+                    ),
+                    SizedBox(height: 4.h),
+                    Expanded(
+                        child: ListView(
+                      scrollDirection: Axis.horizontal,
+                      children: [
+                        DefaultTeacherSubjectsWrap(subjects: subjects),
+                      ],
+                    )),
+                    Row(
+                      children: [
+                        RatingBar.builder(
+                          initialRating: rate,
+                          minRating: 1,
+                          direction: Axis.horizontal,
+                          allowHalfRating: true,
+                          itemCount: 5,
+                          itemSize: 18.w,
+                          itemBuilder: (context, _) => Icon(
+                            Icons.star,
+                            color: Colors.amber,
+                          ),
+                          onRatingUpdate: (rating) {
+                            print(rating);
+                          },
+                          ignoreGestures: isAdd,
                         ),
-                        onRatingUpdate: (rating) {
-                          print(rating);
-                        },
-                        ignoreGestures: isAdd,
-                      ),
-                      Text(
-                        '($rate)',
-                        style: subTextStyle(null).copyWith(color: Colors.amber),
-                      )
-                    ],
-                  ),
-                ],
+                        Text(
+                          '($rate)',
+                          style:
+                              subTextStyle(null).copyWith(color: Colors.amber),
+                        )
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ],
           ),

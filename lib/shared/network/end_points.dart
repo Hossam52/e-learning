@@ -50,13 +50,16 @@ const STUDENT_TOGGLE_FOLLOW_TEACHER = 'student/toggleFollow';
 const STUDENT_SEARCH_IN_TEACHERS = 'student/searchInTeachers';
 
 const STUDENT_CHANGE_CLASS = 'api/student/changeStudentClassroom';
+
+const RATE_TEACHER = 'student/RateTeacher';
+
 /// Home
 const STUDENT_GET_SUBJECTS = 'student/getStudenSubjects';
 
-
 const STUDENT_GET_SUBJECT_FILE_TEACHERS = 'student/whoTechSubject';
 
-const STUDENT_GET_SUBJECT_PLAYLIST_TEACHERS = 'student/whoUploadPlaylistSubject';
+const STUDENT_GET_SUBJECT_PLAYLIST_TEACHERS =
+    'student/whoUploadPlaylistSubject';
 
 const STUDENT_GET_ALL_NOTIFICATIONS = 'student/getNotifications';
 
@@ -65,7 +68,6 @@ const STUDENT_GET_HIGH_RATED_TEACHERS = 'student/HighRateTecahers';
 const STUDENT_GET_BEST_STUDENTS = 'Guest/getBestsStudents';
 
 const STUDENT_SEARCH = 'student/searchInGroup';
-
 
 /// Files Module
 const STUDENT_GET_SUBJECT_FILES = 'student/getFileBySubTec';
@@ -84,8 +86,8 @@ const STUDENT_GET_TEST_BY_TEACHER_ID = 'student/getAllTestsByTeacherID';
 
 const STUDENT_GET_LATEST_TEST = 'student/getLatestTestsInClassroom';
 
-const STUDENT_GET_SCHEDULE_HOMEWORK = 'student/homework/getHomeworkForAllGroups';
-
+const STUDENT_GET_SCHEDULE_HOMEWORK =
+    'student/homework/getHomeworkForAllGroups';
 
 /// Champion module
 const STUDENT_GET_CHAMPIONS = 'student/champion/AllChampion';
@@ -99,7 +101,6 @@ const STUDENT_SEND_CHAMPION_RESULT = 'student/champion/saveChampionResult';
 /// Student Challenges
 const STUDENT_GET_CHALLENGE = 'student/adminTests/getAdminTests';
 
-
 /// Group Module
 const STUDENT_GET_MY_GROUPS = 'student/group/myGroups';
 
@@ -110,7 +111,6 @@ const STUDENT_TOGGLE_JOIN_GROUPS = 'student/group/ToggleJoinGroup';
 const STUDENT_GET_TEACHER_GROUPS = 'student/group/teacherGroups';
 
 const STUDENT_GET_TEACHER_QUESTIONS = 'student/getAllPostsTecherProfile';
-
 
 /// Posts
 const STUDENT_GET_POSTS = 'student/social/getSocail';
@@ -127,15 +127,14 @@ const STUDENT_POST_EDIT_COMMENT = 'student/comment/update';
 
 const STUDENT_POST_TOGGLE_LIKE = 'student/like/ToggleLike';
 
-const STUDENT_ADD_QUESTION_ON_TEACHER_PROFILE = 'student/storePostInTeacherProfile';
-
+const STUDENT_ADD_QUESTION_ON_TEACHER_PROFILE =
+    'student/storePostInTeacherProfile';
 
 // Videos
 const STUDENT_GET_GROUP_VIDEO = 'student/video/getViseos';
 
 // homework
 const STUDENT_GET_GROUP_HOMEWORK = 'student/homework/getHomeworkByGroupId';
-
 
 /// --------------------------------------------------------------
 /// Teacher
@@ -156,7 +155,6 @@ const TEACHER_GENERAL_GET_PROFILE = 'Guest/getTeacherById';
 const TEACHER_LOGOUT = 'teacher/logout';
 
 const TEACHER_EDIT_PROFILE = 'teacher/updateProfile';
-
 
 /// Home
 const TEACHER_GET_SUBJECTS = 'teacher/getMySubjects';
@@ -182,7 +180,8 @@ const TEACHER_DELETE_FILE_WITH_ID = 'teacher/teacherfile/delete';
 // teacher
 const TEACHER_ADD_PLAYLIST = 'teacher/playlist/store';
 
-const TEACHER_GET_SUBJECT_PLAYLISTS = 'teacher/playlist/getPlaylistWithSubjectId';
+const TEACHER_GET_SUBJECT_PLAYLISTS =
+    'teacher/playlist/getPlaylistWithSubjectId';
 
 const TEACHER_DELETE_PLAYLIST_WITH_ID = 'teacher/playlist/delete';
 
@@ -196,7 +195,6 @@ const TEACHER_EDIT_TEST = 'teacher/test/update';
 const TEACHER_GET_TEST_BY_SUBJECT_ID = 'teacher/test/getTestsWithSubjectId';
 
 const TEACHER_DELETE_TEST_WITH_ID = 'teacher/test/delete';
-
 
 ///------------------------------------------------
 /// Group Module
@@ -259,5 +257,3 @@ const PUBLIC_GET_POSTS = 'student/publicGroup/getPublicPosts';
 const TEACHER_PROFILE_GET_ALL_POST = 'teacher/social/getAllPosts';
 
 const TEACHER_PROFILE_GET_ALL_QUESTION = 'teacher/getAllQuestionInMyProfile';
-
-

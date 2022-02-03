@@ -22,6 +22,7 @@ class GroupInfoScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(group.studentCount);
     return BlocConsumer<GroupCubit, GroupStates>(
       listener: (context, state) {
         if (state is GroupStudentToggleJoinSuccessState) {
@@ -107,25 +108,7 @@ class GroupInfoScreen extends StatelessWidget {
                           textAlign: TextAlign.center,
                         ),
                         SizedBox(height: 22.h),
-                        Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            GroupMemberBuildItem(margin: 80),
-                            GroupMemberBuildItem(margin: 125),
-                            GroupMemberBuildItem(margin: 170),
-                            Container(
-                              // margin: EdgeInsetsDirectional.only(start: 80),
-                              child: Chip(
-                                label: Text(
-                                  '+4400',
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                                padding: EdgeInsets.zero,
-                                backgroundColor: thirdColor.withOpacity(0.6),
-                              ),
-                            ),
-                          ],
-                        ),
+                        _personsInGroup(),
                         SizedBox(height: 22.h),
                         DefaultAppButton(
                           text: 'انضم الى المجموعة',
@@ -168,6 +151,28 @@ class GroupInfoScreen extends StatelessWidget {
           },
         );
       },
+    );
+  }
+
+  Widget _personsInGroup() {
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        GroupMemberBuildItem(margin: 80),
+        GroupMemberBuildItem(margin: 125),
+        GroupMemberBuildItem(margin: 170),
+        Container(
+          // margin: EdgeInsetsDirectional.only(start: 80),
+          child: Chip(
+            label: Text(
+              '+${group.studentCount}',
+              style: TextStyle(color: Colors.white),
+            ),
+            padding: EdgeInsets.zero,
+            backgroundColor: thirdColor.withOpacity(0.6),
+          ),
+        ),
+      ],
     );
   }
 }

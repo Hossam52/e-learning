@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
 class DefaultCachedNetworkImage extends StatelessWidget {
-  DefaultCachedNetworkImage({Key? key,
+  DefaultCachedNetworkImage({
+    Key? key,
     required this.imageUrl,
     this.width,
     this.height,

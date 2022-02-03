@@ -43,6 +43,7 @@ class _TeacherProfileViewState extends State<TeacherProfileView> {
         }
       },
       builder: (context, state) {
+        print('From teacher profiloe view');
         StudentCubit cubit = StudentCubit.get(context);
         return responsiveWidget(
           responsive: (_, deviceInfo) => Scaffold(

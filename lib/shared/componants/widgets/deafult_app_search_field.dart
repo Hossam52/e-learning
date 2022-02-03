@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DefaultAppSearchField extends StatelessWidget {
-  DefaultAppSearchField({Key? key,
+  DefaultAppSearchField({
+    Key? key,
     required this.controller,
     required this.onChanged,
     this.padding = 16.0,
@@ -34,8 +35,9 @@ class DefaultAppSearchField extends StatelessWidget {
                 minLines: 1,
                 onChanged: onChanged,
                 decoration: InputDecoration(
+                  contentPadding: const EdgeInsets.all(0),
                   hintText: text!.search,
-                  border:  OutlineInputBorder(
+                  border: OutlineInputBorder(
                     borderSide: BorderSide.none,
                   ),
                 ),

@@ -88,10 +88,11 @@ class _StudentProfileViewState extends State<StudentProfileView> {
                             children: [
                               StudentProfileInfoBuild(
                                 deviceInfo: deviceInfo,
-                                image: "${widget.student!.image}",
-                                name: "${widget.student!.name}",
-                                points: "${widget.student!.points}",
-                                code: "${widget.student!.code}",
+                                // image: "${widget.student!.image}",
+                                // name: "${widget.student!.name}",
+                                // points: "${widget.student!.points}",
+                                // code: "${widget.student!.code}",
+                                student: widget.student,
                                 authType: authType,
                                 trailing: defaultMaterialIconButton(
                                   text: widget.isFriend ? 'حذف' : 'إضافة كصديق',

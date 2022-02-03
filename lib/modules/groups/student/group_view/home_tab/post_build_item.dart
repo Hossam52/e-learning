@@ -71,6 +71,7 @@ class PostBuildItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('date is ${date}');
     var textTranslate = AppLocalizations.of(context)!;
     return Card(
       color: backgroundColor,
