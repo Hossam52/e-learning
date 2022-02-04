@@ -482,6 +482,7 @@ class AuthCubit extends Cubit<AuthStates> {
         loginButtonState = ButtonState.success;
         if (isStudent) {
           studentLoginDataModel = StudentDataModel.fromJson(value.data);
+          studentProfileModel = StudentDataModel.fromJson(value.data);
           studentToken = studentLoginDataModel!.token;
           CacheHelper.saveData(key: 'studentToken', value: studentToken);
           print(' token :$studentToken');
@@ -493,7 +494,8 @@ class AuthCubit extends Cubit<AuthStates> {
             },
           );
         } else {
-          teacherLoginDataModel = TeacherDataModel.fromJson(value.data);
+          teacherProfileModel =
+              teacherLoginDataModel = TeacherDataModel.fromJson(value.data);
           teacherToken = teacherLoginDataModel!.token;
           CacheHelper.saveData(key: 'teacherToken', value: teacherToken);
           print(' token :$teacherToken');

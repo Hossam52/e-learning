@@ -11,6 +11,7 @@ import 'package:e_learning/shared/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:progress_state_button/progress_button.dart';
 
 class StudentLoginScreen extends StatelessWidget {
   final TextEditingController email = TextEditingController();
@@ -20,11 +21,13 @@ class StudentLoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var text = AppLocalizations.of(context);
-
+    AuthCubit.get(context).loginButtonState = ButtonState
+        .idle; // To remove the state of button when enter fail text and go back and then login again
     return BlocProvider.value(
-      value: AuthCubit(),
+      value: AuthCubit.get(context),
       child: Scaffold(
-        body: SafeArea(child: responsiveWidget(responsive: (context, deviceInfo) {
+        body:
+            SafeArea(child: responsiveWidget(responsive: (context, deviceInfo) {
           return BlocConsumer<AuthCubit, AuthStates>(
             listener: (context, state) {},
             builder: (context, state) {
@@ -108,7 +111,8 @@ class StudentLoginScreen extends StatelessWidget {
                                       onPressed: () async {
                                         showDialog(
                                           context: context,
-                                          builder: (context) => ForgetPasswordDialog(
+                                          builder: (context) =>
+                                              ForgetPasswordDialog(
                                             deviceInfo: deviceInfo,
                                             isStudent: true,
                                           ),
