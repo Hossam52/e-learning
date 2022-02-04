@@ -1,4 +1,5 @@
 import 'package:e_learning/models/teacher/groups/in_group/group_post_model.dart';
+import 'package:e_learning/models/teacher/groups/in_group/post_response_model.dart';
 import 'package:e_learning/modules/groups/cubit/cubit.dart';
 import 'package:e_learning/modules/groups/cubit/states.dart';
 import 'package:e_learning/modules/groups/student/group_view/home_tab/post_build_item.dart';
@@ -60,7 +61,8 @@ class _PublicGroupHomeScreenState extends State<PublicGroupHomeScreen> {
             GroupCubit.get(context).getAllPublicGroupPosts(
                 GroupCubit.get(context).publicGroupModel!.id!);
           if (state is AddPostSuccessState) {
-            GroupCubit.get(context).getAllPublicGroupPosts(GroupCubit.get(context).publicGroupModel!.id!);
+            GroupCubit.get(context).getAllPublicGroupPosts(
+                GroupCubit.get(context).publicGroupModel!.id!);
             controller.clear();
             GroupCubit.get(context).clearImageList();
             showSnackBar(text: text.add_success, context: context);
@@ -200,9 +202,11 @@ class _PublicGroupHomeScreenState extends State<PublicGroupHomeScreen> {
                                                                   postId:
                                                                       postId,
                                                                 ),
-                                                                isStudent: widget.isStudent,
+                                                                isStudent: widget
+                                                                    .isStudent,
                                                                 isEdit: isEdit,
-                                                                context: context,
+                                                                context:
+                                                                    context,
                                                               );
                                                             }
                                                           },
@@ -281,7 +285,7 @@ class _PublicGroupHomeScreenState extends State<PublicGroupHomeScreen> {
                                                   var post = cubit
                                                       .publicGroupPosts[index];
                                                   return PostBuildItem(
-                                                    type: 'admin',
+                                                    type: 'post',
                                                     // name: post.teacher!,
                                                     deviceInfo: deviceInfo,
                                                     isMe: widget.isStudent
@@ -308,6 +312,9 @@ class _PublicGroupHomeScreenState extends State<PublicGroupHomeScreen> {
                                                         post.images!.isNotEmpty
                                                             ? post.images
                                                             : null,
+                                                    image: post.studentImage ??
+                                                        post.teacherImage ??
+                                                        '',
                                                     onEdit: () {},
                                                   );
                                                 }),

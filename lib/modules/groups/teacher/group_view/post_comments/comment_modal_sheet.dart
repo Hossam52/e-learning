@@ -123,8 +123,12 @@ class CommentModalSheet extends StatelessWidget {
                                       text: comment.text!,
                                       date: comment.date!,
                                       isStudent: isStudent,
-                                      isMe: isStudent ? comment.studentComment! : comment.teacherComment!,
-                                      isStudentComment: comment.student != null ? true : false,
+                                      isMe: isStudent
+                                          ? comment.studentComment!
+                                          : comment.teacherComment!,
+                                      isStudentComment: comment.student != null
+                                          ? true
+                                          : false,
                                       onSelected: (value) {
                                         if (value.toString() == 'delete') {
                                           defaultAlertDialog(
@@ -154,7 +158,8 @@ class CommentModalSheet extends StatelessWidget {
                                         } else {
                                           editComment(
                                             CommentModel(
-                                              id: postId,
+                                              // id: postId,
+                                              id: comment.id!,
                                               text: comment.text!,
                                               image: comment.images,
                                             ),

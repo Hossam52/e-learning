@@ -45,7 +45,7 @@ class GroupCubit extends Cubit<GroupStates> {
   bool isPostEdit = false;
   int? postId;
 
-  void changeEditPost(bool isEdit ,int? id) {
+  void changeEditPost(bool isEdit, int? id) {
     isPostEdit = isEdit;
     postId = id;
     emit(GroupChangeState());
@@ -53,7 +53,7 @@ class GroupCubit extends Cubit<GroupStates> {
 
   bool isStudentPostEdit = false;
   int? studentPostId;
-  void changeStudentEditPost(bool isEdit ,int? id) {
+  void changeStudentEditPost(bool isEdit, int? id) {
     isStudentPostEdit = isEdit;
     studentPostId = id;
     print(isStudentPostEdit);
@@ -772,6 +772,8 @@ class GroupCubit extends Cubit<GroupStates> {
       throw e;
     } finally {
       isAddCommentLoading = false;
+      isEdit = false;
+      isPostEdit = false;
       emit(GroupChangeState());
     }
   }
@@ -884,12 +886,15 @@ class GroupCubit extends Cubit<GroupStates> {
   }
 
   /// Get Posts And Questions for teacher Profile
-  void getAllProfilePostsAndQuestion(String type, {bool isQuestion = false}) async {
+  void getAllProfilePostsAndQuestion(String type,
+      {bool isQuestion = false}) async {
     List posts = [];
     emit(GroupGetPostLoadingState());
     try {
       Response response = await DioHelper.getData(
-        url: isQuestion ? TEACHER_PROFILE_GET_ALL_QUESTION : TEACHER_PROFILE_GET_ALL_POST,
+        url: isQuestion
+            ? TEACHER_PROFILE_GET_ALL_QUESTION
+            : TEACHER_PROFILE_GET_ALL_POST,
         token: teacherToken,
       );
       if (response.data['status']) {
