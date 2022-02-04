@@ -22,12 +22,14 @@ class ChangeCountryState extends AuthStates {}
 class ChangeStageState extends AuthStates {}
 
 class ChangeClassState extends AuthStates {}
+
 ///
 class GetAllSubjectsLoadingState extends AuthStates {}
 
 class GetAllSubjectsSuccessState extends AuthStates {}
 
 class GetAllSubjectsErrorState extends AuthStates {}
+
 ///
 class ChangeSubjectState extends AuthStates {}
 
@@ -64,7 +66,9 @@ class LoginErrorState extends AuthStates {}
 
 /// Forget Password
 class ForgetPasswordLoadingState extends AuthStates {}
+
 class ForgetPasswordSuccessState extends AuthStates {}
+
 class ForgetPasswordErrorState extends AuthStates {}
 
 /// logout states

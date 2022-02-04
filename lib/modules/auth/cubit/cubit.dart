@@ -59,6 +59,12 @@ class AuthCubit extends Cubit<AuthStates> {
     emit(ChooseTypeState());
   }
 
+  void resetAccountType() {
+    isStudent = false;
+    isTeacher = false;
+    isDisable = true;
+  }
+
   // Change password visibility methode
   void changePasswordVisibility() {
     isSecure = !isSecure;
@@ -521,6 +527,10 @@ class AuthCubit extends Cubit<AuthStates> {
       print(error.toString());
       emit(LoginErrorState());
     });
+  }
+
+  void resetLoginButtonToIdleState() {
+    loginButtonState = ButtonState.idle;
   }
 
   /// Forget Password

@@ -25,108 +25,111 @@ class TeacherLoginScreen extends StatelessWidget {
       child: Scaffold(
         body:
             SafeArea(child: responsiveWidget(responsive: (context, deviceInfo) {
-          return BlocConsumer<AuthCubit, AuthStates>(
-            listener: (context, state) {},
-            builder: (context, state) {
-              var cubit = AuthCubit.get(context);
-              return Scaffold(
-                extendBodyBehindAppBar: true,
-                body: responsiveWidget(responsive: (context, deviceInfo) {
-                  return SafeArea(
-                    child: SingleChildScrollView(
-                      child: Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                        child: Form(
-                          key: formKey,
-                          child: Column(
-                            children: [
-                              defaultBackButton(
-                                  context, deviceInfo.screenHeight),
-                              Text(
-                                text!.sign_in,
-                                style: primaryTextStyle(deviceInfo)
-                                    .copyWith(color: primaryColor),
-                              ),
-                              SizedBox(
-                                height: deviceInfo.screenHeight * 0.05,
-                              ),
-                              DefaultFormField(
-                                  controller: email,
-                                  type: TextInputType.name,
-                                  labelText: text.email,
-                                  validation: (email) {
-                                    if (email == null || email.isEmpty)
-                                      return text.email_validate;
+          return BlocProvider.value(
+            value: AuthCubit.get(context)..resetLoginButtonToIdleState(),
+            child: BlocConsumer<AuthCubit, AuthStates>(
+              listener: (context, state) {},
+              builder: (context, state) {
+                var cubit = AuthCubit.get(context);
+                return Scaffold(
+                  extendBodyBehindAppBar: true,
+                  body: responsiveWidget(responsive: (context, deviceInfo) {
+                    return SafeArea(
+                      child: SingleChildScrollView(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 10),
+                          child: Form(
+                            key: formKey,
+                            child: Column(
+                              children: [
+                                defaultBackButton(
+                                    context, deviceInfo.screenHeight),
+                                Text(
+                                  text!.sign_in,
+                                  style: primaryTextStyle(deviceInfo)
+                                      .copyWith(color: primaryColor),
+                                ),
+                                SizedBox(
+                                  height: deviceInfo.screenHeight * 0.05,
+                                ),
+                                DefaultFormField(
+                                    controller: email,
+                                    type: TextInputType.name,
+                                    labelText: text.email,
+                                    validation: (email) {
+                                      if (email == null || email.isEmpty)
+                                        return text.email_validate;
+                                      return null;
+                                    }),
+                                SizedBox(
+                                  height: deviceInfo.screenHeight * 0.03,
+                                ),
+                                DefaultFormField(
+                                  controller: password,
+                                  type: TextInputType.text,
+                                  labelText: text.password,
+                                  suffix: cubit.suffix,
+                                  suffixPressed: () {
+                                    cubit.changePasswordVisibility();
+                                  },
+                                  validation: (password) {
+                                    if (password == null || password.isEmpty)
+                                      return text.password_validate;
                                     return null;
-                                  }),
-                              SizedBox(
-                                height: deviceInfo.screenHeight * 0.03,
-                              ),
-                              DefaultFormField(
-                                controller: password,
-                                type: TextInputType.text,
-                                labelText: text.password,
-                                suffix: cubit.suffix,
-                                suffixPressed: () {
-                                  cubit.changePasswordVisibility();
-                                },
-                                validation: (password) {
-                                  if (password == null || password.isEmpty)
-                                    return text.password_validate;
-                                  return null;
-                                },
-                                secure: cubit.isSecure,
-                              ),
-                              SizedBox(
-                                height: deviceInfo.screenHeight * 0.06,
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  DefaultProgressButton(
-                                    buttonState: cubit.loginButtonState,
-                                    idleText: text.sign_in,
-                                    loadingText: 'Loading',
-                                    failText: text.failed,
-                                    successText: text.success_sign,
-                                    onPressed: () {
-                                      formKey.currentState!.save();
-                                      if (formKey.currentState!.validate()) {
-                                        cubit.login(
-                                          isStudent: false,
+                                  },
+                                  secure: cubit.isSecure,
+                                ),
+                                SizedBox(
+                                  height: deviceInfo.screenHeight * 0.06,
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    DefaultProgressButton(
+                                      buttonState: cubit.loginButtonState,
+                                      idleText: text.sign_in,
+                                      loadingText: 'Loading',
+                                      failText: text.failed,
+                                      successText: text.success_sign,
+                                      onPressed: () {
+                                        formKey.currentState!.save();
+                                        if (formKey.currentState!.validate()) {
+                                          cubit.login(
+                                            isStudent: false,
+                                            context: context,
+                                            email: email.text,
+                                            password: password.text,
+                                          );
+                                        }
+                                      },
+                                    ),
+                                    TextButton(
+                                      onPressed: () async {
+                                        await showDialog(
                                           context: context,
-                                          email: email.text,
-                                          password: password.text,
+                                          builder: (context) =>
+                                              ForgetPasswordDialog(
+                                            deviceInfo: deviceInfo,
+                                            isStudent: false,
+                                          ),
                                         );
-                                      }
-                                    },
-                                  ),
-                                  TextButton(
-                                    onPressed: () async {
-                                      await showDialog(
-                                        context: context,
-                                        builder: (context) =>
-                                            ForgetPasswordDialog(
-                                          deviceInfo: deviceInfo,
-                                          isStudent: false,
-                                        ),
-                                      );
-                                    },
-                                    child: Text(text.forget_password),
-                                  ),
-                                ],
-                              )
-                            ],
+                                      },
+                                      child: Text(text.forget_password),
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  );
-                }),
-              );
-            },
+                    );
+                  }),
+                );
+              },
+            ),
           );
         })),
       ),
