@@ -537,6 +537,7 @@ class GroupCubit extends Cubit<GroupStates> {
 
   ///
   Future<void> deleteMethod(int id, GroupDeleteType type) async {
+    print('$id  $type ${generateDeleteUrl(type)}');
     emit(GroupGeneralDeleteLoadingState());
     try {
       Response response = await DioHelper.postFormData(
@@ -567,7 +568,10 @@ class GroupCubit extends Cubit<GroupStates> {
         url = teacherToken != null ? TEACHER_DELETE_POST : STUDENT_DELETE_POST;
         break;
       case GroupDeleteType.COMMENT:
-        url = TEACHER_POST_DELETE_COMMENT;
+        url = teacherToken != null
+            ? TEACHER_POST_DELETE_COMMENT
+            : STUDENT_POST_DELETE_COMMENT;
+
         break;
       case GroupDeleteType.VIDEO:
         url = TEACHER_DELETE_GROUP_VIDEO;

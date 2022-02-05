@@ -328,6 +328,12 @@ class AppCubit extends Cubit<AppStates> {
   int? commentId;
   int? index;
   List<File> imageFiles = [];
+  void exitFocusFromComments() {
+    isEdit = false;
+    commentId = null;
+    index = null;
+    imageFiles = [];
+  }
 
   Future<void> addImageFromUrl(String imageUrl,
       {List<String>? imageUrls}) async {

@@ -10,10 +10,12 @@ import 'package:e_learning/shared/componants/constants.dart';
 import 'package:e_learning/shared/componants/widgets/default_cached_image.dart';
 import 'package:e_learning/shared/componants/widgets/default_popup_menu.dart';
 import 'package:e_learning/shared/componants/widgets/membership_widgets/student_star.dart';
+import 'package:e_learning/shared/cubit/cubit.dart';
 import 'package:e_learning/shared/responsive_ui/device_information.dart';
 import 'package:e_learning/shared/styles/colors.dart';
 import 'package:e_learning/shared/styles/styles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -71,7 +73,7 @@ class PostBuildItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('date is ${date}');
+    final appCubit = AppCubit.get(context);
     var textTranslate = AppLocalizations.of(context)!;
     return Card(
       color: backgroundColor,
@@ -279,8 +281,8 @@ class PostBuildItem extends StatelessWidget {
                         ? '$commentCount ${textTranslate.answer}'
                         : '$commentCount ${textTranslate.comment}',
                     isLiked: false,
-                    onPressed: () {
-                      showBarModalBottomSheet(
+                    onPressed: () async {
+                      await showBarModalBottomSheet(
                         expand: true,
                         context: context,
                         backgroundColor: Colors.transparent,
@@ -302,6 +304,8 @@ class PostBuildItem extends StatelessWidget {
                           isMe: isMe,
                         ),
                       );
+
+                      appCubit.exitFocusFromComments();
                     },
                   ),
                 ),

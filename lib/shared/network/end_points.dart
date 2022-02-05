@@ -123,6 +123,8 @@ const STUDENT_DELETE_POST = 'student/social/delete';
 
 const STUDENT_POST_ADD_COMMENT = 'student/comment/store';
 
+const STUDENT_POST_DELETE_COMMENT = 'student/comment/delete';
+
 const STUDENT_POST_EDIT_COMMENT = 'student/comment/update';
 
 const STUDENT_POST_TOGGLE_LIKE = 'student/like/ToggleLike';
