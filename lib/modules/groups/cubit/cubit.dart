@@ -239,7 +239,7 @@ class GroupCubit extends Cubit<GroupStates> {
   /// In Group-view
   PostResponseModel? teacherPostResponseModel;
 
-  void addPostAndQuestion(
+  Future<void> addPostAndQuestion(
     GroupPostModel model, {
     required bool isStudent,
     required bool isEdit,
@@ -250,6 +250,7 @@ class GroupCubit extends Cubit<GroupStates> {
     progress!.show();
     emit(AddPostLoadingState());
     try {
+      print('post id ${model.postId}');
       Response response = await DioHelper.postFormData(
         url: isProfileTeacher
             ? STUDENT_ADD_QUESTION_ON_TEACHER_PROFILE
@@ -263,6 +264,7 @@ class GroupCubit extends Cubit<GroupStates> {
         token: teacherToken ?? studentToken,
         formData: addTeacherPostFormData(model, isEdit, isProfileTeacher),
       );
+      print(response.data);
       if (response.data['status']) {
         teacherPostResponseModel = PostResponseModel.fromJson(response.data);
         emit(AddPostSuccessState());
@@ -274,6 +276,8 @@ class GroupCubit extends Cubit<GroupStates> {
       throw e;
     } finally {
       progress.dismiss();
+      isStudentPostEdit = false;
+      isPostEdit = false;
       emit(GroupChangeState());
     }
   }
@@ -302,7 +306,7 @@ class GroupCubit extends Cubit<GroupStates> {
   bool noPostData = false;
   bool noQuestionData = false;
 
-  void getAllPostsAndQuestions(String type, int groupId, bool isStudent,
+  Future<void> getAllPostsAndQuestions(String type, int groupId, bool isStudent,
       {bool isProfile = false}) async {
     List posts = [];
     noPostData = false;

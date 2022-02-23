@@ -9,6 +9,7 @@ import 'package:e_learning/shared/responsive_ui/responsive_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_conditional_rendering/conditional.dart';
+import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 
 class ProfileScreen extends StatelessWidget {
   ProfileScreen({Key? key}) : super(key: key);
@@ -21,44 +22,48 @@ class ProfileScreen extends StatelessWidget {
         listener: (context, state) {},
         builder: (context, state) {
           AuthCubit cubit = AuthCubit.get(context);
-          return responsiveWidget(
-            responsive: (_, deviceInfo) {
-              return Scaffold(
-                body: Conditional.single(
-                  context: context,
-                  conditionBuilder: (context) =>
-                      state is! GetProfileLoadingState,
-                  fallbackBuilder: (context) => DefaultLoader(),
-                  widgetBuilder: (context) {
-                    return cubit.noProfileData
-                        ? NoDataWidget(
-                            text: 'عذرا لا يوجد بيانات',
-                            onPressed: () {
-                              cubit.getProfile(true);
-                            },
-                          )
-                        : SingleChildScrollView(
-                            child: Column(
-                              children: [
-                                /// Profile info
-                                StudentProfileInfoBuild(
-                                  deviceInfo: deviceInfo,
-                                  authType: authType,
-                                  student: cubit.studentProfileModel!.student!,
-                                  isMe: true,
-                                ),
+          return ProgressHUD(
+            child: responsiveWidget(
+              responsive: (_, deviceInfo) {
+                return Scaffold(
+                  body: Conditional.single(
+                    context: context,
+                    conditionBuilder: (context) =>
+                        state is! GetProfileLoadingState,
+                    fallbackBuilder: (context) => DefaultLoader(),
+                    widgetBuilder: (context) {
+                      return cubit.noProfileData
+                          ? NoDataWidget(
+                              text: 'عذرا لا يوجد بيانات',
+                              onPressed: () {
+                                cubit.getProfile(true);
+                              },
+                            )
+                          : SingleChildScrollView(
+                              child: Column(
+                                children: [
+                                  /// Profile info
+                                  StudentProfileInfoBuild(
+                                    deviceInfo: deviceInfo,
+                                    authType: authType,
+                                    student:
+                                        cubit.studentProfileModel!.student!,
+                                    isMe: true,
+                                  ),
 
-                                /// Tabs
-                                TabsBuildItem(
-                                  student: cubit.studentProfileModel!.student!,
-                                ),
-                              ],
-                            ),
-                          );
-                  },
-                ),
-              );
-            },
+                                  /// Tabs
+                                  TabsBuildItem(
+                                    student:
+                                        cubit.studentProfileModel!.student!,
+                                  ),
+                                ],
+                              ),
+                            );
+                    },
+                  ),
+                );
+              },
+            ),
           );
         },
       ),
