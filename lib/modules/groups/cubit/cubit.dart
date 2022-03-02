@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
@@ -544,11 +545,13 @@ class GroupCubit extends Cubit<GroupStates> {
     print('$id  $type ${generateDeleteUrl(type)}');
     emit(GroupGeneralDeleteLoadingState());
     try {
+      log('Recieved from delete $id ${type.toString()}');
       Response response = await DioHelper.postFormData(
         url: generateDeleteUrl(type),
         token: teacherToken ?? studentToken,
         formData: generateDeleteFormData(type, id),
       );
+      log('data from delete is ${response.data}');
       if (response.data['status']) {
         emit(GroupGeneralDeleteSuccessState());
       } else {

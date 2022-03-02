@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:e_learning/models/enums/enums.dart';
+import 'package:e_learning/models/teacher/groups/in_group/comment_model.dart';
 import 'package:e_learning/models/teacher/groups/in_group/post_response_model.dart';
 import 'package:e_learning/modules/groups/cubit/cubit.dart';
 import 'package:e_learning/modules/groups/cubit/states.dart';
@@ -241,7 +244,60 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
                                                       var comment = widget
                                                           .comments[index];
                                                       return CommentBuildItem(
-                                                        onSelected: (value) {},
+                                                        onSelected: (value) {
+                                                          if (value
+                                                                  .toString() ==
+                                                              'delete') {
+                                                            defaultAlertDialog(
+                                                              context: context,
+                                                              title:
+                                                                  'مسح الكومنت',
+                                                              subTitle:
+                                                                  'هل تريد حقا مسح هذا الكومنت',
+                                                              buttonConfirm:
+                                                                  "مسح",
+                                                              buttonReject:
+                                                                  "عوده",
+                                                              onConfirm:
+                                                                  () async {
+                                                                await groupCubit
+                                                                    .deleteMethod(
+                                                                        comment
+                                                                            .id!,
+                                                                        GroupDeleteType
+                                                                            .COMMENT);
+                                                                widget.comments
+                                                                    .removeAt(
+                                                                        index);
+                                                                Navigator.pop(
+                                                                    context);
+                                                              },
+                                                              onReject: () {},
+                                                            );
+                                                          } else if (value
+                                                                  .toString() ==
+                                                              'block') {
+                                                            // groupCubit.addStudentToGroupWithCode(
+                                                            //   groupId: groupId,
+                                                            //   code: comment.code!,
+                                                            //   isAdd: false,
+                                                            //   context: context,
+                                                            // );
+                                                          } else {
+                                                            editComment(
+                                                              CommentModel(
+                                                                // id: postId,
+                                                                id: comment.id!,
+                                                                text: comment
+                                                                    .text!,
+                                                                image: comment
+                                                                    .images,
+                                                              ),
+                                                              appCubit,
+                                                              index: index,
+                                                            );
+                                                          }
+                                                        },
                                                         name: comment.student ??
                                                             comment.teacher ??
                                                             'user',
@@ -308,11 +364,13 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
                                         commentController: commentController,
                                         formKey: formKey,
                                         isStudent: widget.isStudent,
-                                        isEdit: false,
+                                        isEdit: appCubit.isEdit,
                                         id: widget.id,
                                         type: '',
                                         groupId: 0,
-                                        commentType: widget.commentType,
+                                        commentType: appCubit.isEdit
+                                            ? CommentType.Edit
+                                            : CommentType.Add,
                                         focusNode: focusNode,
                                       ),
                                     ],
@@ -332,6 +390,15 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
         },
       ),
     );
+  }
+
+  void editComment(CommentModel model, AppCubit cubit, {required int index}) {
+    cubit.commentId = model.id;
+    cubit.index = index;
+    cubit.isEdit = true;
+    commentController.text = model.text;
+    cubit.emit(AppChangeState());
+    if (model.image != null) cubit.addImageFromUrl(model.image!);
   }
 
   @override
