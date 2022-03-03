@@ -78,6 +78,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
 
   @override
   Widget build(BuildContext context) {
+    log('id ${widget.id} videoID ${widget.videoId} teacher ${widget.teacherId} subject ${widget.subjectId}');
     return BlocProvider.value(
       value: VideosCubit()..isVideoLiked = widget.isLiked,
       child: BlocConsumer<VideosCubit, VideosStates>(
@@ -370,7 +371,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
                                         groupId: 0,
                                         commentType: appCubit.isEdit
                                             ? CommentType.Edit
-                                            : CommentType.Add,
+                                            : widget.commentType,
                                         focusNode: focusNode,
                                       ),
                                     ],
