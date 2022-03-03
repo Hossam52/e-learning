@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:e_learning/models/teacher/groups/in_group/group_post_model.dart';
 import 'package:e_learning/models/teacher/groups/in_group/post_response_model.dart';
 import 'package:e_learning/modules/groups/cubit/cubit.dart';
@@ -37,13 +39,8 @@ class _PublicGroupHomeScreenState extends State<PublicGroupHomeScreen> {
 
   final TextEditingController controller = TextEditingController();
 
-  bool? noImages;
-  int? postId;
-  bool isEdit = false;
-
   @override
   void initState() {
-    noImages = GroupCubit.get(context).selectedImages.isEmpty;
     super.initState();
   }
 
@@ -73,6 +70,10 @@ class _PublicGroupHomeScreenState extends State<PublicGroupHomeScreen> {
           },
           builder: (context, state) {
             GroupCubit cubit = GroupCubit.get(context);
+            if (state is GroupChangeState) log('Change state');
+
+            final noImages = GroupCubit.get(context).selectedImages.isEmpty;
+            log(noImages.toString());
             return responsiveWidget(
               responsive: (_, deviceInfo) {
                 return Scaffold(
@@ -154,23 +155,22 @@ class _PublicGroupHomeScreenState extends State<PublicGroupHomeScreen> {
                                                     ),
                                                     if (cubit.selectedImages
                                                         .isNotEmpty)
-                                                      Container(
-                                                        height: 250,
-                                                        child: GridView.builder(
-                                                          itemCount: cubit
-                                                              .selectedImages
-                                                              .length,
-                                                          gridDelegate:
-                                                              SliverGridDelegateWithFixedCrossAxisCount(
-                                                            crossAxisCount: 3,
-                                                            crossAxisSpacing: 3,
-                                                          ),
-                                                          itemBuilder: (context,
-                                                                  index) =>
-                                                              Image.file(
-                                                            cubit.selectedImages[
-                                                                index],
-                                                          ),
+                                                      GridView.builder(
+                                                        primary: false,
+                                                        shrinkWrap: true,
+                                                        itemCount: cubit
+                                                            .selectedImages
+                                                            .length,
+                                                        gridDelegate:
+                                                            SliverGridDelegateWithFixedCrossAxisCount(
+                                                          crossAxisCount: 3,
+                                                          crossAxisSpacing: 3,
+                                                        ),
+                                                        itemBuilder:
+                                                            (context, index) =>
+                                                                Image.file(
+                                                          cubit.selectedImages[
+                                                              index],
                                                         ),
                                                       ),
                                                     SizedBox(
@@ -195,7 +195,7 @@ class _PublicGroupHomeScreenState extends State<PublicGroupHomeScreen> {
                                                                   GroupPostModel(
                                                                     text: controller
                                                                         .text,
-                                                                    images: noImages!
+                                                                    images: noImages
                                                                         ? null
                                                                         : cubit
                                                                             .selectedImages,
@@ -237,23 +237,23 @@ class _PublicGroupHomeScreenState extends State<PublicGroupHomeScreen> {
                                                           child:
                                                               defaultMaterialIconButton(
                                                             onPressed: () {
-                                                              if (noImages!)
+                                                              if (noImages)
                                                                 cubit
                                                                     .loadImages();
                                                               else
                                                                 cubit
                                                                     .clearImageList();
                                                             },
-                                                            text: noImages!
+                                                            text: noImages
                                                                 ? text
                                                                     .add_images
                                                                 : text
                                                                     .remove_images,
-                                                            icon: noImages!
+                                                            icon: noImages
                                                                 ? Icons.photo
                                                                 : Icons.close,
                                                             backgroundColor:
-                                                                noImages!
+                                                                noImages
                                                                     ? successColor
                                                                     : errorColor,
                                                             textColor:
@@ -265,26 +265,6 @@ class _PublicGroupHomeScreenState extends State<PublicGroupHomeScreen> {
                                                   ],
                                                 ),
                                               ),
-                                              if (cubit
-                                                  .selectedImages.isNotEmpty)
-                                                Container(
-                                                  height: 250,
-                                                  child: GridView.builder(
-                                                    itemCount: cubit
-                                                        .selectedImages.length,
-                                                    gridDelegate:
-                                                        SliverGridDelegateWithFixedCrossAxisCount(
-                                                      crossAxisCount: 3,
-                                                      crossAxisSpacing: 3,
-                                                    ),
-                                                    itemBuilder:
-                                                        (context, index) =>
-                                                            Image.file(
-                                                      cubit.selectedImages[
-                                                          index],
-                                                    ),
-                                                  ),
-                                                ),
                                               ListView.builder(
                                                   itemCount: cubit
                                                       .publicGroupPosts.length,
@@ -300,60 +280,68 @@ class _PublicGroupHomeScreenState extends State<PublicGroupHomeScreen> {
                                                         cubit.publicGroupPosts[
                                                             index];
                                                     return PostBuildItem(
-                                                        type: 'post',
-                                                        // name: post.teacher!,
-                                                        deviceInfo: deviceInfo,
-                                                        isMe: widget.isStudent
-                                                            ? post.studentPost!
-                                                            : post.teacherPost!,
-                                                        isStudent:
-                                                            widget.isStudent,
-                                                        date: post.date!,
-                                                        cubit: cubit,
-                                                        postId: post.id!,
-                                                        answer: null,
-                                                        text: post.text,
-                                                        likesCount: cubit
-                                                                .publicGroupPostsLikeCount[
-                                                            post.id]!,
-                                                        isLiked:
-                                                            cubit.publicGroupPostsLikeBool[
-                                                                post.id]!,
-                                                        commentCount: post
-                                                            .comments!.length,
-                                                        comments: post.comments,
-                                                        groupId: cubit
-                                                            .publicGroupModel!
-                                                            .id!,
-                                                        images: post.images!
-                                                                .isNotEmpty
-                                                            ? post.images
-                                                            : null,
-                                                        image: post
-                                                                .studentImage ??
-                                                            post.teacherImage ??
-                                                            '',
-                                                        onEdit: () async {
-                                                          cubit
-                                                              .changeStudentEditPost(
-                                                                  true,
-                                                                  post.id);
-                                                          controller.text =
-                                                              post.text!;
-                                                          if (post.images!
-                                                              .isNotEmpty) {
-                                                            await AppCubit.get(
-                                                                    context)
-                                                                .addImageFromUrl(
-                                                                    '',
-                                                                    imageUrls: post
-                                                                        .images);
-                                                            cubit.selectedImages =
-                                                                AppCubit.get(
-                                                                        context)
-                                                                    .imageFiles;
-                                                          }
-                                                        });
+                                                      type: 'admin',
+                                                      name: post.student ??
+                                                          post.teacher ??
+                                                          'Unknown',
+                                                      deviceInfo: deviceInfo,
+                                                      isMe: widget.isStudent
+                                                          ? post.studentPost!
+                                                          : post.teacherPost!,
+                                                      isStudent:
+                                                          widget.isStudent,
+                                                      date: post.date!,
+                                                      cubit: cubit,
+                                                      postId: post.id!,
+                                                      answer: null,
+                                                      text: post.text,
+                                                      likesCount: cubit
+                                                              .publicGroupPostsLikeCount[
+                                                          post.id]!,
+                                                      isLiked: cubit
+                                                              .publicGroupPostsLikeBool[
+                                                          post.id]!,
+                                                      commentCount:
+                                                          post.comments!.length,
+                                                      comments: post.comments,
+                                                      groupId: cubit
+                                                          .publicGroupModel!
+                                                          .id!,
+                                                      images: post.images!
+                                                              .isNotEmpty
+                                                          ? post.images
+                                                          : null,
+                                                      image: post
+                                                              .studentImage ??
+                                                          post.teacherImage ??
+                                                          '',
+                                                      onEdit: () async {
+                                                        controller.text =
+                                                            post.text!;
+                                                        if (post.images!
+                                                            .isNotEmpty) {
+                                                          await AppCubit.get(
+                                                                  context)
+                                                              .addImageFromUrl(
+                                                                  '',
+                                                                  imageUrls: post
+                                                                      .images);
+                                                          cubit.selectedImages =
+                                                              AppCubit.get(
+                                                                      context)
+                                                                  .imageFiles;
+                                                        }
+                                                        cubit
+                                                            .changeStudentEditPost(
+                                                                true, post.id);
+                                                      },
+                                                      onDelete: () {
+                                                        cubit.getAllPublicGroupPosts(
+                                                            cubit
+                                                                .publicGroupModel!
+                                                                .id!);
+                                                      },
+                                                    );
                                                   }),
                                             ],
                                           ),

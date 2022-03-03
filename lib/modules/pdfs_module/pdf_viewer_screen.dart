@@ -36,17 +36,17 @@ class PdfViewerScreen extends StatelessWidget {
                   IconButton(
                     icon: state is! FileDownloadLoadingState
                         ? Icon(state is! FileDownloadSuccessState
-                        ? Icons.download
-                        : Icons.done)
+                            ? Icons.download
+                            : Icons.done)
                         : Container(
-                        width: 20,
-                        height: 20,
-                        child: CircularProgressIndicator()),
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator()),
                     tooltip: 'download',
-                    onPressed: () =>
-                    state is! FileDownloadSuccessState
+                    onPressed: () => state is! FileDownloadSuccessState
                         ? cubit.downloadFile(url, title)
-                        : showSnackBar(context: context, text: 'تم تحميل الملف من قبل'),
+                        : showSnackBar(
+                            context: context, text: 'تم تحميل الملف من قبل'),
                   )
                 ],
               ),

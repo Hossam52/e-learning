@@ -73,10 +73,10 @@ class _EditProfileTabState extends State<EditProfileTab> {
                     key: formKey,
                     child: Column(
                       children: [
-                        AvatarBuildItem(
-                          image: "${widget.student.image}",
-                          appCubit: appCubit,
-                        ),
+                        // AvatarBuildItem(
+                        //   image: "${widget.student.image}",
+                        //   appCubit: appCubit,
+                        // ),
                         DefaultFormField(
                             controller: name,
                             type: TextInputType.name,

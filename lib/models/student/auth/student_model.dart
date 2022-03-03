@@ -5,8 +5,8 @@ class StudentModel {
   late String email;
   String? password;
   String? passwordConfirmation;
-  late int countryId;
-  late int classroomId;
+  late int? countryId;
+  late int? classroomId;
   File? avatar;
 
   StudentModel({
@@ -14,8 +14,8 @@ class StudentModel {
     required this.email,
     this.password,
     this.passwordConfirmation,
-    required this.countryId,
-    required this.classroomId,
+    this.countryId,
+    this.classroomId,
     this.avatar,
-});
+  });
 }

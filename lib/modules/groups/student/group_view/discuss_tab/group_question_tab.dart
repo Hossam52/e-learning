@@ -15,9 +15,12 @@ class GroupStudentTab extends StatelessWidget {
     required this.posts,
     required this.groupId,
     this.postController,
+    this.isPost = false,
   }) : super(key: key);
 
   final bool isQuestion;
+  final bool isPost;
+
   final bool isStudent;
   final DeviceInformation deviceInfo;
   final GroupCubit cubit;
@@ -38,14 +41,18 @@ class GroupStudentTab extends StatelessWidget {
           var post = posts[index];
           return PostBuildItem(
             isMe: post.studentPost ?? false,
-            type: isQuestion ? 'question' : 'share',
+            type: isPost
+                ? 'post'
+                : isQuestion
+                    ? 'question'
+                    : 'share',
             deviceInfo: deviceInfo,
             answer: isQuestion ? post.answer : null,
             cubit: cubit,
             text: post.text!,
             isStudent: isStudent,
             groupId: groupId,
-            onEdit: () async{
+            onEdit: () async {
               cubit.changeStudentEditPost(true, post.id);
               postController!.text = post.text!;
               if (post.images!.isNotEmpty) {
@@ -58,12 +65,16 @@ class GroupStudentTab extends StatelessWidget {
             name: post.student ?? 'student',
             image: post.studentImage ?? post.teacherImage,
             commentCount: post.comments!.length,
-            likesCount: isQuestion
-                ? cubit.questionLikeCount[post.id]!
-                : cubit.shareLikeCount[post.id]!,
-            isLiked: isQuestion
-                ? cubit.questionLikeBool[post.id]!
-                : cubit.shareLikeBool[post.id]!,
+            likesCount: isPost
+                ? cubit.postsLikeCount[post.id]!
+                : isQuestion
+                    ? cubit.questionLikeCount[post.id]!
+                    : cubit.shareLikeCount[post.id]!,
+            isLiked: isPost
+                ? cubit.postsLikeBool[post.id]!
+                : isQuestion
+                    ? cubit.questionLikeBool[post.id]!
+                    : cubit.shareLikeBool[post.id]!,
             comments: post.comments,
             date: post.date!,
             images: post.images!.isNotEmpty ? post.images : null,

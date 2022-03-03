@@ -45,6 +45,7 @@ class PostBuildItem extends StatelessWidget {
     required this.date,
     this.name = 'محمد',
     this.image,
+    this.onDelete,
   }) : super(key: key);
 
   final DeviceInformation deviceInfo;
@@ -61,6 +62,7 @@ class PostBuildItem extends StatelessWidget {
   final int commentCount;
   final int groupId;
   final Function onEdit;
+  final void Function()? onDelete;
   final bool isLiked;
   final String date;
   List<Comments>? comments;
@@ -181,8 +183,11 @@ class PostBuildItem extends StatelessWidget {
                             await cubit.deleteMethod(
                                 postId, GroupDeleteType.POST);
                             Navigator.pop(context);
-                            cubit.getAllPostsAndQuestions(
-                                type, groupId, isStudent);
+                            if (onDelete != null)
+                              onDelete!();
+                            else
+                              cubit.getAllPostsAndQuestions(
+                                  type, groupId, isStudent);
                           },
                           onReject: () {},
                         );
