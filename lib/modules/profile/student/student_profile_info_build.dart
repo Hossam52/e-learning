@@ -47,7 +47,7 @@ class StudentProfileInfoBuild extends StatelessWidget {
   Widget build(BuildContext context) {
     final String image = student!.image!;
     final String name = student!.name!;
-    final String points = student!.points!;
+    final String points = student!.points.toString();
     final String code = student!.code!;
     return Container(
       decoration: BoxDecoration(

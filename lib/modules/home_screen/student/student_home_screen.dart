@@ -202,7 +202,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                                                     name: student.name!,
                                                     image: student.image!,
                                                     pointsCount:
-                                                        student.points!,
+                                                        student.points.toString(),
                                                     onTap: () {
                                                       navigateTo(
                                                           context,

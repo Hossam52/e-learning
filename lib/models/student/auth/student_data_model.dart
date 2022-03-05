@@ -5,7 +5,8 @@ class StudentDataModel {
   bool? authType;
   String? token;
 
-  StudentDataModel({this.status, this.message, this.student, this.token, this.authType});
+  StudentDataModel(
+      {this.status, this.message, this.student, this.token, this.authType});
 
   StudentDataModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
@@ -46,7 +47,7 @@ class Student {
     country = json['country'];
     classroom = json['classroom'];
     image = json['image'];
-    points = json['points'];
+    points = json['points'].toString();
   }
 
   Map<String, dynamic> toJson() {

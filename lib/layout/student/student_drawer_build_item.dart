@@ -7,7 +7,6 @@ import 'package:e_learning/modules/student/my_friend_list/my_friend_list_screen.
 import 'package:e_learning/shared/componants/componants.dart';
 import 'package:e_learning/shared/componants/constants.dart';
 import 'package:e_learning/shared/componants/home_components.dart';
-import 'package:e_learning/shared/componants/widgets/default_cached_image.dart';
 import 'package:e_learning/shared/cubit/cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -134,7 +133,7 @@ class StudentDrawerBuildItem extends StatelessWidget {
                                       // fontSize: 20
                                       )),
                               TextSpan(
-                                  text: studentModel.points,
+                                  text: studentModel.points.toString(),
                                   style: TextStyle(
                                     color: Colors.lightBlue,
                                     fontWeight: FontWeight.bold,

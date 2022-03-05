@@ -1,4 +1,3 @@
-import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:e_learning/layout/student/cubit/cubit.dart';
 import 'package:e_learning/layout/student/student_layout.dart';
 import 'package:e_learning/layout/teacher/teacher_layout.dart';

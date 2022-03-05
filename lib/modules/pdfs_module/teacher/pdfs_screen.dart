@@ -11,6 +11,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_conditional_rendering/conditional.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:open_file/open_file.dart';
 import '../pdf_viewer_screen.dart';
 import 'add_pdf_screen.dart';
 
@@ -93,16 +94,21 @@ class PdfsScreen extends StatelessWidget {
                           deviceInfo: deviceInfo,
                           text: file.name!,
                           fileId: file.fileId!,
-                          onTap: () {
+                          onTap: () async {
                             if (filesCounter < 10) {
-                              navigateTo(
-                                context,
-                                PdfViewerScreen(
-                                  url:
-                                      'https://drive.google.com/u/0/uc?id=${file.fileId!}&export=download',
-                                  title: file.name!,
-                                ),
-                              );
+                              String? filePath =
+                                  await cubit.checkFileExist(file.name!);
+                              if (filePath != null)
+                                await OpenFile.open(filePath);
+                              else
+                                navigateTo(
+                                  context,
+                                  PdfViewerScreen(
+                                    url:
+                                        'https://drive.google.com/u/0/uc?id=${file.fileId!}&export=download',
+                                    title: file.name!,
+                                  ),
+                                );
                             } else {
                               showSnackBar(
                                 context: context,

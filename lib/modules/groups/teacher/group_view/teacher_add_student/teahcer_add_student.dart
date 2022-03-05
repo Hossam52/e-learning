@@ -94,7 +94,8 @@ class _TeacherAddStudentState extends State<TeacherAddStudent> {
                       conditionBuilder: (context) =>
                           state is! GroupGetVideoAndMembersLoadingState,
                       fallbackBuilder: (context) => DefaultLoader(),
-                      widgetBuilder: (context) => cubit.noGroupMemberData
+                      widgetBuilder: (context) => cubit.studentInGroupModel ==
+                              null
                           ? NoDataWidget(
                               text: 'عذرا لا يوجد بيانات',
                               onPressed: () => GroupCubit.get(context)

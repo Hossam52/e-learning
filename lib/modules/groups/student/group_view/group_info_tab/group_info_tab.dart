@@ -36,70 +36,70 @@ class GroupInfoTab extends StatelessWidget {
         GroupCubit cubit = GroupCubit.get(context);
         return responsiveWidget(
           responsive: (_, deviceInfo) {
-            return Column(
-              children: [
-                SizedBox(
-                  height: deviceInfo.screenHeight * 0.06,
-                ),
-                Container(
-                  clipBehavior: Clip.antiAliasWithSaveLayer,
-                  padding: EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(40),
-                      bottomRight: Radius.circular(40),
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        spreadRadius: 1,
-                        blurRadius: 20,
-                        offset: Offset(0, 2), // changes position of shadow
-                      ),
-                    ],
+            return Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: deviceInfo.screenHeight * 0.06,
                   ),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: deviceInfo.screenwidth * 0.2,
-                        height: deviceInfo.screenwidth * 0.2,
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: DecorationImage(
-                              image: AssetImage(
-                                  'assets/images/teacher_profile.png'),
-                              fit: BoxFit.cover,
-                            )),
+                  Container(
+                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                    padding: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(40),
+                        bottomRight: Radius.circular(40),
                       ),
-                      SizedBox(
-                        width: deviceInfo.screenwidth * 0.1,
-                      ),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'محمدود محمد',
-                              style: secondaryTextStyle(deviceInfo),
-                              maxLines: 1,
-                            ),
-                            SizedBox(height: deviceInfo.screenHeight * 0.02),
-                            Text(
-                              groupName,
-                              style: thirdTextStyle(deviceInfo),
-                              maxLines: 2,
-                            ),
-                          ],
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 1,
+                          blurRadius: 20,
+                          offset: Offset(0, 2), // changes position of shadow
                         ),
-                      )
-                    ],
+                      ],
+                    ),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: deviceInfo.screenwidth * 0.2,
+                          height: deviceInfo.screenwidth * 0.2,
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              image: DecorationImage(
+                                image: AssetImage(
+                                    'assets/images/teacher_profile.png'),
+                                fit: BoxFit.cover,
+                              )),
+                        ),
+                        SizedBox(
+                          width: deviceInfo.screenwidth * 0.1,
+                        ),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'محمدود محمد',
+                                style: secondaryTextStyle(deviceInfo),
+                                maxLines: 1,
+                              ),
+                              SizedBox(height: deviceInfo.screenHeight * 0.02),
+                              Text(
+                                groupName,
+                                style: thirdTextStyle(deviceInfo),
+                                maxLines: 2,
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
                   ),
-                ),
-                SizedBox(height: deviceInfo.screenHeight * 0.02),
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Container(
+                  SizedBox(height: deviceInfo.screenHeight * 0.02),
+                  Container(
                     padding: EdgeInsets.symmetric(horizontal: 16, vertical: 45),
                     width: double.infinity,
                     decoration: BoxDecoration(
@@ -137,23 +137,23 @@ class GroupInfoTab extends StatelessWidget {
                       ),
                     ),
                   ),
-                ),
-                if (isStudent)
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 25.0),
-                    child: DefaultAppButton(
-                      text: 'مغادره الجروب',
-                      textStyle: thirdTextStyle(null),
-                      width: MediaQuery.of(context).size.width * 0.6,
-                      height: 60,
-                      isLoading: cubit.isJoinGroupLoading,
-                      onPressed: () {
-                        cubit.toggleStudentJoinGroup(groupId);
-                      },
-                      background: errorColor,
+                  if (isStudent)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 25.0),
+                      child: DefaultAppButton(
+                        text: 'مغادره الجروب',
+                        textStyle: thirdTextStyle(null),
+                        width: MediaQuery.of(context).size.width * 0.6,
+                        height: 60,
+                        isLoading: cubit.isJoinGroupLoading,
+                        onPressed: () {
+                          cubit.toggleStudentJoinGroup(groupId);
+                        },
+                        background: errorColor,
+                      ),
                     ),
-                  ),
-              ],
+                ],
+              ),
             );
           },
         );

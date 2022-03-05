@@ -428,6 +428,7 @@ class GroupCubit extends Cubit<GroupStates> {
           'group_id': groupId,
         }),
       );
+      print(response.data);
       if (response.data['status']) {
         if (isMembers) {
           studentInGroupModel = StudentInGroupModel.fromJson(response.data);
@@ -478,6 +479,7 @@ class GroupCubit extends Cubit<GroupStates> {
           'code': code,
         }),
       );
+      print(response.data);
       if (response.data['status']) {
         showSnackBar(
           context: context,

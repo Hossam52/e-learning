@@ -17,53 +17,68 @@ class PdfViewerScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => FilesCubit()..changeFileCounter(),
-      child: BlocConsumer<FilesCubit, FilesStates>(
-        listener: (context, state) {},
-        builder: (context, state) {
-          FilesCubit cubit = FilesCubit.get(context);
-          return Scaffold(
-              appBar: AppBar(
-                centerTitle: true,
-                title: Text(
-                  title,
-                  style: TextStyle(
-                    color: Colors.black,
-                  ),
-                ),
-                actions: [
-                  IconButton(
+    return Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          title: Text(
+            title,
+            style: TextStyle(
+              color: Colors.black,
+            ),
+          ),
+          actions: [
+            BlocProvider(
+              create: (context) => FilesCubit()..changeFileCounter(),
+              child: BlocBuilder<FilesCubit, FilesStates>(
+                builder: (context, state) {
+                  FilesCubit cubit = FilesCubit.get(context);
+
+                  return IconButton(
                     icon: state is! FileDownloadLoadingState
                         ? Icon(state is! FileDownloadSuccessState
-                        ? Icons.download
-                        : Icons.done)
+                            ? Icons.download
+                            : Icons.done)
                         : Container(
-                        width: 20,
-                        height: 20,
-                        child: CircularProgressIndicator()),
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(
+                              value: cubit.precentage,
+                              color: Colors.red,
+                            )),
                     tooltip: 'download',
-                    onPressed: () =>
-                    state is! FileDownloadSuccessState
+                    onPressed: () => state is! FileDownloadSuccessState
                         ? cubit.downloadFile(url, title)
-                        : showSnackBar(context: context, text: 'تم تحميل الملف من قبل'),
-                  )
-                ],
+                        : showSnackBar(
+                            context: context, text: 'تم تحميل الملف من قبل'),
+                  );
+                },
               ),
-              body: Column(
-                children: [
-                  Expanded(
-                    child: SfPdfViewer.network(
-                      url,
-                      onDocumentLoadFailed: (detail) {
-                        print(detail.description);
-                      },
-                    ),
-                  ),
-                ],
-              ));
-        },
-      ),
-    );
+            )
+          ],
+        ),
+        body: Column(
+          children: [
+            Expanded(
+              child: SfPdfViewer.network(
+                url,
+                onDocumentLoadFailed: (detail) {
+                  print(detail.description);
+                },
+              ),
+            ),
+          ],
+        ));
+  }
+}
+
+class DownloadFile extends StatefulWidget {
+  @override
+  State<DownloadFile> createState() => _DownloadFileState();
+}
+
+class _DownloadFileState extends State<DownloadFile> {
+  @override
+  Widget build(BuildContext context) {
+    return Container();
   }
 }

@@ -1,4 +1,3 @@
-import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:e_learning/layout/student/student_layout.dart';
 import 'package:e_learning/layout/teacher/teacher_layout.dart';
@@ -471,13 +470,15 @@ class AuthCubit extends Cubit<AuthStates> {
     required BuildContext context,
     required String email,
     required String password,
-  }) async {
+  }) async 
+  {
     isLoginLoading = true;
     loginButtonState = ButtonState.loading;
     emit(LoginLoadingState());
     await DioHelper.postFormData(
       url: isStudent ? STUDENT_LOGIN : TEACHER_LOGIN,
-      formData: FormData.fromMap({
+      formData: FormData.fromMap(
+      {
         'email': email,
         'password': password,
       }),

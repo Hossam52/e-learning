@@ -8,7 +8,9 @@ class TestResponseModel {
   TestResponseModel.fromJson(Map<String, dynamic> json, bool isTeacher) {
     status = json['status'];
     message = json['message'];
-    test = json['test'] != null ? new Test.fromJson(json['test'], isTeacher) : null;
+    test = json['test'] != null
+        ? new Test.fromJson(json['test'], isTeacher)
+        : null;
   }
 }
 
@@ -27,15 +29,15 @@ class Test {
 
   Test(
       {this.id,
-        this.name,
-        this.subject,
-        this.stage,
-        this.classroom,
-        this.term,
-        this.minuteNum,
-        this.groupId,
-        this.result,
-        this.questions});
+      this.name,
+      this.subject,
+      this.stage,
+      this.classroom,
+      this.term,
+      this.minuteNum,
+      this.groupId,
+      this.result,
+      this.questions});
 
   Test.fromJson(Map<String, dynamic> json, bool isTeacher) {
     id = json['id'];
@@ -44,7 +46,7 @@ class Test {
     stage = json['stage'];
     classroom = json['classroom'];
     term = json['term'];
-    minuteNum = json['minute_num'];
+    minuteNum = json['minute_num'].toString();
     groupId = json['group_id'];
     switch (isTeacher) {
       case true:
@@ -96,17 +98,17 @@ class Question {
 
   Question(
       {this.id,
-        this.questionText,
-        this.questionImage,
-        this.chose1Text,
-        this.chose1Image,
-        this.chose2Text,
-        this.chose2Image,
-        this.chose3Text,
-        this.chose3Image,
-        this.chose4Text,
-        this.chose4Image,
-        this.answer});
+      this.questionText,
+      this.questionImage,
+      this.chose1Text,
+      this.chose1Image,
+      this.chose2Text,
+      this.chose2Image,
+      this.chose3Text,
+      this.chose3Image,
+      this.chose4Text,
+      this.chose4Image,
+      this.answer});
 
   Question.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -120,6 +122,6 @@ class Question {
     chose3Image = json['chose3_image'];
     chose4Text = json['chose4_text'];
     chose4Image = json['chose4_image'];
-    answer = json['answer'];
+    answer = json['answer'].toString();
   }
 }
