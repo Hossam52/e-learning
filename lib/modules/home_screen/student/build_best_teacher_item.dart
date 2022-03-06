@@ -54,36 +54,39 @@ class BuildBestTeacherItem extends StatelessWidget {
                 width: 16.5.w,
               ),
               Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      name,
-                      style: thirdTextStyle(null),
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
-                    ),
-                    SizedBox(
-                      height: 7,
-                    ),
-                    Row(
-                      children: [
-                        Text(
-                          '$followersCount',
-                          style: TextStyle(
-                              color: primaryColor, fontWeight: FontWeight.w500),
-                        ),
-                        SizedBox(width: 3),
-                        Text(
-                          text.followers,
-                          style: subTextStyle(null),
-                        ),
-                      ],
-                    ),
-                    Expanded(
-                        child: DefaultTeacherSubjectsWrap(subjects: subjects)),
-                  ],
+                child: SingleChildScrollView(
+                  physics: BouncingScrollPhysics(),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        name,
+                        style: thirdTextStyle(null),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                      ),
+                      SizedBox(
+                        height: 7,
+                      ),
+                      Row(
+                        children: [
+                          Text(
+                            '$followersCount',
+                            style: TextStyle(
+                                color: primaryColor,
+                                fontWeight: FontWeight.w500),
+                          ),
+                          SizedBox(width: 3),
+                          Text(
+                            text.followers,
+                            style: subTextStyle(null),
+                          ),
+                        ],
+                      ),
+                      DefaultTeacherSubjectsWrap(subjects: subjects),
+                    ],
+                  ),
                 ),
               ),
             ],

@@ -14,6 +14,7 @@ import 'package:e_learning/shared/network/remote/dio_helper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:open_file/open_file.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:progress_state_button/progress_button.dart';
 
 class FilesCubit extends Cubit<FilesStates> {
@@ -147,20 +148,49 @@ class FilesCubit extends Cubit<FilesStates> {
 
   /// download pdf file method
   Uint8List? document;
+  String? totalRecieved;
+  double? precentage = 0;
+  Future<String?> checkFileExist(String fileName) async {
+    final directory = await getApplicationDocumentsDirectory();
+    File file = File('${directory.path}/$fileName.pdf');
+    if (await file.exists()) {
+      return file.path;
+    }
+    return null;
+  }
+
   void downloadFile(String url, String fileName) async {
     try {
+      print(url);
       emit(FileDownloadLoadingState());
-      final newDirectory =
-          await Directory('/storage/emulated/0/Download/e-learning')
-              .create(recursive: true);
-      final File file = File('${newDirectory.path}/$fileName.pdf');
+      final directory = await getApplicationDocumentsDirectory();
+      File file = File('${directory.path}/$fileName.pdf');
+      // final newDirectory =
+      //     await Directory('/storage/emulated/0/Download/e-learning')
+      //         .create(recursive: true);
+      // final File file = File('${newDirectory.path}/$fileName.pdf');
+      final response = await Dio().get(
+        url,
+        options: Options(
+          responseType: ResponseType.bytes,
+          receiveTimeout: 0, //no timeout
+        ),
+        onReceiveProgress: (received, total) {
+          precentage = ((received / total) * 100);
+          totalRecieved = precentage!.toStringAsFixed(0) + " %";
+          precentage = precentage! / 100;
+          emit(FileDownloadLoadingState());
+        },
+      );
+      final document = file.openSync(mode: FileMode.write);
+      document.writeFromSync(response.data);
+      await document.close();
+      //   document = await http.readBytes(Uri.parse(url));
 
-      document = await http.readBytes(Uri.parse(url));
-
-      final raf = file.openSync(mode: FileMode.write);
-      raf.writeFromSync(document!);
-      await raf.close();
-      OpenFile.open(file.path);
+      // final raf = file.openSync(mode: FileMode.write);
+      // raf.writeFromSync(document!);
+      // await raf.close();
+      // OpenFile.open(file.path);
       emit(FileDownloadSuccessState());
     } catch (e) {
       emit(FileDownloadErrorState());

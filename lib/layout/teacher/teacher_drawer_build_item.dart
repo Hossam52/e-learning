@@ -25,15 +25,15 @@ class TeacherDrawerBuildItem extends StatelessWidget {
       child: Column(
         children: [
           Container(
-            height: MediaQuery.of(context).size.height * 0.28,
+            height: MediaQuery.of(context).size.height * 0.29,
             child: Stack(
               alignment: AlignmentDirectional.topStart,
               children: [
                 Container(
-                  height: MediaQuery.of(context).size.height * 0.28,
+                  height: MediaQuery.of(context).size.height * 0.29,
                 ),
                 Container(
-                  height: MediaQuery.of(context).size.height * 0.2,
+                  height: MediaQuery.of(context).size.height * 0.21,
                   decoration: BoxDecoration(
                     color: Color(0xffD8DCFC),
                     borderRadius: BorderRadius.only(
@@ -47,7 +47,7 @@ class TeacherDrawerBuildItem extends StatelessWidget {
                   child: Padding(
                     padding: EdgeInsetsDirectional.only(top: 30),
                     child: Container(
-                      height: MediaQuery.of(context).size.height * 0.15,
+                      height: MediaQuery.of(context).size.height * 0.16,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -96,7 +96,7 @@ class TeacherDrawerBuildItem extends StatelessWidget {
                                       // fontSize: 20
                                       )),
                               TextSpan(
-                                  text: '290',
+                                  text: teacher.authStudentRate.toString(),
                                   style: TextStyle(
                                     color: Colors.lightBlue,
                                     fontWeight: FontWeight.bold,

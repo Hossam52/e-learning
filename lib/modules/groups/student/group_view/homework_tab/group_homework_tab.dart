@@ -43,55 +43,56 @@ class _GroupHomeworkTabState extends State<GroupHomeworkTab> {
         return responsiveWidget(
           responsive: (_, deviceInfo) {
             return Scaffold(
-              floatingActionButton: widget.isStudent ? null : FloatingActionButton(
-                onPressed: () {
-                  navigateTo(
-                      context,
-                      TeacherAddTestDetails(
-                        deviceInfo: deviceInfo,
-                        groupId: widget.groupId,
-                      ));
-                },
-                child: Icon(Icons.add),
-              ),
+              floatingActionButton: widget.isStudent
+                  ? null
+                  : FloatingActionButton(
+                      onPressed: () => navigateTo(
+                          context,
+                          TeacherAddTestDetails(
+                            deviceInfo: deviceInfo,
+                            groupId: widget.groupId,
+                          )),
+                      child: Icon(Icons.add),
+                    ),
               body: Conditional.single(
                 context: context,
                 conditionBuilder: (context) =>
-                state is! GroupGetHomeworkLoadingState,
+                    state is! GroupGetHomeworkLoadingState,
                 fallbackBuilder: (context) => DefaultLoader(),
-                widgetBuilder: (context) =>
-                cubit.noHomeworkData
+                widgetBuilder: (context) => cubit.noHomeworkData
                     ? NoDataWidget(
-                    text: 'عذرا لا يوجد بيانات',
-                    onPressed: () =>
-                        cubit.getGroupHomework(
+                        text: 'عذرا لا يوجد بيانات',
+                        onPressed: () => cubit.getGroupHomework(
                             widget.groupId, widget.isStudent))
                     : ListView.builder(
-                    itemCount: cubit.homeWorkResponseModel!.homework!.length,
-                    padding: EdgeInsets.all(16),
-                    itemBuilder: (context, index) {
-                      var homework = cubit.homeWorkResponseModel!
-                          .homework![index];
-                      return HomeworkBuildItem(
-                        deviceInfo: deviceInfo,
-                        title: homework.name!,
-                        buttonText: widget.isStudent
-                            ? 'حل واجب'
-                            : 'نتائج الواجب',
-                        result: homework.result,
-                        onPressed: () {
-                          if (widget.isStudent)
-                            navigateTo(context, StudentTestQuestion(test: homework, isChampion: false));
-                          else
-                            navigateTo(context, HomeWorkResultScreen());
-                        },
-                        onDelete: () {
-                          cubit.deleteMethod(
-                              homework.id!, GroupDeleteType.HOMEWORK);
-                        },
-                      );
-                    }
-                ),
+                        itemCount:
+                            cubit.homeWorkResponseModel!.homework!.length,
+                        padding: EdgeInsets.all(16),
+                        itemBuilder: (context, index) {
+                          var homework =
+                              cubit.homeWorkResponseModel!.homework![index];
+                          return HomeworkBuildItem(
+                            deviceInfo: deviceInfo,
+                            title: homework.name!,
+                            buttonText:
+                                widget.isStudent ? 'حل واجب' : 'نتائج الواجب',
+                            result: homework.result,
+                            onPressed: () {
+                              if (widget.isStudent)
+                                navigateTo(context,StudentTestQuestion( test: homework, isChampion: false,));
+                              else
+                                navigateTo(
+                                    context,
+                                    HomeWorkResultScreen(
+                                      results: homework.resultTeacher,
+                                    ));
+                            },
+                            onDelete: () {
+                              cubit.deleteMethod(
+                                  homework.id!, GroupDeleteType.HOMEWORK);
+                            },
+                          );
+                        }),
               ),
             );
           },

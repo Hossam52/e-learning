@@ -45,6 +45,7 @@ class _TeacherHomeScreenState extends State<TeacherHomeScreen> {
               SizedBox(
                 height: 10,
               ),
+              //static
               Container(
                 height: 120.h,
                 child: Swiper(

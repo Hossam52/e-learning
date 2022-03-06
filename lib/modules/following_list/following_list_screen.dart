@@ -3,7 +3,6 @@ import 'package:e_learning/modules/student/cubit/cubit/cubit.dart';
 import 'package:e_learning/shared/componants/componants.dart';
 import 'package:e_learning/shared/responsive_ui/responsive_widget.dart';
 import 'package:e_learning/shared/styles/colors.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

@@ -9,9 +9,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ForgetPasswordDialog extends StatelessWidget {
-  ForgetPasswordDialog({Key? key,
-    required this.deviceInfo,
-    required this.isStudent}) : super(key: key);
+  ForgetPasswordDialog(
+      {Key? key, required this.deviceInfo, required this.isStudent})
+      : super(key: key);
 
   final DeviceInformation deviceInfo;
   final bool isStudent;
@@ -25,7 +25,9 @@ class ForgetPasswordDialog extends StatelessWidget {
         AuthCubit cubit = AuthCubit.get(context);
         return DefaultGestureWidget(
           child: AlertDialog(
-            titleTextStyle: secondaryTextStyle(deviceInfo).copyWith(color: Colors.black),
+            scrollable: true,
+            titleTextStyle:
+                secondaryTextStyle(deviceInfo).copyWith(color: Colors.black),
             title: Text(
               'ادخل البريد الالكتروني الخاص بك لكي تصلك رسالة للتأكيد  لأنشاء كلمة مرور جديدة',
             ),

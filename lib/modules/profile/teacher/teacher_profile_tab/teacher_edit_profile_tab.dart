@@ -18,6 +18,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_conditional_rendering/conditional.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TeacherEditProfileTab extends StatefulWidget {
   const TeacherEditProfileTab({Key? key, required this.teacher})
@@ -77,16 +78,17 @@ class _TeacherEditProfileTabState extends State<TeacherEditProfileTab> {
               child: responsiveWidget(responsive: (context, deviceInfo) {
                 return SafeArea(
                   child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 22, vertical: 10),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 22.w, vertical: 10.h),
                     child: Form(
                       key: formKey,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          AvatarBuildItem(
-                            image: '${widget.teacher.image}',
-                            appCubit: appCubit,
-                          ),
+                          // AvatarBuildItem(
+                          //   image: '${widget.teacher.image}',
+                          //   appCubit: appCubit,
+                          // ),
                           DefaultFormField(
                               controller: name,
                               type: TextInputType.name,
