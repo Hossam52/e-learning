@@ -75,17 +75,16 @@ class DefaultAddPostWidget extends StatelessWidget {
             ],
           ),
           if (cubit.selectedImages.isNotEmpty)
-            Container(
-              height: 250,
-              child: GridView.builder(
-                itemCount: cubit.selectedImages.length,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                  crossAxisSpacing: 3,
-                ),
-                itemBuilder: (context, index) => Image.file(
-                  cubit.selectedImages[index],
-                ),
+            GridView.builder(
+              shrinkWrap: true,
+              primary: false,
+              itemCount: cubit.selectedImages.length,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                crossAxisSpacing: 3,
+              ),
+              itemBuilder: (context, index) => Image.file(
+                cubit.selectedImages[index],
               ),
             ),
           SizedBox(

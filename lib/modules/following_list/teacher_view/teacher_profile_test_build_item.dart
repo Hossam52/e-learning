@@ -9,7 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TeacherProfileTestBuildItem extends StatelessWidget {
-  const TeacherProfileTestBuildItem({Key? key, required this.test}) : super(key: key);
+  const TeacherProfileTestBuildItem({Key? key, required this.test})
+      : super(key: key);
 
   final Test test;
   @override
@@ -24,17 +25,22 @@ class TeacherProfileTestBuildItem extends StatelessWidget {
         title: Text("${test.name}"),
         contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
         trailing: SizedBox(
-          width: 120.w,
+          // width: 120.w,
           child: Row(
+            mainAxisSize: MainAxisSize.min,
             children: [
               TextButton(
                 onPressed: () {
-                  if(test.result != null) {
-                    showSnackBar(context: context, text: 'لقد قمت بأداء هذا الامتحان من قبل');
+                  if (test.result != null) {
+                    showSnackBar(
+                        context: context,
+                        text: 'لقد قمت بأداء هذا الامتحان من قبل');
                   } else {
-                    navigateTo(context, TestStartAlertScreen(
-                      test: test,
-                    ));
+                    navigateTo(
+                        context,
+                        TestStartAlertScreen(
+                          test: test,
+                        ));
                   }
                 },
                 child: Text('اختبر'),
@@ -46,14 +52,15 @@ class TeacherProfileTestBuildItem extends StatelessWidget {
                   style: TextStyle(color: successColor),
                 ),
                 onPressed: () {
-                  if(test.result != null) {
-                    showSnackBar(context: context, text: 'لقد قمت بأداء هذا الامتحان من قبل');
+                  if (test.result != null) {
+                    showSnackBar(
+                        context: context,
+                        text: 'لقد قمت بأداء هذا الامتحان من قبل');
                   } else {
                     navigateTo(
                         context,
                         ChampionChooseFriendScreen(
-                          testId:
-                          test.id!,
+                          testId: test.id!,
                           test: test,
                         ));
                   }

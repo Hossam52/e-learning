@@ -6,6 +6,8 @@ import 'package:e_learning/shared/componants/componants.dart';
 import 'package:e_learning/shared/componants/widgets/default_add_post_widget.dart';
 import 'package:e_learning/shared/componants/widgets/default_loader.dart';
 import 'package:e_learning/shared/componants/widgets/no_data_widget.dart';
+import 'package:e_learning/shared/cubit/cubit.dart';
+import 'package:e_learning/shared/responsive_ui/device_information.dart';
 import 'package:e_learning/shared/responsive_ui/responsive_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -33,10 +35,15 @@ class _TeacherQuestionsTabState extends State<TeacherQuestionsTab> {
   @override
   void initState() {
     GroupCubit cubit = GroupCubit.get(context);
-    cubit.getTeacherDataById(widget.teacherId, TeacherDataType.questions);
+    getTeacherDataById();
     noImages = cubit.selectedImages.isEmpty;
     print(noImages);
     super.initState();
+  }
+
+  void getTeacherDataById() {
+    GroupCubit.get(context)
+        .getTeacherDataById(widget.teacherId, TeacherDataType.questions);
   }
 
   @override
@@ -45,8 +52,7 @@ class _TeacherQuestionsTabState extends State<TeacherQuestionsTab> {
     return BlocConsumer<GroupCubit, GroupStates>(
       listener: (context, state) {
         if (state is AddPostSuccessState) {
-          GroupCubit.get(context)
-              .getTeacherDataById(widget.teacherId, TeacherDataType.questions);
+          getTeacherDataById();
           postController.clear();
           GroupCubit.get(context).clearImageList();
           showSnackBar(text: text.add_success, context: context);
@@ -59,61 +65,74 @@ class _TeacherQuestionsTabState extends State<TeacherQuestionsTab> {
             context: context,
             conditionBuilder: (context) => cubit.isTeacherDataLoading == false,
             fallbackBuilder: (context) => DefaultLoader(),
-            widgetBuilder: (context) => cubit.postsList.isEmpty
-                ? NoDataWidget(
-                    onPressed: () => cubit.getTeacherDataById(
-                        widget.teacherId, TeacherDataType.questions))
-                : Form(
-                    key: formKey,
-                    child: Column(
-                      children: [
-                        DefaultAddPostWidget(
-                          isStudent: false,
-                          isTeacherProfile: true,
-                          teacherId: widget.teacherId,
-                          groupId: 0,
-                          postController: postController,
-                          cubit: cubit,
-                          formKey: formKey,
-                          noImages: noImages,
-                          isEdit: isEdit,
-                        ),
-                        ListView.builder(
-                          itemCount: cubit.postsList.length,
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          padding: EdgeInsets.all(16),
-                          itemBuilder: (context, index) {
-                            var post = cubit.postsList[index];
-                            return PostBuildItem(
-                              deviceInfo: deviceInfo,
-                              type: 'questions',
-                              isStudent: true,
-                              isMe: post.studentPost?? false,
-                              postId: post.id!,
-                              answer: post.answer!,
-                              cubit: cubit,
-                              likesCount: cubit.postsLikeCount[post.id]!,
-                              isLiked: cubit.postsLikeBool[post.id]!,
-                              commentCount: post.comments!.length,
-                              groupId: 0,
-                              onEdit: () {},
-                              date: post.date!,
-                              image: post.studentImage ?? "",
-                              text: post.text!,
-                              name: post.student?? "student",
-                              comments: post.comments,
-                              images:
-                                  post.images!.isNotEmpty ? post.images : null,
-                            );
-                          },
-                        ),
-                      ],
-                    ),
+            widgetBuilder: (context) => Form(
+              key: formKey,
+              child: Column(
+                children: [
+                  DefaultAddPostWidget(
+                    isStudent: false,
+                    isTeacherProfile: true,
+                    teacherId: widget.teacherId,
+                    groupId: 0,
+                    postId: GroupCubit.get(context).studentPostId,
+                    postController: postController,
+                    cubit: cubit,
+                    formKey: formKey,
+                    noImages: cubit.selectedImages.isEmpty,
+                    isEdit: cubit.isStudentPostEdit,
                   ),
+                  _postListView(cubit, deviceInfo),
+                ],
+              ),
+            ),
           ),
         );
       },
     );
+  }
+
+  Widget _postListView(GroupCubit cubit, DeviceInformation deviceInfo) {
+    return cubit.questionsList.isEmpty
+        ? NoDataWidget(onPressed: () => getTeacherDataById())
+        : ListView.builder(
+            itemCount: cubit.questionsList.length,
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            padding: EdgeInsets.all(16),
+            itemBuilder: (context, index) {
+              var post = cubit.questionsList[index];
+              return PostBuildItem(
+                deviceInfo: deviceInfo,
+                type: 'question',
+                isStudent: true,
+                isMe: post.studentPost ?? false,
+                postId: post.id!,
+                answer: null, //post.answer!,
+                cubit: cubit,
+                likesCount: cubit.questionLikeCount[post.id]!,
+                isLiked: cubit.questionLikeBool[post.id]!,
+                commentCount: post.comments!.length,
+                groupId: 0,
+                onEdit: () async {
+                  postController.text = post.text!;
+                  if (post.images!.isNotEmpty) {
+                    await AppCubit.get(context)
+                        .addImageFromUrl('', imageUrls: post.images);
+                    cubit.selectedImages = AppCubit.get(context).imageFiles;
+                  }
+                  cubit.changeStudentEditPost(true, post.id);
+                },
+                onDelete: () {
+                  getTeacherDataById();
+                },
+                date: post.date!,
+                image: post.studentImage ?? "",
+                text: post.text!,
+                name: post.student ?? "student",
+                comments: post.comments,
+                images: post.images!.isNotEmpty ? post.images : null,
+              );
+            },
+          );
   }
 }
