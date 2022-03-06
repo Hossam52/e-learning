@@ -71,6 +71,7 @@ class _TeacherProfileViewState extends State<TeacherProfileView> {
                 child: Column(
                   children: [
                     TeacherProfileInfoBuild(
+                      teacherId: widget.teacher.id!,
                       deviceInfo: deviceInfo,
                       name: widget.teacher.name!,
                       subjects: List.generate(widget.teacher.subjects!.length,
