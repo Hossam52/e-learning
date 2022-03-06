@@ -13,16 +13,18 @@ class TeacherProfileQuestionTab extends StatefulWidget {
   const TeacherProfileQuestionTab({Key? key}) : super(key: key);
 
   @override
-  _TeacherProfileQuestionTabState createState() => _TeacherProfileQuestionTabState();
+  _TeacherProfileQuestionTabState createState() =>
+      _TeacherProfileQuestionTabState();
 }
 
 class _TeacherProfileQuestionTabState extends State<TeacherProfileQuestionTab> {
   final RefreshController refreshController =
-  RefreshController(initialRefresh: false);
+      RefreshController(initialRefresh: false);
 
   @override
   void initState() {
-    GroupCubit.get(context).getAllProfilePostsAndQuestion('question', isQuestion: true);
+    GroupCubit.get(context)
+        .getAllProfilePostsAndQuestion('question', isQuestion: true);
     super.initState();
   }
 
@@ -36,43 +38,43 @@ class _TeacherProfileQuestionTabState extends State<TeacherProfileQuestionTab> {
           responsive: (context, deviceInfo) {
             return Conditional.single(
               context: context,
-              conditionBuilder: (context) =>
-              state is! GroupGetPostLoadingState,
+              conditionBuilder: (context) => state is! GroupGetPostLoadingState,
               fallbackBuilder: (context) => DefaultLoader(),
               widgetBuilder: (context) => cubit.noQuestionData
                   ? NoDataWidget(
-                  onPressed: () =>
-                      cubit.getAllProfilePostsAndQuestion('question', isQuestion: true))
+                      onPressed: () => cubit.getAllProfilePostsAndQuestion(
+                          'question',
+                          isQuestion: true))
                   : ListView.builder(
-                  itemCount: cubit.questionsList.length,
-                  shrinkWrap: true,
-                  padding: const EdgeInsets.all(22.0),
-                  physics: NeverScrollableScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    var post = cubit.questionsList[index];
-                    print(post.teacherPost);
-                    return PostBuildItem(
-                      type: 'questions',
-                      deviceInfo: deviceInfo,
-                      isMe: post.teacherPost?? false,
-                      isStudent: false,
-                      name: "${post.student}",
-                      image: post.studentImage,
-                      cubit: cubit,
-                      postId: post.id!,
-                      answer: post.answer,
-                      text: post.text,
-                      likesCount: cubit.questionLikeCount[post.id]!,
-                      isLiked: cubit.questionLikeBool[post.id]!,
-                      date: post.date!,
-                      commentCount: post.comments!.length,
-                      comments: post.comments,
-                      groupId: 0,
-                      images:
-                      post.images!.isNotEmpty ? post.images : null,
-                      onEdit: () {},
-                    );
-                  }),
+                      itemCount: cubit.questionsList.length,
+                      shrinkWrap: true,
+                      padding: const EdgeInsets.all(22.0),
+                      physics: NeverScrollableScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        var post = cubit.questionsList[index];
+                        print(post.teacherPost);
+                        return PostBuildItem(
+                          type: 'questions',
+                          ownerPostId: post.studentId!,
+                          deviceInfo: deviceInfo,
+                          isMe: post.studentPost ?? false,
+                          isStudent: false,
+                          name: "${post.student}",
+                          image: post.studentImage,
+                          cubit: cubit,
+                          postId: post.id!,
+                          answer: post.answer,
+                          text: post.text,
+                          likesCount: cubit.questionLikeCount[post.id]!,
+                          isLiked: cubit.questionLikeBool[post.id]!,
+                          date: post.date!,
+                          commentCount: post.comments!.length,
+                          comments: post.comments,
+                          groupId: 0,
+                          images: post.images!.isNotEmpty ? post.images : null,
+                          onEdit: () {},
+                        );
+                      }),
             );
           },
         );

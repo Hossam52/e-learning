@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:e_learning/shared/responsive_ui/device_information.dart';
 import 'package:e_learning/shared/styles/styles.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -28,12 +27,12 @@ class BuildTopStudent extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+          padding:  EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
           clipBehavior: Clip.antiAliasWithSaveLayer,
           width: 260.w,
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(15),
+            borderRadius: BorderRadius.circular(15.r),
             border: Border.all(color: Colors.grey.shade300, width: 0.3),
           ),
           child: Row(
@@ -48,13 +47,13 @@ class BuildTopStudent extends StatelessWidget {
                   color: const Color(0xFFE2E2E2),
                   shape: BoxShape.circle,
                   image: DecorationImage(
-                    image: CachedNetworkImageProvider(image),
+                    image: CachedNetworkImageProvider(image,),
                     fit: BoxFit.cover,
                   ),
                 ),
               ),
               SizedBox(
-                width: 10,
+                width: 10.w,
               ),
               Expanded(
                 child: Column(
@@ -70,7 +69,7 @@ class BuildTopStudent extends StatelessWidget {
                       maxLines: 1,
                     ),
                     SizedBox(
-                      height: 5,
+                      height: 5.h,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -79,20 +78,20 @@ class BuildTopStudent extends StatelessWidget {
                           text.points_count,
                           style: subTextStyle(deviceInfo),
                         ),
-                        SizedBox(width: 10),
+                        SizedBox(width: 10.w),
                         Container(
                           padding: EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 2.5),
+                              horizontal: 10.w, vertical: 2.5.h),
                           decoration: BoxDecoration(
                             color: Color(0xff9DA8FC),
-                            borderRadius: BorderRadius.circular(15),
+                            borderRadius: BorderRadius.circular(15.r),
                           ),
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Text(pointsCount,
                                   style: TextStyle(color: Colors.white)),
-                              SizedBox(width: 5),
+                              SizedBox(width: 5.w),
                               Image.asset('assets/images/points.png'),
                             ],
                           ),

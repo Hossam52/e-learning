@@ -1,4 +1,3 @@
-
 import 'package:dio/dio.dart';
 import 'package:e_learning/shared/componants/constants.dart';
 
@@ -15,8 +14,8 @@ class DioHelper {
         validateStatus: (status) => true,
         headers: {
           'Content-Type': 'application/json',
-          'Apipassword' : '1795S',
-          'lang' : lang,
+          'Apipassword': '1795S',
+          'lang': lang,
         },
       ),
     );
@@ -29,9 +28,9 @@ class DioHelper {
     Options? options,
   }) async {
     dio.options.headers = {
-      'Authorization': token != null ? 'Bearer $token' :'',
-      'Apipassword' : '1795S',
-      'lang' : lang,
+      'Authorization': token != null ? 'Bearer $token' : '',
+      'Apipassword': '1795S',
+      'lang': lang,
     };
 
     return await dio.get(
@@ -47,14 +46,12 @@ class DioHelper {
     Map<String, dynamic>? query,
     String? token,
     Options? options,
-  }) async
-  {
-    dio.options.headers =
-    {
-      'Content-Type' : 'application/json',
-      'Authorization': token != null ? 'Bearer $token' :'',
-      'Apipassword' : '1795S',
-      'lang' : lang,
+  }) async {
+    dio.options.headers = {
+      'Content-Type': 'application/json',
+      'Authorization': token != null ? 'Bearer $token' : '',
+      'Apipassword': '1795S',
+      'lang': lang,
     };
 
     return await dio.post(
@@ -64,19 +61,18 @@ class DioHelper {
       options: options,
     );
   }
+
   static Future<Response> postFormData({
     required String url,
     required FormData formData,
     Map<String, dynamic>? query,
     String? token,
     Options? options,
-  }) async
-  {
-    dio.options.headers =
-    {
-      'Authorization': token != null ? 'Bearer $token' :'',
-      'Apipassword' : '1795S',
-      'lang' : lang,
+  }) async {
+    dio.options.headers = {
+      'Authorization': token != null ? 'Bearer $token' : '',
+      'Apipassword': '1795S',
+      'lang': lang,
     };
 
     return await dio.post(
@@ -86,20 +82,19 @@ class DioHelper {
       options: options,
     );
   }
+
   /// Put Data Function
   static Future<Response> putData({
     required String url,
     Map<String, dynamic>? data,
     Map<String, dynamic>? query,
     String? token,
-  }) async
-  {
-    dio.options.headers =
-    {
-      'Content-Type' : 'application/json',
-      'lang':lang,
-      'Authorization': token != null ? 'Bearer $token' :'',
-      'Apipassword' : '1795S',
+  }) async {
+    dio.options.headers = {
+      'Content-Type': 'application/json',
+      'lang': lang,
+      'Authorization': token != null ? 'Bearer $token' : '',
+      'Apipassword': '1795S',
     };
     return dio.put(
       url,
@@ -107,6 +102,7 @@ class DioHelper {
       queryParameters: query,
     );
   }
+
   /// Delete data function
   static Future<Response> deleteData({
     required String url,
@@ -115,12 +111,11 @@ class DioHelper {
     String lang = 'en',
     String? token,
   }) async {
-    dio.options.headers =
-    {
-      'Content-Type' : 'application/json',
-      'lang':lang,
-      'Authorization': token != null ? 'Bearer $token' :'',
-      'Apipassword' : '1795S',
+    dio.options.headers = {
+      'Content-Type': 'application/json',
+      'lang': lang,
+      'Authorization': token != null ? 'Bearer $token' : '',
+      'Apipassword': '1795S',
     };
 
     return dio.delete(

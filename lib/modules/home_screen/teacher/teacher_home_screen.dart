@@ -3,14 +3,19 @@ import 'package:e_learning/modules/home_screen/student/build_best_teacher_item.d
 import 'package:e_learning/modules/home_screen/student/build_top_students.dart';
 import 'package:e_learning/modules/home_screen/student/category_home_build_item.dart';
 import 'package:e_learning/modules/pdfs_module/teacher/teacher_subjects_pdf_screen.dart';
+import 'package:e_learning/modules/student/public_group/public_grouo_home_screen.dart';
 import 'package:e_learning/modules/test_module/teacher/test_subjects_screen.dart';
 import 'package:e_learning/modules/video_module/video_teacher_screens/subjects_video_screen.dart';
 import 'package:e_learning/shared/componants/componants.dart';
 import 'package:e_learning/shared/componants/home_components.dart';
 import 'package:e_learning/shared/componants/widgets/confirm_exit.dart';
 import 'package:e_learning/shared/cubit/cubit.dart';
+import 'package:e_learning/shared/cubit/states.dart';
 import 'package:e_learning/shared/responsive_ui/responsive_widget.dart';
+import 'package:e_learning/shared/styles/colors.dart';
+import 'package:e_learning/shared/styles/styles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_card_swipper/flutter_card_swiper.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -38,6 +43,28 @@ class _TeacherHomeScreenState extends State<TeacherHomeScreen> {
         responsive: (context, deviceInfo) => SingleChildScrollView(
           child: Column(
             children: [
+              TextButton.icon(
+                style: TextButton.styleFrom(
+                    backgroundColor: primaryColor.withOpacity(0.26)),
+                onPressed: () => navigateTo(
+                    context,
+                    PublicGroupHomeScreen(
+                      isStudent: false,
+                    )),
+                icon: Icon(
+                  Icons.people,
+                  color: primaryColor,
+                ),
+                label: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 30.w),
+                  child: Text(
+                    text.public_group,
+                    style: subTextStyle(deviceInfo).copyWith(
+                      color: primaryColor,
+                    ),
+                  ),
+                ),
+              ),
               SizedBox(
                 height: 10,
               ),
@@ -49,7 +76,7 @@ class _TeacherHomeScreenState extends State<TeacherHomeScreen> {
               Container(
                 height: 120.h,
                 child: Swiper(
-                  itemCount: 4,
+                  itemCount:4,
                   viewportFraction: 1.0,
                   itemHeight: 120.h,
                   pagination: new SwiperPagination(),
@@ -73,25 +100,45 @@ class _TeacherHomeScreenState extends State<TeacherHomeScreen> {
               SizedBox(
                 height: 12.h,
               ),
-              CarouselSlider.builder(
-                itemCount: 4,
-                itemBuilder:
-                    (BuildContext context, int itemIndex, int pageViewIndex) =>
-                        BuildTopStudent(
-                  deviceInfo: deviceInfo,
-                  text: text,
-                  image:
-                      'https://userstock.io/data/wp-content/uploads/2020/06/jack-finnigan-rriAI0nhcbc.jpg',
-                  name: 'عبدرحمن',
-                  pointsCount: '5',
-                  onTap: () {},
-                ),
-                options: CarouselOptions(
-                  enlargeCenterPage: true,
-                  height: 100.h,
-                  viewportFraction: 0.65,
-                ),
-              ),
+              
+                   BlocBuilder<AppCubit, AppStates>(
+                      builder: (context, state) {
+                        return 
+                        AppCubit.get(context).isBestStudentsListLoading ||
+                      state is BestStudentsLoadingState?
+                      CircularProgressIndicator():
+                        CarouselSlider.builder(
+                          itemCount: AppCubit.get(context)
+                              .bestStudentsModel!
+                              .students!
+                              .length,
+                          itemBuilder: (BuildContext context, int itemIndex,
+                                  int pageViewIndex) =>
+                              BuildTopStudent(
+                            deviceInfo: deviceInfo,
+                            text: text,
+                            image: AppCubit.get(context)
+                                .bestStudentsModel!
+                                .students![itemIndex]
+                                .image!,
+                            name: AppCubit.get(context)
+                                .bestStudentsModel!
+                                .students![itemIndex]
+                                .name!,
+                            pointsCount: AppCubit.get(context)
+                                .bestStudentsModel!
+                                .students![itemIndex]
+                                .points!,
+                            onTap: () {},
+                          ),
+                          options: CarouselOptions(
+                            enlargeCenterPage: true,
+                            height: 100.h,
+                            viewportFraction: 0.65,
+                          ),
+                        );
+                      },
+                    ),
               SizedBox(
                 height: 16.h,
               ),

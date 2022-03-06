@@ -36,8 +36,7 @@ class _TeacherProfilePostsTabState extends State<TeacherProfilePostsTab> {
           responsive: (context, deviceInfo) {
             return Conditional.single(
               context: context,
-              conditionBuilder: (context) =>
-                  state is! GroupGetPostLoadingState,
+              conditionBuilder: (context) => state is! GroupGetPostLoadingState,
               fallbackBuilder: (context) => DefaultLoader(),
               widgetBuilder: (context) => cubit.noPostData
                   ? NoDataWidget(
@@ -49,11 +48,13 @@ class _TeacherProfilePostsTabState extends State<TeacherProfilePostsTab> {
                       padding: const EdgeInsets.all(22.0),
                       physics: const NeverScrollableScrollPhysics(),
                       itemBuilder: (context, index) {
+                        //posts for Teacher or what?
                         var post = cubit.postsList[index];
                         return PostBuildItem(
+                          ownerPostId: post.teacherId!,
                           type: 'post',
                           deviceInfo: deviceInfo,
-                          isMe: post.teacherPost?? false,
+                          isMe: post.teacherPost ?? false,
                           name: "${post.teacher}",
                           image: post.teacherImage,
                           isStudent: false,
@@ -67,8 +68,7 @@ class _TeacherProfilePostsTabState extends State<TeacherProfilePostsTab> {
                           commentCount: post.comments!.length,
                           comments: post.comments,
                           groupId: 0,
-                          images:
-                              post.images!.isNotEmpty ? post.images : null,
+                          images: post.images!.isNotEmpty ? post.images : null,
                           onEdit: () {},
                         );
                       }),

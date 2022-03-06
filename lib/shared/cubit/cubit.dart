@@ -358,14 +358,19 @@ class AppCubit extends Cubit<AppStates> {
   void getHighRateTeachersList(bool isStudent) async {
     try {
       isStudentHighRateLoading = true;
+
       emit(FollowingListLoadingState());
       Response response = await DioHelper.getData(
         url: STUDENT_GET_HIGH_RATED_TEACHERS,
-        token: studentToken,
+        token: isStudent ? studentToken : teacherToken,
       );
+      print(response.data);
+
       if (response.data['status']) {
         studentHighRateTeachersModel =
             TeachersResponseModel.fromJson(response.data);
+        isStudentHighRateLoading = false;
+
         emit(FollowingListSuccessState());
       } else {
         print(response.data);
@@ -391,6 +396,7 @@ class AppCubit extends Cubit<AppStates> {
         url: STUDENT_GET_BEST_STUDENTS,
       );
       if (response.data['status']) {
+        isBestStudentsListLoading = false;
         bestStudentsModel = StudentsListResponseModel.fromJson(response.data);
         emit(BestStudentsSuccessState());
       } else {

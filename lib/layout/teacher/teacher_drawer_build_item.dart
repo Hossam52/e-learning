@@ -79,36 +79,36 @@ class TeacherDrawerBuildItem extends StatelessWidget {
                   ),
                   Column(
                     children: [
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 20),
-                        child: Row(
-                          children: [
-                            Image.asset('assets/images/points.png'),
-                            SizedBox(width: 30),
-                            RichText(
-                                text: TextSpan(children: [
-                              TextSpan(
-                                  text: '${text!.my_points} :  ',
-                                  style: TextStyle(
-                                      color: Colors.black87,
-                                      fontWeight: FontWeight.w800,
-                                      fontSize: 15
-                                      // fontSize: 20
-                                      )),
-                              TextSpan(
-                                  text: teacher.authStudentRate.toString(),
-                                  style: TextStyle(
-                                    color: Colors.lightBlue,
-                                    fontWeight: FontWeight.bold,
-                                    // fontSize: 20
-                                  )),
-                            ]))
-                          ],
-                        ),
-                      ),
+                      // Padding(
+                      //   padding: EdgeInsets.symmetric(horizontal: 20),
+                      //   child: Row(
+                      //     children: [
+                      //   //    Image.asset('assets/images/points.png'),
+                      //     //  SizedBox(width: 30),
+                      //       // RichText(
+                      //       //     text: TextSpan(children: [
+                      //       //   TextSpan(
+                      //       //       text: '${text!.my_points} :  ',
+                      //       //       style: TextStyle(
+                      //       //           color: Colors.black87,
+                      //       //           fontWeight: FontWeight.w800,
+                      //       //           fontSize: 15
+                      //       //           // fontSize: 20
+                      //       //           )),
+                      //       //   TextSpan(
+                      //       //       text: teacher.authStudentRate.toString(),
+                      //       //       style: TextStyle(
+                      //       //         color: Colors.lightBlue,
+                      //       //         fontWeight: FontWeight.bold,
+                      //       //         // fontSize: 20
+                      //       //       )),
+                      //       // ]))
+                      //     ],
+                      //   ),
+                      // ),
                       buildListItem(
                         icon: Icons.person,
-                        title: text.my_profile,
+                        title: text!.my_profile,
                         onTap: () {
                           Navigator.pop(context);
                           appCubit.changeBottomNav(3);

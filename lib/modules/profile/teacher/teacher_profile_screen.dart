@@ -46,8 +46,11 @@ class TeacherProfileScreen extends StatelessWidget {
                                   .toDouble(),
                               isStudent: false,
                               isLiked: false,
-                              onFollow: (_) {},
-                              followCount: 2,
+                              onFollow: (_) {
+                              //  cubit.teacherProfileModel.teacher.authType;
+                              },
+                              followCount: cubit.teacherProfileModel!.teacher!
+                                  .followersCount!,
                             ),
                             SizedBox(height: 15),
 

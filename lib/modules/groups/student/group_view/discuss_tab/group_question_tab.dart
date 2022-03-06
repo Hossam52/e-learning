@@ -37,15 +37,16 @@ class GroupStudentTab extends StatelessWidget {
         itemBuilder: (context, index) {
           var post = posts[index];
           return PostBuildItem(
-            isMe: post.studentPost ?? false,
+            isMe:isStudent? post.studentPost! : post.teacherPost!,
             type: isQuestion ? 'question' : 'share',
             deviceInfo: deviceInfo,
             answer: isQuestion ? post.answer : null,
             cubit: cubit,
             text: post.text!,
             isStudent: isStudent,
+            ownerPostId:isStudent?post.studentId!:post.teacherId!,
             groupId: groupId,
-            onEdit: () async{
+            onEdit: () async {
               cubit.changeStudentEditPost(true, post.id);
               postController!.text = post.text!;
               if (post.images!.isNotEmpty) {

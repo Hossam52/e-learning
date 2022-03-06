@@ -161,6 +161,7 @@ class TeacherProfileInfoBuild extends StatelessWidget {
                           allowHalfRating: true,
                           itemCount: 5,
                           itemSize: 18.w,
+                          ignoreGestures: !isStudent ? true : false,
                           // itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
                           itemBuilder: (context, _) => Icon(
                             Icons.star,

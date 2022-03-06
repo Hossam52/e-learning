@@ -302,6 +302,7 @@ class _PublicGroupHomeScreenState extends State<PublicGroupHomeScreen> {
                                                     return PostBuildItem(
                                                         type: 'post',
                                                         // name: post.teacher!,
+                                                        ownerPostId:  widget.isStudent?post.studentId!:post.teacherId!,
                                                         deviceInfo: deviceInfo,
                                                         isMe: widget.isStudent
                                                             ? post.studentPost!
