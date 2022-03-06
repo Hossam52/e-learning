@@ -27,7 +27,7 @@ class BuildTopStudent extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-          padding:  EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
+          padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
           clipBehavior: Clip.antiAliasWithSaveLayer,
           width: 260.w,
           decoration: BoxDecoration(
@@ -47,7 +47,9 @@ class BuildTopStudent extends StatelessWidget {
                   color: const Color(0xFFE2E2E2),
                   shape: BoxShape.circle,
                   image: DecorationImage(
-                    image: CachedNetworkImageProvider(image,),
+                    image: CachedNetworkImageProvider(
+                      image,
+                    ),
                     fit: BoxFit.cover,
                   ),
                 ),

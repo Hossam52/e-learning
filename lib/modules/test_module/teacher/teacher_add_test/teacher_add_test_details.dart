@@ -157,21 +157,6 @@ class _TeacherAddTestDetailsState extends State<TeacherAddTestDetails> {
                         isLoading: appCubit.isTermsLoading,
                       ),
                       SizedBox(height: 17.h),
-                      DefaultDropDown(
-                        label: 'الماده',
-                        hint: 'الماده',
-                        haveBackground: true,
-                        onChanged: (value) {
-                          appCubit.onSubjectChange(value);
-                        },
-                        validator: (value) {
-                          if (value == null || value.isEmpty)
-                            return 'هذا الحقل مطلوب';
-                          return null;
-                        },
-                        items: appCubit.subjectNamesList,
-                        selectedValue: appCubit.selectedSubjectName,
-                      ),
                       SizedBox(height: 17.h),
                       DefaultFormField(
                         validation: (value) {
@@ -217,7 +202,8 @@ class _TeacherAddTestDetailsState extends State<TeacherAddTestDetails> {
                               isLoading = true;
                               appCubit.emit(AppChangeState());
                               List<QuestionDataModel> questions =
-                               await addTestDataForEdit(widget.test!, appCubit);
+                                  await addTestDataForEdit(
+                                      widget.test!, appCubit);
                               isLoading = false;
                               appCubit.emit(AppChangeState());
                               navigateTo(
@@ -257,9 +243,10 @@ class _TeacherAddTestDetailsState extends State<TeacherAddTestDetails> {
     );
   }
 
-  Future<List<QuestionDataModel>> addTestDataForEdit(Test test, AppCubit appCubit) async{
+  Future<List<QuestionDataModel>> addTestDataForEdit(
+      Test test, AppCubit appCubit) async {
     List<QuestionDataModel> questions = [];
-    for(var question in test.questions!) {
+    for (var question in test.questions!) {
       questions.add(
         QuestionDataModel(
           questionText: question.questionText!,
@@ -272,29 +259,25 @@ class _TeacherAddTestDetailsState extends State<TeacherAddTestDetails> {
               Choose(
                   chooseText: question.chose1Text,
                   chooseImage: question.chose1Image!.split('.').last != 'txt'
-                      ? await appCubit
-                      .urlToFile(question.chose1Image!)
+                      ? await appCubit.urlToFile(question.chose1Image!)
                       : null),
             if (question.chose2Text != null)
               Choose(
                   chooseText: question.chose2Text,
                   chooseImage: question.chose2Image!.split('.').last != 'txt'
-                      ? await appCubit
-                      .urlToFile(question.chose2Image!)
+                      ? await appCubit.urlToFile(question.chose2Image!)
                       : null),
             if (question.chose3Text != null)
               Choose(
                   chooseText: question.chose3Text,
                   chooseImage: question.chose3Image!.split('.').last != 'txt'
-                      ? await appCubit
-                      .urlToFile(question.chose3Image!)
+                      ? await appCubit.urlToFile(question.chose3Image!)
                       : null),
             if (question.chose4Text != null)
               Choose(
                   chooseText: question.chose4Text,
                   chooseImage: question.chose4Image!.split('.').last != 'txt'
-                      ? await appCubit
-                      .urlToFile(question.chose4Image!)
+                      ? await appCubit.urlToFile(question.chose4Image!)
                       : null),
           ],
         ),

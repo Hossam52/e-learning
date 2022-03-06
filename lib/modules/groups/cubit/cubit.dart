@@ -326,6 +326,7 @@ class GroupCubit extends Cubit<GroupStates> {
           'type': type,
         }),
       );
+      log(response.data.toString());
       if (response.data['status']) {
         posts = response.data['posts'];
         insertPostLists(
