@@ -38,59 +38,53 @@ class BuildBestTeacherItem extends StatelessWidget {
             border: Border.all(width: 0.2, color: Colors.grey.shade300),
             borderRadius: BorderRadius.circular(12),
           ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
+          child: Row(
             children: [
-              Row(
-                children: [
-                  Container(
-                    width: 77.17.w,
-                    clipBehavior: Clip.antiAliasWithSaveLayer,
-                    child: DefaultCachedNetworkImage(
-                      imageUrl: image,
+              Container(
+                width: 77.17.w,
+                clipBehavior: Clip.antiAliasWithSaveLayer,
+                child: DefaultCachedNetworkImage(
+                  imageUrl: image,
+                ),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              SizedBox(
+                width: 16.5.w,
+              ),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      name,
+                      style: thirdTextStyle(null),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
                     ),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
+                    SizedBox(
+                      height: 7,
                     ),
-                  ),
-                  SizedBox(
-                    width: 16.5.w,
-                  ),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
+                    Row(
                       children: [
                         Text(
-                          name,
-                          style: thirdTextStyle(null),
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 1,
+                          '$followersCount',
+                          style: TextStyle(
+                              color: primaryColor, fontWeight: FontWeight.w500),
                         ),
-                        SizedBox(
-                          height: 7,
+                        SizedBox(width: 3),
+                        Text(
+                          text.followers,
+                          style: subTextStyle(null),
                         ),
-                        Row(
-                          children: [
-                            Text(
-                              '$followersCount',
-                              style: TextStyle(
-                                  color: primaryColor,
-                                  fontWeight: FontWeight.w500),
-                            ),
-                            SizedBox(width: 3),
-                            Text(
-                              text.followers,
-                              style: subTextStyle(null),
-                            ),
-                          ],
-                        ),
-                        DefaultTeacherSubjectsWrap(subjects: subjects),
                       ],
                     ),
-                  ),
-
-                ],
+                    Expanded(
+                        child: DefaultTeacherSubjectsWrap(subjects: subjects)),
+                  ],
+                ),
               ),
             ],
           ),

@@ -5,17 +5,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class StudentAnswersBuildItem extends StatelessWidget {
-  const StudentAnswersBuildItem({Key? key,
+  const StudentAnswersBuildItem({
+    Key? key,
     required this.deviceInfo,
     required this.question,
     required this.wrongAnswer,
     required this.rightAnswer,
+    required this.questionNumber,
   }) : super(key: key);
 
   final DeviceInformation deviceInfo;
   final String question;
   final String wrongAnswer;
   final String rightAnswer;
+  final int questionNumber;
 
   @override
   Widget build(BuildContext context) {
@@ -27,19 +30,14 @@ class StudentAnswersBuildItem extends StatelessWidget {
             color: Colors.grey.withOpacity(0.1),
             spreadRadius: 0,
             blurRadius: 5,
-            offset: Offset(0,4), // changes position of shadow
+            offset: Offset(0, 4), // changes position of shadow
           ),
         ],
         color: Colors.white,
       ),
       child: ExpansionTile(
-        title: Text(question),
-        subtitle: Text(
-          wrongAnswer,
-          style: thirdTextStyle(deviceInfo).copyWith(
-            color: errorColor,
-          ),
-        ),
+        title: Text('Question number $questionNumber'),
+        subtitle: _buildRowAnswer('Your answer is :', wrongAnswer, errorColor),
         leading: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -60,21 +58,38 @@ class StudentAnswersBuildItem extends StatelessWidget {
               children: [
                 Text(
                   question,
-                  style: secondaryTextStyle(deviceInfo).copyWith(fontWeight: FontWeight.w400),
+                  style: secondaryTextStyle(deviceInfo)
+                      .copyWith(fontWeight: FontWeight.w400),
                 ),
                 SizedBox(height: 8.h),
-                Text(
-                  rightAnswer,
-                  style: secondaryTextStyle(deviceInfo).copyWith(
-                    color: successColor,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
+                _buildRowAnswer('Your answer is :', wrongAnswer, errorColor),
+                SizedBox(height: 8.h),
+                _buildRowAnswer('Right answer is :', rightAnswer, successColor),
               ],
             ),
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildRowAnswer(String header, String value, Color color) {
+    return Row(
+      children: [
+        Text(
+          header,
+          style: secondaryTextStyle(null).copyWith(color: Colors.black),
+        ),
+        Center(
+          child: Text(
+            value,
+            style: secondaryTextStyle(deviceInfo).copyWith(
+              color: color,
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
