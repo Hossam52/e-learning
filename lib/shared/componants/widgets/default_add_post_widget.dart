@@ -75,17 +75,16 @@ class DefaultAddPostWidget extends StatelessWidget {
             ],
           ),
           if (cubit.selectedImages.isNotEmpty)
-            Container(
-              height: 250,
-              child: GridView.builder(
-                itemCount: cubit.selectedImages.length,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                  crossAxisSpacing: 3,
-                ),
-                itemBuilder: (context, index) => Image.file(
-                  cubit.selectedImages[index],
-                ),
+            GridView.builder(
+              shrinkWrap: true,
+              primary: false,
+              itemCount: cubit.selectedImages.length,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                crossAxisSpacing: 3,
+              ),
+              itemBuilder: (context, index) => Image.file(
+                cubit.selectedImages[index],
               ),
             ),
           SizedBox(
@@ -100,7 +99,8 @@ class DefaultAddPostWidget extends StatelessWidget {
     );
   }
 
-  Widget generateStudentButtons(AppLocalizations text, BuildContext context) => Row(
+  Widget generateStudentButtons(AppLocalizations text, BuildContext context) =>
+      Row(
         children: [
           Expanded(
             child: defaultMaterialIconButton(
@@ -128,37 +128,37 @@ class DefaultAddPostWidget extends StatelessWidget {
                 backgroundColor: primaryColor),
           ),
           SizedBox(width: 23),
-          if(isEdit == false)
-          Expanded(
-            child: defaultMaterialIconButton(
-              onPressed: () {
-                formKey.currentState!.save();
-                if (formKey.currentState!.validate()) {
-                  SharedMethods.unFocusTextField(context);
-                  cubit.addPostAndQuestion(
-                    GroupPostModel(
-                      text: postController.text,
-                      images: noImages ? null : cubit.selectedImages,
-                      groupId: groupId,
-                      type: 'share',
-                      postId: postId,
-                    ),
-                    isStudent: true,
-                    isEdit: isEdit,
-                    context: context
-                  );
-                }
-              },
-              text: text.share,
-              icon: MyIcons.share,
-              textColor: Colors.white,
-              backgroundColor: Color(0xff008DFF),
+          if (isEdit == false)
+            Expanded(
+              child: defaultMaterialIconButton(
+                onPressed: () {
+                  formKey.currentState!.save();
+                  if (formKey.currentState!.validate()) {
+                    SharedMethods.unFocusTextField(context);
+                    cubit.addPostAndQuestion(
+                        GroupPostModel(
+                          text: postController.text,
+                          images: noImages ? null : cubit.selectedImages,
+                          groupId: groupId,
+                          type: 'share',
+                          postId: postId,
+                        ),
+                        isStudent: true,
+                        isEdit: isEdit,
+                        context: context);
+                  }
+                },
+                text: text.share,
+                icon: MyIcons.share,
+                textColor: Colors.white,
+                backgroundColor: Color(0xff008DFF),
+              ),
             ),
-          ),
         ],
       );
 
-  Widget generateTeacherButtons(AppLocalizations text, BuildContext context) => Row(
+  Widget generateTeacherButtons(AppLocalizations text, BuildContext context) =>
+      Row(
         children: [
           Expanded(
             child: defaultMaterialIconButton(
@@ -167,19 +167,18 @@ class DefaultAddPostWidget extends StatelessWidget {
                 if (formKey.currentState!.validate()) {
                   SharedMethods.unFocusTextField(context);
                   cubit.addPostAndQuestion(
-                    GroupPostModel(
-                      text: postController.text,
-                      images: cubit.selectedImages,
-                      groupId: groupId,
-                      type: 'post',
-                      postId: postId,
-                      teacherId: teacherId,
-                    ),
-                    isStudent: false,
-                    isEdit: isEdit,
-                    isProfileTeacher: isTeacherProfile,
-                    context: context
-                  );
+                      GroupPostModel(
+                        text: postController.text,
+                        images: cubit.selectedImages,
+                        groupId: groupId,
+                        type: 'post',
+                        postId: postId,
+                        teacherId: teacherId,
+                      ),
+                      isStudent: false,
+                      isEdit: isEdit,
+                      isProfileTeacher: isTeacherProfile,
+                      context: context);
                 }
               },
               text: isEdit ? text.edit : text.post,

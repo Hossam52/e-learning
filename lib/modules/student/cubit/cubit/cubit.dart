@@ -232,17 +232,17 @@ class StudentCubit extends Cubit<StudentStates> {
     }
   }
 
-  void rateTeacher(int rate, String teacherId) async {
+  void rateTeacher(double rate, int teacherId) async {
     try {
-      emit(SearchStudentLoadingState());
-      // searchModel = await StudentServices.searchStudent(value);
-      if (searchModel!.status!) {
-        emit(SearchStudentSuccessState());
+      emit(RateTeacherLoadingState());
+      final res = await StudentServices.rateTeacher(rate, teacherId);
+      if (res.status) {
+        emit(RateTeacherSuccessState());
       } else {
-        emit(SearchStudentNoDataState());
+        throw 'Error happened: ${res.message}';
       }
     } catch (e) {
-      emit(SearchStudentErrorState());
+      emit(RateTeacherErrorState());
       throw e;
     }
   }

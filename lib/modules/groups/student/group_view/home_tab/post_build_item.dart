@@ -5,7 +5,6 @@ import 'package:e_learning/modules/auth/cubit/cubit.dart';
 import 'package:e_learning/modules/groups/cubit/cubit.dart';
 import 'package:e_learning/modules/groups/student/group_view/home_tab/post_button.dart';
 import 'package:e_learning/modules/groups/teacher/group_view/post_comments/comment_modal_sheet.dart';
-import 'package:e_learning/modules/profile/student_profile_view.dart';
 import 'package:e_learning/shared/componants/componants.dart';
 import 'package:e_learning/shared/componants/constants.dart';
 import 'package:e_learning/shared/componants/widgets/default_cached_image.dart';
@@ -36,6 +35,7 @@ class PostBuildItem extends StatelessWidget {
     this.images,
     this.comments,
     required this.postId,
+
     required this.answer,
     required this.cubit,
     required this.likesCount,
@@ -43,20 +43,22 @@ class PostBuildItem extends StatelessWidget {
     required this.groupId,
     required this.onEdit,
     required this.isLiked,
-    required this.ownerPostId,
     required this.date,
+    required this.ownerPostId,
     this.name = 'محمد',
     this.image,
+    this.onDelete,
   }) : super(key: key);
 
   final DeviceInformation deviceInfo;
+  final String ownerPostId;
+
   final bool isStudent;
   final String type;
   final bool isMe;
   String name;
   String? image;
   final GroupCubit cubit;
-  final String ownerPostId;
   String? text;
   final int postId;
   bool? answer;
@@ -64,6 +66,7 @@ class PostBuildItem extends StatelessWidget {
   final int commentCount;
   final int groupId;
   final Function onEdit;
+  final void Function()? onDelete;
   final bool isLiked;
   final String date;
   List<Comments>? comments;
@@ -101,7 +104,6 @@ class PostBuildItem extends StatelessWidget {
                 GestureDetector(
                   onTap: () {
                     print('Tapped');
-                    //  navigateTo(context, StudentProfileView(isFriend: isFriend))
                     // AuthCubit.get(context).getPro
                     // cubit.getTeacherDataById(teacherId, type)
                   },
@@ -185,8 +187,11 @@ class PostBuildItem extends StatelessWidget {
                             await cubit.deleteMethod(
                                 postId, GroupDeleteType.POST);
                             Navigator.pop(context);
-                            cubit.getAllPostsAndQuestions(
-                                type, groupId, isStudent);
+                            if (onDelete != null)
+                              onDelete!();
+                            else
+                              cubit.getAllPostsAndQuestions(
+                                  type, groupId, isStudent);
                           },
                           onReject: () {},
                         );

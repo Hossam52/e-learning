@@ -1,6 +1,8 @@
 import 'package:e_learning/models/student/auth/student_data_model.dart';
 import 'package:e_learning/modules/auth/cubit/cubit.dart';
 import 'package:e_learning/modules/auth/cubit/states.dart';
+import 'package:e_learning/modules/groups/cubit/cubit.dart';
+import 'package:e_learning/modules/groups/student/group_view/discuss_tab/group_question_tab.dart';
 import 'package:e_learning/modules/profile/student/student_profile_info_build.dart';
 import 'package:e_learning/modules/student/cubit/cubit/cubit.dart';
 import 'package:e_learning/modules/student/cubit/cubit/states.dart';
@@ -8,12 +10,15 @@ import 'package:e_learning/shared/componants/componants.dart';
 import 'package:e_learning/shared/componants/constants.dart';
 import 'package:e_learning/shared/componants/widgets/default_loader.dart';
 import 'package:e_learning/shared/componants/widgets/no_data_widget.dart';
+import 'package:e_learning/shared/responsive_ui/device_information.dart';
 import 'package:e_learning/shared/responsive_ui/responsive_widget.dart';
 import 'package:e_learning/shared/styles/colors.dart';
+import 'package:e_learning/shared/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_conditional_rendering/conditional.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class StudentProfileView extends StatefulWidget {
   StudentProfileView({
@@ -84,38 +89,35 @@ class _StudentProfileViewState extends State<StudentProfileView> {
                               statusBarIconBrightness: Brightness.light,
                             ),
                           ),
-                          body: Column(
-                            children: [
-                              StudentProfileInfoBuild(
-                                deviceInfo: deviceInfo,
-                                // image: "${widget.student!.image}",
-                                // name: "${widget.student!.name}",
-                                // points: "${widget.student!.points}",
-                                // code: "${widget.student!.code}",
-                                student: widget.student,
-                                authType: authType,
-                                trailing: defaultMaterialIconButton(
-                                  text: widget.isFriend ? 'حذف' : 'إضافة كصديق',
-                                  icon: widget.isFriend
-                                      ? Icons.person_remove
-                                      : Icons.person_add,
-                                  backgroundColor: widget.isFriend
-                                      ? errorColor
-                                      : Colors.white,
-                                  textColor: widget.isFriend
-                                      ? Colors.white
-                                      : primaryColor,
-                                  isLoading: cubit.addFriendWithCodeLoading,
-                                  onPressed: () {
-                                    cubit.addAndRemoveFriendWithCode(
-                                      code: widget.student!.code!,
-                                      context: context,
-                                      isAdd: !widget.isFriend,
-                                    );
-                                  },
+                          backgroundColor: backgroundColor,
+                          body: SingleChildScrollView(
+                            child: Column(
+                              children: [
+                                Container(
+                                  color: Colors.white,
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      _personalInfo(deviceInfo, cubit, context),
+                                      _followPersons(deviceInfo),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            ],
+                                SizedBox(height: 11.h),
+                                Text(
+                                    'This layout is static until get the data from back end',
+                                    style: TextStyle(fontSize: 16.sp)),
+                                GroupStudentTab(
+                                  cubit: GroupCubit.get(context),
+                                  deviceInfo: deviceInfo,
+                                  groupId: 0,
+                                  isQuestion: false,
+                                  isStudent: true,
+                                  posts: GroupCubit.get(context).postsList,
+                                  isPost: true,
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                 );
@@ -124,6 +126,96 @@ class _StudentProfileViewState extends State<StudentProfileView> {
           },
         );
       },
+    );
+  }
+
+  StudentProfileInfoBuild _personalInfo(
+      DeviceInformation deviceInfo, StudentCubit cubit, BuildContext context) {
+    return StudentProfileInfoBuild(
+      deviceInfo: deviceInfo,
+      // image: "${widget.student!.image}",
+      // name: "${widget.student!.name}",
+      // points: "${widget.student!.points}",
+      // code: "${widget.student!.code}",
+      student: widget.student,
+      authType: authType,
+      trailing: defaultMaterialIconButton(
+        text: widget.isFriend ? 'حذف' : 'إضافة كصديق',
+        icon: widget.isFriend ? Icons.person_remove : Icons.person_add,
+        backgroundColor: widget.isFriend ? errorColor : Colors.white,
+        textColor: widget.isFriend ? Colors.white : primaryColor,
+        isLoading: cubit.addFriendWithCodeLoading,
+        onPressed: () {
+          cubit.addAndRemoveFriendWithCode(
+            code: widget.student!.code!,
+            context: context,
+            isAdd: !widget.isFriend,
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _followPersons(deviceInfo) {
+    return Padding(
+      padding: EdgeInsets.all(18.w),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('Follow', style: secondaryTextStyle(deviceInfo)),
+              Text('View all',
+                  style: secondaryTextStyle(deviceInfo)
+                      .copyWith(color: Colors.grey)),
+            ],
+          ),
+          SizedBox(height: 18.h),
+          _followersListView(deviceInfo),
+        ],
+      ),
+    );
+  }
+
+  Widget _followersListView(deviceInfo) {
+    return SizedBox(
+      height: 70.h,
+      child: responsiveWidget(
+          responsive: ((context, deviceInformation) => ListView.separated(
+                separatorBuilder: (context, index) => SizedBox(width: 15.w),
+                itemBuilder: (_, index) {
+                  return _FollowerItem(
+                    deviceInfo: deviceInfo,
+                  );
+                },
+                itemCount: 10,
+                scrollDirection: Axis.horizontal,
+              ))),
+    );
+  }
+}
+
+class _FollowerItem extends StatelessWidget {
+  const _FollowerItem({Key? key, required this.deviceInfo}) : super(key: key);
+  final DeviceInformation deviceInfo;
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Container(
+          width: 50.r,
+          height: 50.r,
+          decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              image: DecorationImage(
+                  image: AssetImage('assets/images/profile.png'))),
+        ),
+        SizedBox(height: 5.h),
+        Text(
+          'Hossam H',
+          style: subTextStyle(deviceInfo).copyWith(color: Colors.black),
+        )
+      ],
     );
   }
 }

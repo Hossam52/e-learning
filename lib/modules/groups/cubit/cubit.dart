@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
@@ -325,7 +326,6 @@ class GroupCubit extends Cubit<GroupStates> {
           'type': type,
         }),
       );
-      print(response.data);
       if (response.data['status']) {
         posts = response.data['posts'];
         insertPostLists(
@@ -429,7 +429,6 @@ class GroupCubit extends Cubit<GroupStates> {
           'group_id': groupId,
         }),
       );
-      print(response.data);
       if (response.data['status']) {
         if (isMembers) {
           studentInGroupModel = StudentInGroupModel.fromJson(response.data);
@@ -480,7 +479,6 @@ class GroupCubit extends Cubit<GroupStates> {
           'code': code,
         }),
       );
-      print(response.data);
       if (response.data['status']) {
         showSnackBar(
           context: context,
@@ -547,11 +545,13 @@ class GroupCubit extends Cubit<GroupStates> {
     print('$id  $type ${generateDeleteUrl(type)}');
     emit(GroupGeneralDeleteLoadingState());
     try {
+      log('Recieved from delete $id ${type.toString()}');
       Response response = await DioHelper.postFormData(
         url: generateDeleteUrl(type),
         token: teacherToken ?? studentToken,
         formData: generateDeleteFormData(type, id),
       );
+      log('data from delete is ${response.data}');
       if (response.data['status']) {
         emit(GroupGeneralDeleteSuccessState());
       } else {
@@ -952,18 +952,16 @@ class GroupCubit extends Cubit<GroupStates> {
         token: studentToken,
         formData: FormData.fromMap({'teacher_id': teacherId}),
       );
-      if (response.data['status']) {
-        generateTeacherDataFunction(type, response);
-        emit(GroupsTeacherGetSuccessState());
-      } else {
-        emit(GroupsTeacherGetErrorState());
-      }
+      log(response.data.toString());
+
+      generateTeacherDataFunction(type, response);
+      emit(GroupsTeacherGetSuccessState());
     } catch (e) {
       emit(GroupsTeacherGetErrorState());
       throw e;
     } finally {
       isTeacherDataLoading = false;
-      emit(GroupChangeState());
+      // emit(GroupChangeState());
     }
   }
 
@@ -986,27 +984,33 @@ class GroupCubit extends Cubit<GroupStates> {
   List<Test> teacherTests = [];
 
   void generateTeacherDataFunction(TeacherDataType type, Response response) {
-    switch (type) {
-      case TeacherDataType.groups:
-        teacherGroupsByIdModel = GroupResponseModel.fromJson(response.data);
-        break;
-      case TeacherDataType.questions:
-        TeacherProfileQuestions teacherProfileQuestions =
-            TeacherProfileQuestions.fromJson(response.data);
-        postsList = teacherProfileQuestions.posts?.postsData ?? [];
-        postsList.forEach((element) {
-          postsLikeCount.addAll({element.id!: element.likesNum!});
-          postsLikeBool.addAll({
-            element.id!: element.authLikeStudent!,
+    if (response.data['status']) {
+      switch (type) {
+        case TeacherDataType.groups:
+          teacherGroupsByIdModel = GroupResponseModel.fromJson(response.data);
+          break;
+        case TeacherDataType.questions:
+          TeacherProfileQuestions teacherProfileQuestions =
+              TeacherProfileQuestions.fromJson(response.data);
+          questionsList = teacherProfileQuestions.posts?.postsData ?? [];
+          questionsList.forEach((element) {
+            questionLikeCount.addAll({element.id!: element.likesNum!});
+            questionLikeBool.addAll({
+              element.id!: element.authLikeStudent!,
+            });
           });
-        });
-        break;
-      case TeacherDataType.tests:
-        List tests = [];
-        tests = response.data['tests'];
-        teacherTests = List.generate(tests.length,
-            (index) => Test.fromJson(response.data['tests'][index], false));
-        break;
+          break;
+        case TeacherDataType.tests:
+          List tests = [];
+          tests = response.data['tests'];
+          teacherTests = List.generate(tests.length,
+              (index) => Test.fromJson(response.data['tests'][index], false));
+          break;
+      }
+    } else {
+      teacherTests.clear();
+      questionsList.clear();
+      throw 'Error happened ${response.data['message']}';
     }
   }
 

@@ -9,6 +9,7 @@ import 'package:e_learning/shared/styles/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 
 class TeacherProfileView extends StatefulWidget {
   const TeacherProfileView({
@@ -65,31 +66,34 @@ class _TeacherProfileViewState extends State<TeacherProfileView> {
                 statusBarIconBrightness: Brightness.light,
               ),
             ),
-            body: SingleChildScrollView(
-              child: Column(
-                children: [
-                  TeacherProfileInfoBuild(
-                    deviceInfo: deviceInfo,
-                    name: widget.teacher.name!,
-                    subjects: List.generate(widget.teacher.subjects!.length,
-                        (index) => widget.teacher.subjects![index].name!),
-                    image: widget.teacher.image!,
-                    rate: widget.teacher.authStudentRate!.toDouble(),
-                    isStudent: true,
-                    isLiked: cubit.isFollowed,
-                    followCount: cubit.followCount,
-                    onFollow: (isFollowed) {
-                      cubit.toggleTeacherFollow(widget.teacher.id!);
-                    },
-                  ),
-                  SizedBox(height: 15),
+            body: ProgressHUD(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    TeacherProfileInfoBuild(
+                      teacherId: widget.teacher.id!,
+                      deviceInfo: deviceInfo,
+                      name: widget.teacher.name!,
+                      subjects: List.generate(widget.teacher.subjects!.length,
+                          (index) => widget.teacher.subjects![index].name!),
+                      image: widget.teacher.image!,
+                      rate: widget.teacher.authStudentRate!.toDouble(),
+                      isStudent: true,
+                      isLiked: cubit.isFollowed,
+                      followCount: cubit.followCount,
+                      onFollow: (isFollowed) {
+                        cubit.toggleTeacherFollow(widget.teacher.id!);
+                      },
+                    ),
+                    SizedBox(height: 15),
 
-                  /// Tabs
-                  TeacherTabBuild(
-                    teacher: widget.teacher,
-                    isStudent: true,
-                  ),
-                ],
+                    /// Tabs
+                    TeacherTabBuild(
+                      teacher: widget.teacher,
+                      isStudent: true,
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

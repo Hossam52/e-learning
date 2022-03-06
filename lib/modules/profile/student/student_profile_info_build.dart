@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -47,7 +48,7 @@ class StudentProfileInfoBuild extends StatelessWidget {
   Widget build(BuildContext context) {
     final String image = student!.image!;
     final String name = student!.name!;
-    final String points = student!.points.toString();
+    final String points = student!.points!;
     final String code = student!.code!;
     return Container(
       decoration: BoxDecoration(
@@ -234,8 +235,48 @@ class ProfileImage extends StatelessWidget {
               bottom: 10,
               child: CircleAvatar(
                 backgroundColor: Theme.of(context).primaryColor,
-                child: Icon(
-                  Icons.edit,
+                child: IconButton(
+                  icon: Icon(Icons.edit),
+                  onPressed: () async {
+                    try {
+                      final res = (await MultiImagePicker.pickImages(
+                        maxImages: 1,
+                        enableCamera: true,
+                        cupertinoOptions: CupertinoOptions(
+                          takePhotoIcon: "E-learning app",
+                          doneButtonTitle: "Done",
+                        ),
+                        materialOptions: MaterialOptions(
+                          actionBarColor: "#4C5FFB",
+                          actionBarTitle: "E-learning app",
+                          allViewTitle: "All Photos",
+                          useDetailsView: true,
+                          selectCircleStrokeColor: "#000000",
+                        ),
+                      ))
+                          .first;
+                      final path = await FlutterAbsolutePath.getAbsolutePath(
+                          res.identifier!);
+                      File tempFile = File(path!);
+                      final authCubit = AuthCubit.get(context);
+                      log('${authCubit.selectedCountryId} ${authCubit.selectedClassIndex}');
+
+                      authCubit.studentRegisterAndEdit(
+                        context: context,
+                        type: AuthType.Edit,
+                        model: StudentModel(
+                          name: student.name!,
+                          email: student.email!,
+                          avatar: tempFile,
+                        ),
+                      );
+                    } catch (e) {
+                      log(e.toString());
+                      showToast(
+                          msg: 'يوجد خطا من فضلك ادخل الصور مجددا',
+                          state: ToastStates.WARNING);
+                    }
+                  },
                   color: Colors.white,
                 ),
               ),

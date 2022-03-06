@@ -29,7 +29,7 @@ class _ProfilePostsTabState extends State<ProfilePostsTab> {
   @override
   void initState() {
     GroupCubit.get(context)
-        .getAllPostsAndQuestions('share', 0, true, isProfile: true);
+        .getAllPostsAndQuestions('post', 0, true, isProfile: true);
     super.initState();
   }
 
@@ -59,21 +59,22 @@ class _ProfilePostsTabState extends State<ProfilePostsTab> {
                     key: formKey,
                     child: Column(
                       children: [
-                        // if (GroupCubit.get(context).isPostEdit)
-                        _EditProfilePost(
-                          isStudent: true,
-                          postController: editingController,
-                          cubit: cubit,
-                          formKey: formKey,
-                          noImages: true,
-                          postId: cubit.studentPostId,
-                        ),
+                        if (GroupCubit.get(context).isStudentPostEdit)
+                          _EditProfilePost(
+                            isStudent: true,
+                            postController: editingController,
+                            cubit: cubit,
+                            formKey: formKey,
+                            noImages: cubit.selectedImages.isEmpty,
+                            postId: cubit.studentPostId,
+                          ),
                         GroupStudentTab(
                           deviceInfo: deviceInfo,
                           groupId: 0,
                           cubit: cubit,
+                          isPost: true,
                           isQuestion: false,
-                          posts: cubit.shareList,
+                          posts: cubit.postsList,
                           isStudent: true,
                           postController: editingController,
                         ),
@@ -147,22 +148,22 @@ class _EditProfilePost extends StatelessWidget {
             ],
           ),
           if (cubit.selectedImages.isNotEmpty)
-            Container(
-              height: 250,
-              child: GridView.builder(
-                itemCount: cubit.selectedImages.length,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                  crossAxisSpacing: 3,
-                ),
-                itemBuilder: (context, index) => Image.file(
-                  cubit.selectedImages[index],
-                ),
+            GridView.builder(
+              shrinkWrap: true,
+              primary: false,
+              itemCount: cubit.selectedImages.length,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                crossAxisSpacing: 3,
+              ),
+              itemBuilder: (context, index) => Image.file(
+                cubit.selectedImages[index],
               ),
             ),
-          SizedBox(
-            height: 15.h,
-          ),
+
+          // SizedBox(
+          //   height: 15.h,
+          // ),
           if (isStudent) generateStudentButtons(text, context)
         ],
       ),
@@ -183,22 +184,23 @@ class _EditProfilePost extends StatelessWidget {
                       GroupPostModel(
                         text: postController.text,
                         images: noImages ? null : cubit.selectedImages,
-                        groupId: 4,
-                        type: 'question',
+                        groupId: 0,
+                        type: 'post',
                         postId: postId,
                       ),
                       isStudent: true,
-                      isEdit: true,
+                      isEdit: cubit.isPostEdit,
                       context: context,
                     );
                     cubit.isPostEdit = false;
+                    postController.clear();
                     await GroupCubit.get(context).getAllPostsAndQuestions(
-                        'share', 0, true,
+                        'post', 0, true,
                         isProfile: true);
                   }
                 },
-                text: text.edit,
-                icon: Icons.edit,
+                text: cubit.isStudentPostEdit ? text.edit : text.post,
+                icon: cubit.isStudentPostEdit ? Icons.edit : Icons.send,
                 textColor: Colors.white,
                 backgroundColor: primaryColor),
           ),

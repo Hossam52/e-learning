@@ -34,6 +34,8 @@ class TeacherProfileScreen extends StatelessWidget {
                             /// Profile info
                             TeacherProfileInfoBuild(
                               deviceInfo: deviceInfo,
+                               teacherId:
+                                  cubit.teacherProfileModel!.teacher!.id!,
                               name: cubit.teacherProfileModel!.teacher!.name!,
                               image: cubit.teacherProfileModel!.teacher!.image!,
                               subjects: List.generate(

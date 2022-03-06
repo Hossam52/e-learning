@@ -54,3 +54,10 @@ class SearchStudentSuccessState extends StudentStates {}
 class SearchStudentNoDataState extends StudentStates {}
 
 class SearchStudentErrorState extends StudentStates {}
+
+//Rate teacher
+class RateTeacherLoadingState extends StudentStates {}
+
+class RateTeacherSuccessState extends StudentStates {}
+
+class RateTeacherErrorState extends StudentStates {}

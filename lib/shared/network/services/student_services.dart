@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
+import 'package:e_learning/models/student/rate_teacher/rate_teacher.dart';
 import 'package:e_learning/models/student/search/search_model.dart';
 import 'package:e_learning/shared/componants/constants.dart';
 import 'package:e_learning/shared/network/remote/dio_helper.dart';
@@ -11,9 +14,23 @@ class StudentServices {
       url: STUDENT_SEARCH,
       token: studentToken,
       formData: FormData.fromMap({
-        'text' : value,
+        'text': value,
       }),
     );
     return SearchModel.fromJson(response.data);
+  }
+
+  static Future<RateTeacherModel> rateTeacher(
+      double rate, int teacherId) async {
+    final response = await DioHelper.postFormData(
+      url: RATE_TEACHER,
+      token: studentToken,
+      formData: FormData.fromMap({
+        'stars': rate,
+        'teacher_id': teacherId,
+      }),
+    );
+    log(response.data.toString());
+    return RateTeacherModel.fromMap(response.data);
   }
 }
