@@ -2,6 +2,7 @@ import 'package:e_learning/models/enums/enums.dart';
 import 'package:e_learning/modules/groups/cubit/cubit.dart';
 import 'package:e_learning/modules/groups/cubit/states.dart';
 import 'package:e_learning/modules/groups/student/group_view/home_tab/post_build_item.dart';
+import 'package:e_learning/modules/profile/teacher/teacher_profile_tab/edit_post_screen.dart';
 import 'package:e_learning/shared/componants/componants.dart';
 import 'package:e_learning/shared/componants/widgets/default_add_post_widget.dart';
 import 'package:e_learning/shared/componants/widgets/default_loader.dart';
@@ -102,7 +103,7 @@ class _TeacherQuestionsTabState extends State<TeacherQuestionsTab> {
             itemBuilder: (context, index) {
               var post = cubit.questionsList[index];
               return PostBuildItem(
-                ownerPostId:  post.studentId!,
+                ownerPostId: post.studentId!,
                 deviceInfo: deviceInfo,
                 type: 'question',
                 isStudent: true,
@@ -115,7 +116,11 @@ class _TeacherQuestionsTabState extends State<TeacherQuestionsTab> {
                 commentCount: post.comments!.length,
                 groupId: 0,
                 onEdit: () async {
+                  navigateTo(
+                      context, EditPostScreen(post, context, widget.teacherId));
+                  return;
                   postController.text = post.text!;
+
                   if (post.images!.isNotEmpty) {
                     await AppCubit.get(context)
                         .addImageFromUrl('', imageUrls: post.images);

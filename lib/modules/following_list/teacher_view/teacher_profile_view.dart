@@ -4,6 +4,7 @@ import 'package:e_learning/modules/profile/teacher/teacher_tab_build.dart';
 import 'package:e_learning/modules/student/cubit/cubit/cubit.dart';
 import 'package:e_learning/modules/student/cubit/cubit/states.dart';
 import 'package:e_learning/shared/componants/componants.dart';
+import 'package:e_learning/shared/cubit/cubit.dart';
 import 'package:e_learning/shared/responsive_ui/responsive_widget.dart';
 import 'package:e_learning/shared/styles/colors.dart';
 import 'package:flutter/material.dart';
@@ -83,6 +84,7 @@ class _TeacherProfileViewState extends State<TeacherProfileView> {
                       followCount: cubit.followCount,
                       onFollow: (isFollowed) {
                         cubit.toggleTeacherFollow(widget.teacher.id!);
+                        AppCubit.get(context).getHighRateTeachersList(true);
                       },
                     ),
                     SizedBox(height: 15),
