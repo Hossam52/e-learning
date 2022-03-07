@@ -17,16 +17,37 @@ class NotificationCubit extends Cubit<NotificationState> {
 
   NotificationResponseModel? notificationResponseModel;
   bool noNotifications = false;
+  void deleteNotification(NotificationType type,
+      {required int notificationId}) async {
+    try {
+      final response = await DioHelper.postData(
+          url: type == NotificationType.Student
+              ? STUDENT_DELETE_NOTIFICATION
+              : TEACHER_DELETE_NOTIFICATION,
+          token: type == NotificationType.Student ? studentToken : teacherToken,
+          data: {
+            'notify_id': notificationId,
+          });
+      if (response.data['status']) {
+        emit(NotificationDeletedSuccess(response.data['notifications']));
+      }
+    } catch (e) {
+      throw e;
+    }
+  }
+
   void getAllNotifications(NotificationType type) async {
     try {
       emit(NotificationGetLoading());
       Response response = await DioHelper.getData(
         url: type == NotificationType.Student
-            ? STUDENT_GET_ALL_NOTIFICATIONS : TEACHER_GET_ALL_NOTIFICATIONS,
+            ? STUDENT_GET_ALL_NOTIFICATIONS
+            : TEACHER_GET_ALL_NOTIFICATIONS,
         token: type == NotificationType.Student ? studentToken : teacherToken,
       );
-      if(response.data['status']){
-        notificationResponseModel = NotificationResponseModel.fromJson(response.data);
+      if (response.data['status']) {
+        notificationResponseModel =
+            NotificationResponseModel.fromJson(response.data);
       } else
         noNotifications = true;
       emit(NotificationGetSuccess());

@@ -66,6 +66,7 @@ const STUDENT_GET_SUBJECT_PLAYLIST_TEACHERS =
     'student/whoUploadPlaylistSubject';
 
 const STUDENT_GET_ALL_NOTIFICATIONS = 'student/getNotifications';
+const STUDENT_DELETE_NOTIFICATION = 'student/deleteNotify';
 
 const STUDENT_GET_HIGH_RATED_TEACHERS = 'student/HighRateTecahers';
 
@@ -170,6 +171,7 @@ const TEACHER_GET_STAGES = 'teacher/getMyStages';
 const TEACHER_GET_TERMS = 'teacher/getMyTerms';
 
 const TEACHER_GET_ALL_NOTIFICATIONS = 'teacher/getNotifications';
+const TEACHER_DELETE_NOTIFICATION = 'teacher/deleteNotify';
 
 ///-------------------------------------------------
 /// Files Module

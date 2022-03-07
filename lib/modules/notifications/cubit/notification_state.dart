@@ -10,4 +10,9 @@ class NotificationGetLoading extends NotificationState {}
 
 class NotificationGetSuccess extends NotificationState {}
 
+class NotificationDeletedSuccess extends NotificationState {
+  final String message;
+  NotificationDeletedSuccess(this.message);
+}
+
 class NotificationGetError extends NotificationState {}
