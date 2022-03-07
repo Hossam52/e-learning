@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:buttons_tabbar/buttons_tabbar.dart';
 import 'package:e_learning/layout/student/cubit/cubit.dart';
 import 'package:e_learning/layout/student/cubit/states.dart';
@@ -25,9 +27,6 @@ class _StudentExamScreenState extends State<StudentExamScreen> {
   @override
   void initState() {
     TestLayoutCubit.get(context).getMySubjects();
-    TestLayoutCubit.get(context).getTestsBySubjectId(1);
-
-    // TestLayoutCubit.get(context).getStudentTests(TestType.Test);
     super.initState();
   }
 
@@ -44,13 +43,14 @@ class _StudentExamScreenState extends State<StudentExamScreen> {
             final subjects = TestLayoutCubit.get(context).studentSubjects;
             return Conditional.single(
               context: context,
-              conditionBuilder: (context) => state is! StudentTestsLoadingState,
+              conditionBuilder: (context) =>
+                  state is! StudentSubjectsLoadingState,
               fallbackBuilder: (context) => DefaultLoader(),
-              widgetBuilder: (context) => cubit.noStudentTestsData
+              widgetBuilder: (context) => subjects.length == 0
                   ? NoDataWidget(
                       text: 'عذرا لا يوجد بيانات',
                       onPressed: () {
-                        cubit.getStudentTests(TestType.Test);
+                        cubit.getMySubjects();
                       },
                     )
                   : DefaultTabController(
@@ -63,6 +63,12 @@ class _StudentExamScreenState extends State<StudentExamScreen> {
                               top: 16.0,
                             ),
                             child: ButtonsTabBar(
+                                onTap: (int index) async {
+                                  log('index');
+                                  if (subjects[index].tests == null) {
+                                    await cubit.setTestsBySubjectIndex(index);
+                                  }
+                                },
                                 backgroundColor: primaryColor,
                                 contentPadding:
                                     EdgeInsets.symmetric(horizontal: 15),
@@ -85,28 +91,21 @@ class _StudentExamScreenState extends State<StudentExamScreen> {
                                     .toList()),
                           ),
                           Expanded(
-                            child: TabBarView(
-                              children: subjects
-                                  .map(
-                                    (e) => ExamTab(
-                                      deviceInfo: deviceInfo,
-                                      tests: cubit.testsBySubjectId,
-                                      isChampion: false,
-                                    ),
-                                  )
-                                  .toList(),
-                              // ExamTab(
-                              //   deviceInfo: deviceInfo,
-                              //   tests: cubit.studentTestsList,
-                              //   isChampion: false,
-                              // ),
-                              // ExamTab(
-                              //   deviceInfo: deviceInfo,
-                              //   tests: cubit.studentTestsList,
-                              //   isChampion: false,
-                              // ),
-                              // ],
-                            ),
+                            child: state is StudentTestsLoadingState
+                                ? DefaultLoader()
+                                : TabBarView(
+                                    children: subjects
+                                        .map(
+                                          (subject) => ExamTab(
+                                            deviceInfo: deviceInfo,
+                                            tests: subject.tests == null
+                                                ? []
+                                                : subject.tests!,
+                                            isChampion: false,
+                                          ),
+                                        )
+                                        .toList(),
+                                  ),
                           ),
                         ],
                       ),

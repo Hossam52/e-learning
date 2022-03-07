@@ -22,6 +22,8 @@ class StudentSubjectsSuccessState extends TestLayoutStates {}
 
 class StudentSubjectsErrorState extends TestLayoutStates {}
 
+class StudentFinishAllTestsInSubjectsState extends TestLayoutStates {}
+
 /// Get Friend List States
 class StudentFriendLoadingState extends TestLayoutStates {}
 

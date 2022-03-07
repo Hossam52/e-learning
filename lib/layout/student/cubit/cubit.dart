@@ -131,7 +131,7 @@ class TestLayoutCubit extends Cubit<TestLayoutStates> {
   }
 
   List<Subjects> studentSubjects = [];
-  void getMySubjects() async {
+  Future<void> getMySubjects() async {
     isGetTestsLoading = true;
     emit(StudentSubjectsLoadingState());
     try {
@@ -145,6 +145,7 @@ class TestLayoutCubit extends Cubit<TestLayoutStates> {
         studentSubjects = List.generate(tests.length,
             (index) => Subjects.fromJson(response.data['subjects'][index]));
         noStudentTestsData = false;
+        if (studentSubjects.isNotEmpty) await setTestsBySubjectIndex(0);
         emit(StudentSubjectsSuccessState());
       } else {
         print(response.data['message']);
@@ -160,7 +161,7 @@ class TestLayoutCubit extends Cubit<TestLayoutStates> {
   }
 
   List<Test> testsBySubjectId = [];
-  void getTestsBySubjectId(int subjectId) async {
+  Future<void> getTestsBySubjectId(int subjectId) async {
     isGetTestsLoading = true;
     emit(StudentTestsLoadingState());
     try {
@@ -168,8 +169,7 @@ class TestLayoutCubit extends Cubit<TestLayoutStates> {
           url: STUDENT_GET_ALL_TESTS_BY_ID,
           token: studentToken,
           data: {'subject_id': subjectId});
-      log(response.data.toString());
-      if (response.data['tests']) {
+      if (response.data['status']) {
         final tests = response.data['tests'];
         testsBySubjectId = List.generate(
             tests.length, (index) => Test.fromJson(tests[index], false));
@@ -186,6 +186,12 @@ class TestLayoutCubit extends Cubit<TestLayoutStates> {
       isGetTestsLoading = false;
       emit(ChangeTestState());
     }
+  }
+
+  Future<void> setTestsBySubjectIndex(int subjectIndex) async {
+    await getTestsBySubjectId(studentSubjects[subjectIndex].id!);
+    studentSubjects[subjectIndex].setTests(testsBySubjectId);
+    testsBySubjectId.clear();
   }
 
   ChampionResponseModel? championResponseModel;
