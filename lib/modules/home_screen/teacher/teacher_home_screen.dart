@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:e_learning/modules/groups/teacher/teacher_public_groups_screen.dart';
 import 'package:e_learning/modules/home_screen/student/build_best_teacher_item.dart';
 import 'package:e_learning/modules/home_screen/student/build_top_students.dart';
 import 'package:e_learning/modules/home_screen/student/category_home_build_item.dart';
@@ -48,8 +49,7 @@ class _TeacherHomeScreenState extends State<TeacherHomeScreen> {
                     backgroundColor: primaryColor.withOpacity(0.26)),
                 onPressed: () => navigateTo(
                     context,
-                    PublicGroupHomeScreen(
-                      isStudent: false,
+                    TeacherPublicGroupsScreen(
                     )),
                 icon: Icon(
                   Icons.people,
@@ -58,7 +58,7 @@ class _TeacherHomeScreenState extends State<TeacherHomeScreen> {
                 label: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 30.w),
                   child: Text(
-                    text.public_group,
+                    'الجروبات الرسمية لموادك',
                     style: subTextStyle(deviceInfo).copyWith(
                       color: primaryColor,
                     ),

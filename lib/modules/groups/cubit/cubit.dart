@@ -52,6 +52,8 @@ class GroupCubit extends Cubit<GroupStates> {
     emit(GroupChangeState());
   }
 
+  void changeState() => emit(GroupChangeState());
+
   bool isStudentPostEdit = false;
   int? studentPostId;
   void changeStudentEditPost(bool isEdit, int? id) {
@@ -170,10 +172,29 @@ class GroupCubit extends Cubit<GroupStates> {
   ///
   GroupResponseModel? groupResponseModel;
   GroupsStudentResponse? groupsStudentResponse;
+  GroupResponseModel? groupsPublicTeacher;
   List<Group> myGroups = [];
   List<Group> discoverGroups = [];
   bool noGroupsData = false;
   Map<int, bool> joinedGroupMap = {};
+
+  Future<void> getPublicGroupsForTeacher() async {
+    emit(PublicGroupsTeacherGetLoadingState());
+    try {
+      final response = await DioHelper.getData(
+          url: TEACHER_GET_PUBLIC_GROUPS, token: teacherToken);
+      if (response.data['status']) {
+        groupsPublicTeacher = GroupResponseModel.fromJson(response.data);
+        emit(PublicGroupsTeacherGetSuccessState());
+      } else {
+        noGroupsData = true;
+        emit(PublicGroupsTeacherGetSuccessState());
+      }
+    } catch (e) {
+      emit(PublicGroupsTeacherGetErrorState());
+      throw e;
+    }
+  }
 
   void getMyGroups(bool isStudent, GroupType type) async {
     myGroups.clear();
@@ -251,7 +272,6 @@ class GroupCubit extends Cubit<GroupStates> {
     progress!.show();
     emit(AddPostLoadingState());
     try {
-      print('post id ${model.postId}');
       Response response = await DioHelper.postFormData(
         url: isProfileTeacher
             ? STUDENT_ADD_QUESTION_ON_TEACHER_PROFILE
@@ -268,7 +288,7 @@ class GroupCubit extends Cubit<GroupStates> {
       print(response.data);
       if (response.data['status']) {
         teacherPostResponseModel = PostResponseModel.fromJson(response.data);
-        emit(AddPostSuccessState());
+        emit(AddPostSuccessState(message: response.data['message']));
       } else {
         showToast(msg: response.data['message'], state: ToastStates.ERROR);
       }
@@ -835,7 +855,7 @@ class GroupCubit extends Cubit<GroupStates> {
     try {
       Response response = await DioHelper.getData(
         url: PUBLIC_GROUP_INFO,
-        token: studentToken,
+        token: studentToken ?? teacherToken,
       );
       print(response.data);
       if (response.data['status']) {
@@ -859,14 +879,14 @@ class GroupCubit extends Cubit<GroupStates> {
 
   Map<int, bool> publicGroupPostsLikeBool = {};
 
-  void getAllPublicGroupPosts(int groupId) async {
+  void getAllPublicGroupPosts(int groupId, {bool isStudent = true}) async {
     List posts = [];
     noPublicGroupPostData = false;
     emit(GroupGetPostLoadingState());
     try {
       Response response = await DioHelper.postFormData(
-        url: PUBLIC_GET_POSTS,
-        token: studentToken,
+        url: isStudent ? PUBLIC_GET_POSTS : PUBLIC_GET_POSTS_TEACHER,
+        token: isStudent ? studentToken : teacherToken,
         formData: FormData.fromMap({
           'group_id': groupId,
         }),

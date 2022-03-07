@@ -206,6 +206,7 @@ const TEACHER_CREATE_GROUP = 'teacher/group/store';
 const TEACHER_EDIT_GROUP = 'teacher/group/update';
 
 const TEACHER_GET_GROUPS = 'teacher/group/getTeacherGroup';
+const TEACHER_GET_PUBLIC_GROUPS = 'teacher/publicGroup/myPublicGroups';
 
 const TEACHER_DELETE_GROUP = 'teacher/group/delete';
 
@@ -255,6 +256,7 @@ const TEACHER_DELETE_GROUP_HOMEWORK = 'teacher/homework/delete';
 const PUBLIC_GROUP_INFO = 'student/publicGroup/myPublicGroup';
 
 const PUBLIC_GET_POSTS = 'student/publicGroup/getPublicPosts';
+const PUBLIC_GET_POSTS_TEACHER = 'teacher/publicGroup/getPublicPosts';
 
 const TEACHER_PROFILE_GET_ALL_POST = 'teacher/social/getAllPosts';
 

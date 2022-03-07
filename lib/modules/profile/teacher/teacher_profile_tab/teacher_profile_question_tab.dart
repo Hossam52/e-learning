@@ -52,7 +52,6 @@ class _TeacherProfileQuestionTabState extends State<TeacherProfileQuestionTab> {
                       physics: NeverScrollableScrollPhysics(),
                       itemBuilder: (context, index) {
                         var post = cubit.questionsList[index];
-                        print(post.teacherPost);
                         return PostBuildItem(
                           type: 'questions',
                           ownerPostId: post.studentId!,
@@ -70,7 +69,7 @@ class _TeacherProfileQuestionTabState extends State<TeacherProfileQuestionTab> {
                           date: post.date!,
                           commentCount: post.comments!.length,
                           comments: post.comments,
-                          groupId: 0,
+                          groupId: -1,
                           images: post.images!.isNotEmpty ? post.images : null,
                           onEdit: () {},
                         );

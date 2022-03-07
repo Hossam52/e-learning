@@ -1,7 +1,10 @@
 import 'package:e_learning/layout/group_layout/student/group_layout.dart';
 import 'package:e_learning/layout/group_layout/teacher/teacher_group_layout.dart';
+import 'package:e_learning/models/teacher/groups/group_response_model.dart';
 import 'package:e_learning/modules/groups/cubit/cubit.dart';
 import 'package:e_learning/modules/groups/group_type_badge_build_item.dart';
+import 'package:e_learning/modules/groups/teacher/teacher_public_group_screen.dart';
+import 'package:e_learning/modules/student/public_group/public_grouo_home_screen.dart';
 import 'package:e_learning/shared/componants/componants.dart';
 import 'package:e_learning/shared/responsive_ui/device_information.dart';
 import 'package:e_learning/shared/styles/colors.dart';
@@ -12,7 +15,7 @@ import 'package:focused_menu/focused_menu.dart';
 import 'package:focused_menu/modals.dart';
 
 class GroupBuildItem extends StatelessWidget {
-  const GroupBuildItem({
+  GroupBuildItem({
     Key? key,
     required this.deviceInfo,
     required this.isTeacher,
@@ -22,11 +25,15 @@ class GroupBuildItem extends StatelessWidget {
     required this.groupId,
     required this.onDelete,
     required this.onEdit,
+    this.typeGroup = 0,
     this.isJoined,
+    this.group,
   }) : super(key: key);
 
   final DeviceInformation deviceInfo;
   final bool isTeacher;
+  int? typeGroup;
+  Group? group;
   final String groupName;
   final String description;
   final bool isFree;
@@ -37,7 +44,7 @@ class GroupBuildItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return isTeacher
+    return isTeacher && typeGroup == 0
         ? FocusedMenuHolder(
             onPressed: () {},
             animateMenuItems: true,
@@ -67,15 +74,19 @@ class GroupBuildItem extends StatelessWidget {
         elevation: 3,
         child: InkWell(
           onTap: () {
-            if(isJoined == null) {
+            if (isJoined == null) {
               if (isTeacher) {
-                navigateTo(
-                    context,
-                    TeacherGroupLayout(
-                      groupId: groupId,
-                      groupName: groupName,
-                      groupDesc: description,
-                    ));
+                if (typeGroup == 0)
+                  navigateTo(
+                      context,
+                      TeacherGroupLayout(
+                        groupId: groupId,
+                        groupName: groupName,
+                        groupDesc: description,
+                      ));
+                else
+                  navigateTo(
+                      context, PublicGroupTeacherHomeScreen(group: group!,));
               } else {
                 navigateTo(
                   context,
@@ -117,25 +128,25 @@ class GroupBuildItem extends StatelessWidget {
                     style: subTextStyle(deviceInfo),
                   ),
                 ),
-                if(isJoined != null)
-                Align(
-                  alignment: AlignmentDirectional.bottomEnd,
-                  child: InkWell(
-                    onTap: () {
-                      GroupCubit.get(context).toggleStudentJoinGroup(groupId);
-                    },
-                    child: GroupCubit.get(context).isJoinGroupLoading
-                        ? Container(
-                      child: CircularProgressIndicator(),
-                    )
-                        : isJoined!
-                        ? Icon(Icons.logout, color: errorColor)
-                        : SvgPicture.asset(
-                      'assets/images/icons/group_add.svg',
-                      width: 28,
+                if (isJoined != null)
+                  Align(
+                    alignment: AlignmentDirectional.bottomEnd,
+                    child: InkWell(
+                      onTap: () {
+                        GroupCubit.get(context).toggleStudentJoinGroup(groupId);
+                      },
+                      child: GroupCubit.get(context).isJoinGroupLoading
+                          ? Container(
+                              child: CircularProgressIndicator(),
+                            )
+                          : isJoined!
+                              ? Icon(Icons.logout, color: errorColor)
+                              : SvgPicture.asset(
+                                  'assets/images/icons/group_add.svg',
+                                  width: 28,
+                                ),
                     ),
                   ),
-                ),
               ],
             ),
           ),

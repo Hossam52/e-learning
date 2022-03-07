@@ -23,10 +23,20 @@ class GroupsTeacherGetSuccessState extends GroupStates {}
 
 class GroupsTeacherGetErrorState extends GroupStates {}
 
+// Get public groups states
+class PublicGroupsTeacherGetLoadingState extends GroupStates {}
+
+class PublicGroupsTeacherGetSuccessState extends GroupStates {}
+
+class PublicGroupsTeacherGetErrorState extends GroupStates {}
+
 // Add teacher post states
 class AddPostLoadingState extends GroupStates {}
 
-class AddPostSuccessState extends GroupStates {}
+class AddPostSuccessState extends GroupStates {
+  String? message;
+  AddPostSuccessState({this.message});
+}
 
 class AddPostErrorState extends GroupStates {}
 

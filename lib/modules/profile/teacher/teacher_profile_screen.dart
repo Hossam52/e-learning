@@ -34,7 +34,7 @@ class TeacherProfileScreen extends StatelessWidget {
                             /// Profile info
                             TeacherProfileInfoBuild(
                               deviceInfo: deviceInfo,
-                               teacherId:
+                              teacherId:
                                   cubit.teacherProfileModel!.teacher!.id!,
                               name: cubit.teacherProfileModel!.teacher!.name!,
                               image: cubit.teacherProfileModel!.teacher!.image!,
@@ -43,13 +43,12 @@ class TeacherProfileScreen extends StatelessWidget {
                                       .length,
                                   (index) => cubit.teacherProfileModel!.teacher!
                                       .subjects![index].name!),
-                              rate: cubit.teacherProfileModel!.teacher!
-                                  .authStudentRate!
+                              rate: cubit.teacherProfileModel!.teacher!.myRate!
                                   .toDouble(),
                               isStudent: false,
                               isLiked: false,
                               onFollow: (_) {
-                              //  cubit.teacherProfileModel.teacher.authType;
+                                //  cubit.teacherProfileModel.teacher.authType;
                               },
                               followCount: cubit.teacherProfileModel!.teacher!
                                   .followersCount!,

@@ -62,8 +62,8 @@ class Post {
     studentId = json['student_id']??'';
     teacherId = json['teacher_id']??'';
     adminPost = json['adminPost'];
-    studentPost = json['studentPost'];
-    teacherPost = json['teacherPost'];
+    studentPost = json['studentPost']??false;
+    teacherPost = json['teacherPost']??false;
     answer = json['answer'];
     likesNum = json['likes_num'];
     authLikeTeacher = json['authLikeTeacher'];

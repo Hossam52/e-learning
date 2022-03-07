@@ -90,7 +90,7 @@ class _TabsBuildItemState extends State<TeacherTabBuild>
       TeacherTestsProfileTab(teacherId: teacher.id!),
     ] : [
       TeacherEditProfileTab(teacher: teacher),
-      TeacherProfilePostsTab(),
+      TeacherProfilePostsTab(teacher.id!),
       TeacherProfileQuestionTab(),
     ];
 

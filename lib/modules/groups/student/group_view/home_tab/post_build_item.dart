@@ -35,7 +35,6 @@ class PostBuildItem extends StatelessWidget {
     this.images,
     this.comments,
     required this.postId,
-
     required this.answer,
     required this.cubit,
     required this.likesCount,
@@ -227,7 +226,7 @@ class PostBuildItem extends StatelessWidget {
           SizedBox(height: deviceInfo.screenHeight * 0.015),
           if (images != null)
             Container(
-              height: 250,
+              height: 250.h,
               child: PageView.builder(
                 controller: pageController,
                 itemCount: images!.length,
@@ -241,7 +240,7 @@ class PostBuildItem extends StatelessWidget {
           if (images != null && images!.length > 1)
             Center(
               child: Padding(
-                padding: EdgeInsets.all(4),
+                padding: EdgeInsets.symmetric(vertical: 4.h, horizontal: 4.w),
                 child: SmoothPageIndicator(
                   controller: pageController,
                   count: images!.length,
@@ -265,16 +264,20 @@ class PostBuildItem extends StatelessWidget {
                     text: answer != null
                         ? '$likesCount ${textTranslate.me_too}'
                         : '$likesCount ${textTranslate.like}',
-                    onPressed: () {
-                      cubit.toggleLike(
-                        id: postId,
-                        isLiked: isLiked,
-                        isStudent: isStudent,
-                        type: type,
-                        likesCount: likesCount,
-                        likeType: LikeType.post,
-                      );
-                    },
+                    onPressed: type == 'questions'
+                        ? () {
+                            return;
+                          }
+                        : () {
+                            cubit.toggleLike(
+                              id: postId,
+                              isLiked: isLiked,
+                              isStudent: isStudent,
+                              type: type,
+                              likesCount: likesCount,
+                              likeType: LikeType.post,
+                            );
+                          },
                     isLiked: isLiked,
                   ),
                 ),

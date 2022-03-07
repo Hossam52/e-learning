@@ -20,7 +20,8 @@ class TeacherGroupsScreen extends StatelessWidget {
     return BlocProvider(
       create: (context) => GroupCubit()..getMyGroups(false, GroupType.Teacher),
       child: BlocConsumer<GroupCubit, GroupStates>(
-        listener: (context, state) {
+        listener: (context, state) 
+        {
           if(state is GroupGeneralDeleteSuccessState)
             GroupCubit.get(context).getMyGroups(false, GroupType.Teacher);
         },

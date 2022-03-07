@@ -258,7 +258,6 @@ class _RateDialog extends StatelessWidget {
                   color: Colors.amber,
                 ),
                 onRatingUpdate: (rating) {
-                  print(rating);
                   rate = rating;
                 },
               ),

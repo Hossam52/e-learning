@@ -347,8 +347,8 @@ class AppCubit extends Cubit<AppStates> {
     } else {
       File downloadedImageFile = await urlToFile(imageUrl);
       imageFile = downloadedImageFile;
+      emit(AppChangeState());
     }
-    emit(AppChangeState());
   }
 
   /// Teacher Follow Module

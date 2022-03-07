@@ -24,22 +24,22 @@ class Teacher {
   String? image;
   bool? authStudentFollow;
   int? authStudentRate;
+  int? myRate;
   int? followersCount;
   bool? authType;
 
-
-  Teacher({
-    this.id,
-    this.name,
-    this.email,
-    this.country,
-    this.subjects,
-    this.image,
-    this.authStudentFollow,
-    this.authStudentRate,
-    this.authType,
-    this.followersCount
-  });
+  Teacher(
+      {this.id,
+      this.name,
+      this.email,
+      this.country,
+      this.subjects,
+      this.image,
+      this.authStudentFollow,
+      this.authStudentRate,
+      this.myRate,
+      this.authType,
+      this.followersCount});
 
   Teacher.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -54,6 +54,7 @@ class Teacher {
     image = json['image'];
     authStudentFollow = json['AuthStudentFollow'];
     authStudentRate = json['AuthStudentRate'];
+    myRate = json['myrate']??0;
     followersCount = json['followers_num'];
     authType = json['authType'];
   }

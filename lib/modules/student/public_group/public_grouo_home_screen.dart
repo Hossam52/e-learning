@@ -127,6 +127,7 @@ class _PublicGroupHomeScreenState extends State<PublicGroupHomeScreen> {
                                           key: formKey,
                                           child: Column(
                                             children: [
+                                              if(widget.isStudent)
                                               Padding(
                                                 padding:
                                                     const EdgeInsets.all(16.0),
