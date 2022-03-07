@@ -272,6 +272,8 @@ class GroupCubit extends Cubit<GroupStates> {
     progress!.show();
     emit(AddPostLoadingState());
     try {
+      print(studentToken);
+      print(isStudent);
       Response response = await DioHelper.postFormData(
         url: isProfileTeacher
             ? STUDENT_ADD_QUESTION_ON_TEACHER_PROFILE
@@ -282,7 +284,7 @@ class GroupCubit extends Cubit<GroupStates> {
                 : isEdit
                     ? TEACHER_EDIT_POST
                     : TEACHER_ADD_POST,
-        token: teacherToken ?? studentToken,
+        token: isStudent ? studentToken : teacherToken,
         formData: addTeacherPostFormData(model, isEdit, isProfileTeacher),
       );
       print(response.data);
@@ -307,13 +309,13 @@ class GroupCubit extends Cubit<GroupStates> {
           GroupPostModel model, bool isEdit, bool isTeacherProfile) =>
       FormData.fromMap({
         'text': model.text,
-        'images[]': model.images != null
+        'images[]': model.images!.isNotEmpty
             ? List.generate(
                 model.images!.length,
                 (index) => MultipartFile.fromFileSync(model.images![index].path,
                     filename: model.images![index].path.split('/').last),
               )
-            : null,
+            : [],
         'group_id': model.groupId,
         'type': model.type,
         if (isEdit) "post_id": model.postId,
@@ -900,12 +902,15 @@ class GroupCubit extends Cubit<GroupStates> {
         );
         publicGroupPosts.forEach((element) {
           publicGroupPostsLikeCount.addAll({element.id!: element.likesNum!});
-          publicGroupPostsLikeBool
-              .addAll({element.id!: element.authLikeStudent!});
+          publicGroupPostsLikeBool.addAll({
+            element.id!:
+                isStudent ? element.authLikeStudent! : element.authLikeTeacher!
+          });
         });
         noPublicGroupPostData = false;
         emit(GroupGetPostSuccessState());
-      } else {
+      } else 
+      {
         print(response.data['message']);
         noPublicGroupPostData = true;
         emit(GroupGetPostErrorState());

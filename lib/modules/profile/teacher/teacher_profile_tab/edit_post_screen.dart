@@ -16,8 +16,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class EditPostScreen extends StatefulWidget {
   final Post post;
   final BuildContext groupsContext;
-  final int teacherID;
-  EditPostScreen(this.post, this.groupsContext, this.teacherID);
+  final int publicGroup3;
+  int? groupId;
+  bool? isProfile;
+  EditPostScreen(this.post, this.groupsContext, this.publicGroup3,
+      {this.groupId, this.isProfile = false});
 
   @override
   State<EditPostScreen> createState() => _EditPostScreenState();
@@ -27,11 +30,6 @@ class _EditPostScreenState extends State<EditPostScreen> {
   final controller = TextEditingController();
 
   final formKey = GlobalKey<FormState>();
-  @override
-  void didChangeDependencies() async {
-    // TODO: implement didChangeDependencies
-    super.didChangeDependencies();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,9 +54,29 @@ class _EditPostScreenState extends State<EditPostScreen> {
                   : BlocConsumer<GroupCubit, GroupStates>(
                       listener: (context, state) {
                         if (state is AddPostSuccessState) {
-                          GroupCubit.get(context)
-                              .getAllProfilePostsAndQuestion('post');
+                          if (widget.groupId == null) {
+                            GroupCubit.get(context)
+                                .getAllProfilePostsAndQuestion('post');
+                          } else if (widget.post.studentPost! &&
+                              !widget.isProfile!)
+                            GroupCubit.get(widget.groupsContext)
+                                .getAllPublicGroupPosts(widget.groupId!,
+                                    isStudent: widget.post.studentPost!
+                                        ? true
+                                        : false);
+                          else if (widget.publicGroup3 == 3) {
+                            //not public group
+                            GroupCubit.get(widget.groupsContext)
+                                .getAllPostsAndQuestions(
+                                    'post',
+                                    widget.groupId!,
+                                    widget.post.studentPost! ? true : false,
+                                    isProfile: widget.isProfile!);
+                          }
+
                           showSnackBar(context: context, text: state.message!);
+                          GroupCubit.get(context).selectedImages.clear();
+                          AppCubit.get(appCubitContext).imageFiles.clear();
                           Navigator.pop(context);
                         }
                       },
@@ -70,7 +88,7 @@ class _EditPostScreenState extends State<EditPostScreen> {
                               AppCubit.get(appCubitContext).imageFiles;
                           //  cubit.changeState();
                         }
-                        final noImages =
+                        bool noImages =
                             GroupCubit.get(context).selectedImages.isEmpty;
                         return Padding(
                           padding: EdgeInsets.symmetric(horizontal: 10.w),
@@ -121,15 +139,16 @@ class _EditPostScreenState extends State<EditPostScreen> {
                                               cubit.addPostAndQuestion(
                                                 GroupPostModel(
                                                   text: controller.text,
-                                                  images: noImages
-                                                      ? null
-                                                      : cubit.selectedImages,
+                                                  images: cubit.selectedImages,
                                                   groupId: -1,
                                                   type: 'post',
-                                                  teacherId: widget.teacherID,
+                                                  teacherId: widget.publicGroup3,
                                                   postId: widget.post.id,
                                                 ),
-                                                isStudent: false,
+                                                isStudent:
+                                                    widget.post.studentPost!
+                                                        ? true
+                                                        : false,
                                                 isEdit: true,
                                                 context: context,
                                               );
@@ -149,8 +168,9 @@ class _EditPostScreenState extends State<EditPostScreen> {
                                           onPressed: () {
                                             if (noImages)
                                               cubit.loadImages();
-                                            else
+                                            else {
                                               cubit.clearImageList();
+                                            }
                                           },
                                           text: noImages ? 'add' : 'Remove',
                                           icon: noImages

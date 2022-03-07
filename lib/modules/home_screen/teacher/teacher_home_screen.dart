@@ -147,7 +147,7 @@ class _TeacherHomeScreenState extends State<TeacherHomeScreen> {
                 height: 14.h,
               ),
               GridView(
-                padding: EdgeInsets.symmetric(horizontal: 21),
+                padding: EdgeInsets.symmetric(horizontal: 21.w),
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

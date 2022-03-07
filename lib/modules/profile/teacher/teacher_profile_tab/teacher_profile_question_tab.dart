@@ -53,7 +53,7 @@ class _TeacherProfileQuestionTabState extends State<TeacherProfileQuestionTab> {
                       itemBuilder: (context, index) {
                         var post = cubit.questionsList[index];
                         return PostBuildItem(
-                          type: 'questions',
+                          type: 'question',
                           ownerPostId: post.studentId!,
                           deviceInfo: deviceInfo,
                           isMe: post.studentPost ?? false,
@@ -69,7 +69,7 @@ class _TeacherProfileQuestionTabState extends State<TeacherProfileQuestionTab> {
                           date: post.date!,
                           commentCount: post.comments!.length,
                           comments: post.comments,
-                          groupId: -1,
+                          groupId: 0,
                           images: post.images!.isNotEmpty ? post.images : null,
                           onEdit: () {},
                         );

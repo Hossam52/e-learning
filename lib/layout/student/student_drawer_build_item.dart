@@ -11,6 +11,7 @@ import 'package:e_learning/shared/cubit/cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class StudentDrawerBuildItem extends StatelessWidget {
   const StudentDrawerBuildItem(
@@ -42,8 +43,8 @@ class StudentDrawerBuildItem extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: Color(0xffD8DCFC),
                     borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(170),
-                      bottomRight: Radius.circular(170),
+                      bottomLeft: Radius.circular(170.r),
+                      bottomRight: Radius.circular(170.r),
                     ),
                   ),
                 ),
@@ -56,11 +57,17 @@ class StudentDrawerBuildItem extends StatelessWidget {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          CircleAvatar(
-                            backgroundImage: CachedNetworkImageProvider(
-                              studentModel.image!,
+                          Container(
+                            height: 81.h,
+                            width: 77.17.w,
+                            clipBehavior: Clip.antiAliasWithSaveLayer,
+                            child: CachedNetworkImage(
+                              imageUrl: studentModel.image!,
+                              fit: BoxFit.cover,
                             ),
-                            radius: MediaQuery.of(context).size.width * 0.1,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12.r),
+                            ),
                           ),
                           SizedBox(height: 5),
                           Text(studentModel.name!),

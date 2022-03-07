@@ -338,17 +338,23 @@ class AppCubit extends Cubit<AppStates> {
 
   Future<void> addImageFromUrl(String imageUrl,
       {List<String>? imageUrls}) async {
-    imageFiles.clear();
-    if (imageUrls != null) {
-      imageUrls.forEach((element) async {
-        File downloadedImageFile = await urlToFile(element);
-        imageFiles.add(downloadedImageFile);
+    try {
+      imageFiles.clear();
+      if (imageUrls != null && imageUrls.isNotEmpty) {
+        imageUrls.forEach((element) async {
+          File downloadedImageFile = await urlToFile(element);
+          imageFiles.add(downloadedImageFile);
+          emit(AppChangeState());
+        });
+      } else if (imageUrl.isNotEmpty) {
+        File downloadedImageFile = await urlToFile(imageUrl);
+        imageFile = downloadedImageFile;
         emit(AppChangeState());
-      });
-    } else {
-      File downloadedImageFile = await urlToFile(imageUrl);
-      imageFile = downloadedImageFile;
-      emit(AppChangeState());
+      } else {
+        emit(AppChangeState());
+      }
+    } catch (e) {
+      throw e;
     }
   }
 

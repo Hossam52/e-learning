@@ -264,7 +264,7 @@ class PostBuildItem extends StatelessWidget {
                     text: answer != null
                         ? '$likesCount ${textTranslate.me_too}'
                         : '$likesCount ${textTranslate.like}',
-                    onPressed: type == 'questions'
+                    onPressed: type == 'question'
                         ? () {
                             return;
                           }

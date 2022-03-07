@@ -3,9 +3,7 @@ import 'package:e_learning/modules/groups/cubit/cubit.dart';
 import 'package:e_learning/modules/groups/cubit/states.dart';
 import 'package:e_learning/modules/groups/student/group_view/discuss_tab/group_question_tab.dart';
 import 'package:e_learning/shared/componants/componants.dart';
-import 'package:e_learning/shared/componants/icons/my_icons_icons.dart';
 import 'package:e_learning/shared/componants/shared_methods.dart';
-import 'package:e_learning/shared/componants/widgets/default_add_post_widget.dart';
 import 'package:e_learning/shared/componants/widgets/default_loader.dart';
 import 'package:e_learning/shared/componants/widgets/default_text_field.dart';
 import 'package:e_learning/shared/componants/widgets/no_data_widget.dart';
@@ -14,7 +12,6 @@ import 'package:e_learning/shared/styles/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_conditional_rendering/conditional.dart';
-import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -59,15 +56,15 @@ class _ProfilePostsTabState extends State<ProfilePostsTab> {
                     key: formKey,
                     child: Column(
                       children: [
-                        if (GroupCubit.get(context).isStudentPostEdit)
-                          _EditProfilePost(
-                            isStudent: true,
-                            postController: editingController,
-                            cubit: cubit,
-                            formKey: formKey,
-                            noImages: cubit.selectedImages.isEmpty,
-                            postId: cubit.studentPostId,
-                          ),
+                        // if (GroupCubit.get(context).isStudentPostEdit)
+                        //   _EditProfilePost(
+                        //     isStudent: true,
+                        //     postController: editingController,
+                        //     cubit: cubit,
+                        //     formKey: formKey,
+                        //     noImages: cubit.selectedImages.isEmpty,
+                        //     postId: cubit.studentPostId,
+                        //   ),
                         GroupStudentTab(
                           deviceInfo: deviceInfo,
                           groupId: 0,

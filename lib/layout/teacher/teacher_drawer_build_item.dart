@@ -8,6 +8,8 @@ import 'package:e_learning/shared/componants/constants.dart';
 import 'package:e_learning/shared/componants/home_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class TeacherDrawerBuildItem extends StatelessWidget {
@@ -37,8 +39,8 @@ class TeacherDrawerBuildItem extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: Color(0xffD8DCFC),
                     borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(170),
-                      bottomRight: Radius.circular(170),
+                      bottomLeft: Radius.circular(170.r),
+                      bottomRight: Radius.circular(170.r),
                     ),
                   ),
                 ),
@@ -51,11 +53,17 @@ class TeacherDrawerBuildItem extends StatelessWidget {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          CircleAvatar(
-                            backgroundImage: CachedNetworkImageProvider(
-                              teacher.image!,
+                          Container(
+                            height: 81.h,
+                            width: 77.17.w,
+                            clipBehavior: Clip.antiAliasWithSaveLayer,
+                            child: CachedNetworkImage(
+                              imageUrl: teacher.image!,
+                              fit: BoxFit.cover,
                             ),
-                            radius: MediaQuery.of(context).size.width * 0.11,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12.r),
+                            ),
                           ),
                           SizedBox(height: 5),
                           Text(
@@ -150,7 +158,7 @@ class TeacherDrawerBuildItem extends StatelessWidget {
                     children: [
                       ListTile(
                         leading: Icon(
-                          Icons.star,
+                          FontAwesomeIcons.solidStar,
                           color: Color(0xffFDBF03),
                         ),
                         title: Text(
