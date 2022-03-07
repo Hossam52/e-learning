@@ -307,7 +307,10 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
                                                         isStudent: true,
                                                         image: comment.images,
                                                         profileImage: comment
-                                                            .studentImage,
+                                                                .studentImage ??
+                                                            comment
+                                                                .teacherImage ??
+                                                            '',
                                                         isStudentComment:
                                                             comment.student !=
                                                                     null

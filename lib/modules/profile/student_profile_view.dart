@@ -1,3 +1,4 @@
+import 'package:e_learning/models/enums/enums.dart';
 import 'package:e_learning/models/student/auth/student_data_model.dart';
 import 'package:e_learning/modules/auth/cubit/cubit.dart';
 import 'package:e_learning/modules/auth/cubit/states.dart';
@@ -10,6 +11,7 @@ import 'package:e_learning/shared/componants/componants.dart';
 import 'package:e_learning/shared/componants/constants.dart';
 import 'package:e_learning/shared/componants/widgets/default_loader.dart';
 import 'package:e_learning/shared/componants/widgets/no_data_widget.dart';
+import 'package:e_learning/shared/cubit/cubit.dart';
 import 'package:e_learning/shared/responsive_ui/device_information.dart';
 import 'package:e_learning/shared/responsive_ui/responsive_widget.dart';
 import 'package:e_learning/shared/styles/colors.dart';
@@ -56,7 +58,21 @@ class _StudentProfileViewState extends State<StudentProfileView> {
       builder: (context, state) {
         AuthCubit authCubit = AuthCubit.get(context);
         return BlocConsumer<StudentCubit, StudentStates>(
-          listener: (context, state) {},
+          listener: (context, state) {
+            if (state is GroupFriendWithCodeSuccessState) {
+              AppCubit.get(context).getBestStudentsListAuthorized();
+              switch (widget.student!.friendType) {
+                case FriendType.NotFriend:
+                  widget.student!.friendType = FriendType.Pending;
+                  break;
+                case FriendType.Friend:
+                  widget.student!.friendType = FriendType.NotFriend;
+
+                  break;
+                default:
+              }
+            }
+          },
           builder: (context, state) {
             StudentCubit cubit = StudentCubit.get(context);
             return responsiveWidget(
@@ -140,20 +156,79 @@ class _StudentProfileViewState extends State<StudentProfileView> {
       student: widget.student,
       authType: authType,
       trailing: defaultMaterialIconButton(
-        text: widget.isFriend ? 'حذف' : 'إضافة كصديق',
-        icon: widget.isFriend ? Icons.person_remove : Icons.person_add,
-        backgroundColor: widget.isFriend ? errorColor : Colors.white,
-        textColor: widget.isFriend ? Colors.white : primaryColor,
+        text: getActionString,
+        icon: getIcon,
+        backgroundColor: getBackgroundColor,
+        textColor: getTextColor,
         isLoading: cubit.addFriendWithCodeLoading,
-        onPressed: () {
-          cubit.addAndRemoveFriendWithCode(
-            code: widget.student!.code!,
-            context: context,
-            isAdd: !widget.isFriend,
-          );
-        },
+        onPressed: widget.student!.friendType == FriendType.Pending ||
+                widget.student!.friendType == FriendType.Unknown
+            ? null
+            : () {
+                cubit.addAndRemoveFriendWithCode(
+                  code: widget.student!.code!,
+                  context: context,
+                  isAdd: widget.student!.friendType == FriendType.NotFriend,
+                );
+              },
       ),
     );
+  }
+
+  String get getActionString {
+    switch (widget.student!.friendType) {
+      case FriendType.Friend:
+        return 'Remove friend';
+      case FriendType.NotFriend:
+        return 'Add friend';
+      case FriendType.Pending:
+        return 'Pending';
+
+      default:
+        return 'Unknown';
+    }
+  }
+
+  IconData get getIcon {
+    switch (widget.student!.friendType) {
+      case FriendType.Friend:
+        return Icons.person_remove;
+      case FriendType.NotFriend:
+        return Icons.person_add;
+      case FriendType.Pending:
+        return Icons.watch_later_outlined;
+
+      default:
+        return Icons.no_accounts;
+    }
+  }
+
+  Color get getBackgroundColor {
+    switch (widget.student!.friendType) {
+      case FriendType.Friend:
+        return errorColor;
+      case FriendType.NotFriend:
+        return Colors.white;
+      case FriendType.Pending:
+        return Colors.white;
+
+      default:
+        return Colors.white;
+    }
+  }
+
+  Color get getTextColor {
+    switch (widget.student!.friendType) {
+      case FriendType.Friend:
+        return Colors.white;
+      case FriendType.NotFriend:
+        return primaryColor;
+      case FriendType.Pending:
+        return Colors.white;
+
+      default:
+        return Colors.black;
+    }
   }
 
   Widget _followPersons(deviceInfo) {

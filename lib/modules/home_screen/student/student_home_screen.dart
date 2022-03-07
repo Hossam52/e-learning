@@ -11,6 +11,7 @@ import 'package:e_learning/modules/home_screen/student/category_home_build_item.
 import 'package:e_learning/modules/home_screen/student/build_top_students.dart';
 import 'package:e_learning/modules/home_screen/student/latest_test_build_item.dart';
 import 'package:e_learning/modules/pdfs_module/student/student_subjects_screen.dart';
+import 'package:e_learning/modules/profile/student/profile_screen.dart';
 import 'package:e_learning/modules/profile/student_profile_view.dart';
 import 'package:e_learning/modules/student/cubit/cubit/cubit.dart';
 import 'package:e_learning/modules/student/public_group/public_grouo_home_screen.dart';
@@ -44,7 +45,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
   @override
   void initState() {
     AppCubit.get(context).getHighRateTeachersList(true);
-    AppCubit.get(context).getBestStudentsList();
+    AppCubit.get(context).getBestStudentsListAuthorized();
     TestLayoutCubit.get(context).getStudentTests(TestType.latestTest);
     super.initState();
   }
@@ -181,44 +182,52 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                                         cubit.isBestStudentsListLoading ==
                                         false,
                                     fallbackBuilder: (context) => loader(),
-                                    widgetBuilder: (context) =>
-                                        cubit.bestStudentsModel == null
-                                            ? noData('لا يوجد بيانات')
-                                            : CarouselSlider.builder(
-                                                itemCount: cubit
-                                                    .bestStudentsModel!
-                                                    .students!
-                                                    .length,
-                                                itemBuilder:
-                                                    (BuildContext context,
-                                                        int itemIndex,
-                                                        int pageViewIndex) {
-                                                  var student = cubit
-                                                      .bestStudentsModel!
-                                                      .students![itemIndex];
-                                                  return BuildTopStudent(
-                                                    deviceInfo: deviceInfo,
-                                                    text: text,
-                                                    name: student.name!,
-                                                    image: student.image!,
-                                                    pointsCount:
-                                                        student.points.toString(),
-                                                    onTap: () {
-                                                      navigateTo(
-                                                          context,
-                                                          StudentProfileView(
-                                                            isFriend: true,
-                                                            student: student,
-                                                          ));
-                                                    },
-                                                  );
+                                    widgetBuilder: (context) => cubit
+                                                .bestStudentsModelAuthorized ==
+                                            null
+                                        ? noData('لا يوجد بيانات')
+                                        : CarouselSlider.builder(
+                                            itemCount: cubit
+                                                .bestStudentsModelAuthorized!
+                                                .students!
+                                                .length,
+                                            itemBuilder: (BuildContext context,
+                                                int itemIndex,
+                                                int pageViewIndex) {
+                                              var student = cubit
+                                                  .bestStudentsModelAuthorized!
+                                                  .students![itemIndex];
+                                              return BuildTopStudent(
+                                                deviceInfo: deviceInfo,
+                                                text: text,
+                                                name: student.name!,
+                                                image: student.image!,
+                                                pointsCount:
+                                                    student.points.toString(),
+                                                onTap: () {
+                                                  if (student.id ==
+                                                      AuthCubit.get(context)
+                                                          .studentProfileModel!
+                                                          .student!
+                                                          .id)
+                                                    navigateTo(context,
+                                                        ProfileScreen());
+                                                  else
+                                                    navigateTo(
+                                                        context,
+                                                        StudentProfileView(
+                                                          isFriend: true,
+                                                          student: student,
+                                                        ));
                                                 },
-                                                options: CarouselOptions(
-                                                  enlargeCenterPage: true,
-                                                  height: 100.h,
-                                                  viewportFraction: 0.65,
-                                                ),
-                                              ),
+                                              );
+                                            },
+                                            options: CarouselOptions(
+                                              enlargeCenterPage: true,
+                                              height: 100.h,
+                                              viewportFraction: 0.65,
+                                            ),
+                                          ),
                                   ),
                                   SizedBox(
                                     height: 10.h,

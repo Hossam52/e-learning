@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
@@ -387,17 +388,47 @@ class AppCubit extends Cubit<AppStates> {
 
   /// Teacher Follow Module
   StudentsListResponseModel? bestStudentsModel;
+  StudentsListAuthorizedResponseModel? bestStudentsModelAuthorized;
   bool isBestStudentsListLoading = false;
-  void getBestStudentsList() async {
+  void getBestStudentsList({bool isStudent = true}) async {
+    try {
+      isBestStudentsListLoading = true;
+      emit(BestStudentsLoadingState());
+      Response response =
+          await DioHelper.getData(url: STUDENT_GET_BEST_STUDENTS);
+      log(response.data.toString());
+      if (response.data['status']) {
+        isBestStudentsListLoading = false;
+        bestStudentsModel = StudentsListResponseModel.fromJson(response.data);
+        bestStudentsModel!.students!
+            .forEach((element) => log('${element.friendType}'));
+        emit(BestStudentsSuccessState());
+      } else {
+        print(response.data);
+        emit(BestStudentsErrorState());
+      }
+    } catch (e) {
+      emit(BestStudentsErrorState());
+      throw e;
+    } finally {
+      isBestStudentsListLoading = false;
+      emit(AppChangeState());
+    }
+  }
+
+  void getBestStudentsListAuthorized() async {
     try {
       isBestStudentsListLoading = true;
       emit(BestStudentsLoadingState());
       Response response = await DioHelper.getData(
-        url: STUDENT_GET_BEST_STUDENTS,
-      );
+          url: STUDENT_GET_BEST_STUDENTS_AUTHORIZED, token: studentToken);
+      log(response.data.toString());
       if (response.data['status']) {
         isBestStudentsListLoading = false;
-        bestStudentsModel = StudentsListResponseModel.fromJson(response.data);
+        bestStudentsModelAuthorized =
+            StudentsListAuthorizedResponseModel.fromJson(response.data);
+        bestStudentsModelAuthorized!.students!
+            .forEach((element) => log('${element.friendType}'));
         emit(BestStudentsSuccessState());
       } else {
         print(response.data);

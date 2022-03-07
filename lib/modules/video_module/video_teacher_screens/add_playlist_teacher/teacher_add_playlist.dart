@@ -30,6 +30,7 @@ class _TeacherAddPlaylistState extends State<TeacherAddPlaylist> {
   void initState() {
     AppCubit.get(context).getTeacherStages();
     AppCubit.get(context).getTeacherTerms();
+    AppCubit.get(context).getTeacherAndStudentSubjects(false);
     super.initState();
   }
 
@@ -138,7 +139,8 @@ class _TeacherAddPlaylistState extends State<TeacherAddPlaylist> {
                       onPressed: () {
                         formKey.currentState!.save();
                         if (formKey.currentState!.validate()) {
-                          navigateTo(context,
+                          navigateTo(
+                              context,
                               TeacherAddVideos(
                                 deviceInfo: widget.deviceInfo,
                                 playlistName: playlistNameController.text,

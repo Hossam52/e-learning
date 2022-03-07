@@ -25,9 +25,13 @@ class TeacherAddStudent extends StatefulWidget {
 class _TeacherAddStudentState extends State<TeacherAddStudent> {
   @override
   void initState() {
+    getMembers();
+    super.initState();
+  }
+
+  void getMembers() {
     GroupCubit.get(context).getGroupVideosAndStudent(widget.groupId,
         isStudent: false, isMembers: true);
-    super.initState();
   }
 
   final TextEditingController codeController = TextEditingController();
@@ -39,7 +43,9 @@ class _TeacherAddStudentState extends State<TeacherAddStudent> {
     return responsiveWidget(
       responsive: (_, deviceInfo) {
         return BlocConsumer<GroupCubit, GroupStates>(
-          listener: (context, state) {},
+          listener: (context, state) {
+            if (state is GroupAddStudentWithCodeSuccessState) getMembers();
+          },
           builder: (context, state) {
             GroupCubit cubit = GroupCubit.get(context);
             return Form(
@@ -94,13 +100,10 @@ class _TeacherAddStudentState extends State<TeacherAddStudent> {
                       conditionBuilder: (context) =>
                           state is! GroupGetVideoAndMembersLoadingState,
                       fallbackBuilder: (context) => DefaultLoader(),
-                      widgetBuilder: (context) => cubit.studentInGroupModel ==
-                              null
+                      widgetBuilder: (context) => cubit.noGroupMemberData
                           ? NoDataWidget(
                               text: 'عذرا لا يوجد بيانات',
-                              onPressed: () => GroupCubit.get(context)
-                                  .getGroupVideosAndStudent(widget.groupId,
-                                      isStudent: false, isMembers: true))
+                              onPressed: getMembers)
                           : ListView.builder(
                               itemCount:
                                   cubit.studentInGroupModel!.students!.length,
@@ -111,21 +114,20 @@ class _TeacherAddStudentState extends State<TeacherAddStudent> {
                                 return StudentViewBuildItem(
                                   studentImage: member.image,
                                   studentName: member.name!,
-                                  tailing: Expanded(
-                                    child: DefaultAppButton(
-                                      onPressed: () {
-                                        cubit.addStudentToGroupWithCode(
-                                          groupId: widget.groupId,
-                                          code: member.code!,
-                                          isAdd: false,
-                                          context: context,
-                                        );
-                                      },
-                                      text: 'حزف',
-                                      textStyle: thirdTextStyle(deviceInfo),
-                                      background: errorColor,
-                                      height: 30.h,
-                                    ),
+                                  tailing: DefaultAppButton(
+                                    width: 70.w,
+                                    onPressed: () {
+                                      cubit.addStudentToGroupWithCode(
+                                        groupId: widget.groupId,
+                                        code: member.code!,
+                                        isAdd: false,
+                                        context: context,
+                                      );
+                                    },
+                                    text: 'حزف',
+                                    textStyle: thirdTextStyle(deviceInfo),
+                                    background: errorColor,
+                                    height: 30.h,
                                   ),
                                 );
                               },

@@ -5,6 +5,7 @@ import 'package:e_learning/modules/test_module/cubit/cubit.dart';
 import 'package:e_learning/modules/test_module/cubit/states.dart';
 import 'package:e_learning/shared/componants/componants.dart';
 import 'package:e_learning/shared/componants/widgets/default_loader.dart';
+import 'package:e_learning/shared/cubit/cubit.dart';
 import 'package:e_learning/shared/responsive_ui/device_information.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -42,6 +43,7 @@ class TeacherTestsScreen extends StatelessWidget {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
+            AppCubit.get(context).selectedSubjectId = subjectId;
             navigateTo(
                 context,
                 TeacherAddTestDetails(

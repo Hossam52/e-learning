@@ -2,6 +2,7 @@ import 'package:buttons_tabbar/buttons_tabbar.dart';
 import 'package:e_learning/layout/student/cubit/cubit.dart';
 import 'package:e_learning/layout/student/cubit/states.dart';
 import 'package:e_learning/models/enums/enums.dart';
+import 'package:e_learning/modules/test_module/cubit/cubit.dart';
 import 'package:e_learning/shared/componants/widgets/default_loader.dart';
 import 'package:e_learning/shared/componants/widgets/no_data_widget.dart';
 import 'package:e_learning/shared/responsive_ui/responsive_widget.dart';
@@ -23,18 +24,24 @@ class StudentExamScreen extends StatefulWidget {
 class _StudentExamScreenState extends State<StudentExamScreen> {
   @override
   void initState() {
-    TestLayoutCubit.get(context).getStudentTests(TestType.Test);
+    TestLayoutCubit.get(context).getMySubjects();
+    TestLayoutCubit.get(context).getTestsBySubjectId(1);
+
+    // TestLayoutCubit.get(context).getStudentTests(TestType.Test);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<TestLayoutCubit, TestLayoutStates>(
-      listener: (context, state) {},
+      listener: (context, state) {
+        if (state is StudentSubjectsLoadingState) {}
+      },
       builder: (context, state) {
         TestLayoutCubit cubit = TestLayoutCubit.get(context);
         return responsiveWidget(
           responsive: (context, deviceInfo) {
+            final subjects = TestLayoutCubit.get(context).studentSubjects;
             return Conditional.single(
               context: context,
               conditionBuilder: (context) => state is! StudentTestsLoadingState,
@@ -47,7 +54,7 @@ class _StudentExamScreenState extends State<StudentExamScreen> {
                       },
                     )
                   : DefaultTabController(
-                      length: 2,
+                      length: subjects.length,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -56,46 +63,49 @@ class _StudentExamScreenState extends State<StudentExamScreen> {
                               top: 16.0,
                             ),
                             child: ButtonsTabBar(
-                              backgroundColor: primaryColor,
-                              contentPadding:
-                                  EdgeInsets.symmetric(horizontal: 15),
-                              unselectedBackgroundColor:
-                                  primaryColor.withOpacity(0.4),
-                              height: 50,
-                              duration: 3,
-                              labelStyle: primaryTextStyle(deviceInfo).copyWith(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w400,
-                              ),
-                              unselectedLabelStyle:
-                                  primaryTextStyle(deviceInfo).copyWith(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w400,
-                              ),
-                              tabs: [
-                                Tab(
-                                  text: 'اللغة العربية',
+                                backgroundColor: primaryColor,
+                                contentPadding:
+                                    EdgeInsets.symmetric(horizontal: 15),
+                                unselectedBackgroundColor:
+                                    primaryColor.withOpacity(0.4),
+                                height: 50,
+                                duration: 3,
+                                labelStyle:
+                                    primaryTextStyle(deviceInfo).copyWith(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w400,
                                 ),
-                                Tab(
-                                  text: 'فيزياء',
+                                unselectedLabelStyle:
+                                    primaryTextStyle(deviceInfo).copyWith(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w400,
                                 ),
-                              ],
-                            ),
+                                tabs: subjects
+                                    .map((e) => Tab(text: e.name))
+                                    .toList()),
                           ),
                           Expanded(
                             child: TabBarView(
-                              children: [
-                                ExamTab(
-                                  deviceInfo: deviceInfo,
-                                  tests: cubit.studentTestsList,
-                                  isChampion: false,
-                                ),
-                                ExamTab(
-                                  deviceInfo: deviceInfo,
-                                  tests: cubit.studentTestsList,
-                                  isChampion: false,
-                                ),
-                              ],
+                              children: subjects
+                                  .map(
+                                    (e) => ExamTab(
+                                      deviceInfo: deviceInfo,
+                                      tests: cubit.testsBySubjectId,
+                                      isChampion: false,
+                                    ),
+                                  )
+                                  .toList(),
+                              // ExamTab(
+                              //   deviceInfo: deviceInfo,
+                              //   tests: cubit.studentTestsList,
+                              //   isChampion: false,
+                              // ),
+                              // ExamTab(
+                              //   deviceInfo: deviceInfo,
+                              //   tests: cubit.studentTestsList,
+                              //   isChampion: false,
+                              // ),
+                              // ],
                             ),
                           ),
                         ],

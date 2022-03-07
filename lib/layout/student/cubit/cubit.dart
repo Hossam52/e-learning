@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:e_learning/layout/student/cubit/states.dart';
 import 'package:e_learning/models/enums/enums.dart';
+import 'package:e_learning/models/general_apis/subjects_data_model.dart';
 import 'package:e_learning/models/student/champions/champion_response_model.dart';
 import 'package:e_learning/models/student/group/friends_response_model.dart';
 import 'package:e_learning/models/student/home/general_apis/students_list_response_model.dart';
@@ -125,6 +128,64 @@ class TestLayoutCubit extends Cubit<TestLayoutStates> {
         break;
     }
     return url;
+  }
+
+  List<Subjects> studentSubjects = [];
+  void getMySubjects() async {
+    isGetTestsLoading = true;
+    emit(StudentSubjectsLoadingState());
+    try {
+      Response response = await DioHelper.getData(
+        url: STUDENT_GET_SUBJECTS,
+        token: studentToken,
+      );
+      log(response.data.toString());
+      if (response.data['status']) {
+        final tests = response.data['subjects'];
+        studentSubjects = List.generate(tests.length,
+            (index) => Subjects.fromJson(response.data['subjects'][index]));
+        noStudentTestsData = false;
+        emit(StudentSubjectsSuccessState());
+      } else {
+        print(response.data['message']);
+        emit(StudentSubjectsErrorState());
+      }
+    } catch (e) {
+      emit(StudentSubjectsErrorState());
+      throw e;
+    } finally {
+      isGetTestsLoading = false;
+      emit(ChangeTestState());
+    }
+  }
+
+  List<Test> testsBySubjectId = [];
+  void getTestsBySubjectId(int subjectId) async {
+    isGetTestsLoading = true;
+    emit(StudentTestsLoadingState());
+    try {
+      Response response = await DioHelper.postData(
+          url: STUDENT_GET_ALL_TESTS_BY_ID,
+          token: studentToken,
+          data: {'subject_id': subjectId});
+      log(response.data.toString());
+      if (response.data['tests']) {
+        final tests = response.data['tests'];
+        testsBySubjectId = List.generate(
+            tests.length, (index) => Test.fromJson(tests[index], false));
+        noStudentTestsData = false;
+        emit(StudentTestsSuccessState());
+      } else {
+        print(response.data['message']);
+        emit(StudentTestsErrorState());
+      }
+    } catch (e) {
+      emit(StudentTestsErrorState());
+      throw e;
+    } finally {
+      isGetTestsLoading = false;
+      emit(ChangeTestState());
+    }
   }
 
   ChampionResponseModel? championResponseModel;
@@ -284,8 +345,9 @@ class TestLayoutCubit extends Cubit<TestLayoutStates> {
         token: studentToken,
         formData: FormData.fromMap({"day": date}),
       );
-      if(response.data['status']) {
-        homeworkResponseModel = HomeworkResponseModel.fromJson(response.data, true);
+      if (response.data['status']) {
+        homeworkResponseModel =
+            HomeworkResponseModel.fromJson(response.data, true);
         emit(ScheduleHomeworkSuccessState());
       } else {
         emit(ScheduleHomeworkErrorState());

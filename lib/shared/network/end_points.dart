@@ -23,6 +23,8 @@ const STUDENT_GET_PROFILE = 'student/getProfile';
 
 const STUDENT_GENERAL_GET_PROFILE = 'Guest/getStudentById';
 
+const STUDENT_GET_BEST_STUDENTS_AUTHORIZED = 'student/getBestsStudents';
+
 const STUDENT_LOGOUT = 'student/logout';
 
 const STUDENT_EDIT_PROFILE = 'student/updateProfile';
@@ -40,6 +42,8 @@ const STUDENT_ADD_FRIEND_WITH_CODE = 'student/friend/AddFriend';
 const STUDENT_REMOVE_FRIEND_WITH_CODE = 'student/friend/RemoveFriend';
 
 const STUDENT_GET_ALL_POSTS = 'student/social/getAllSocail';
+
+const STUDENT_GET_ALL_TESTS_BY_ID = 'student/getAllTestsBySubjectID';
 
 const STUDENT_GET_FOLLOWING_LIST = 'student/MYfOllowTeachers';
 

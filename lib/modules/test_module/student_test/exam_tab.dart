@@ -39,33 +39,41 @@ class ExamTab extends StatelessWidget {
             var test = tests[index];
             return StudentTestBuildItem(
               onTap: () {
-                if(test.result != null) {
-                  showSnackBar(context: context, text: 'لقد قمت بأداء هذا الامتحان من قبل');
-                } else if(isChampion) {
+                if (test.result != null) {
+                  showSnackBar(
+                      context: context,
+                      text: 'لقد قمت بأداء هذا الامتحان من قبل');
+                } else if (isChampion) {
                   TestLayoutCubit.get(context).changeSelectedTest(index);
                 } else {
-                  navigateTo(context, TestStartAlertScreen(
-                    test: test,
-                  ));
+                  navigateTo(
+                      context,
+                      TestStartAlertScreen(
+                        test: test,
+                      ));
                 }
               },
               label: textLabel(test),
               testName: test.name!,
               teacherName: 'ا / اسم الاستاذ',
-              isSelected: TestLayoutCubit.get(context).selectedTestIndex == index ? true : false,
+              isSelected:
+                  TestLayoutCubit.get(context).selectedTestIndex == index
+                      ? true
+                      : false,
               labelColor: test.result != null
-                  ? resultPercentageColor(textLabel(test, isText: false)) : primaryColor,
+                  ? resultPercentageColor(textLabel(test, isText: false))
+                  : primaryColor,
             );
           }),
     );
   }
+
   dynamic textLabel(Test test, {bool isText = true}) {
-    if(test.result != null) {
-      int percent = ((num.parse(test.result!) / test.questions!.length) * 100).toInt();
-      return isText
-          ? "$percent%"
-          : percent;
-    }
-    else return 'جديد';
+    if (test.result != null) {
+      int percent =
+          ((num.parse(test.result!) / test.questions!.length) * 100).toInt();
+      return isText ? "$percent%" : percent;
+    } else
+      return 'جديد';
   }
 }
