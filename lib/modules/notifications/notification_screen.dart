@@ -15,10 +15,15 @@ class NotificationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) =>
-          NotificationCubit()..getAllNotifications(type),
+      create: (context) => NotificationCubit()..getAllNotifications(type),
       child: BlocConsumer<NotificationCubit, NotificationState>(
-        listener: (context, state) {},
+        listener: (context, state) {
+          if (state is NotificationDeletedSuccess)
+            showSnackBar(
+                context: context,
+                text: state.message,
+                backgroundColor: Colors.green);
+        },
         builder: (context, state) {
           NotificationCubit cubit = NotificationCubit.get(context);
           return responsiveWidget(
@@ -38,8 +43,7 @@ class NotificationScreen extends StatelessWidget {
                       ? noData('لا يوجد اشعارات حتى الان')
                       : state is NotificationGetError
                           ? NoDataWidget(
-                              onPressed: () => cubit.getAllNotifications(
-                                  type))
+                              onPressed: () => cubit.getAllNotifications(type))
                           : ListView.separated(
                               itemCount: cubit.notificationResponseModel!
                                   .notifications!.data!.length,
@@ -52,13 +56,47 @@ class NotificationScreen extends StatelessWidget {
                                     .notifications!
                                     .data![index];
                                 var sender = notification.studentSender != null
-                                    ? notification.studentSender : notification.teacherSender;
-                                return NotificationBuildItem(
-                                  image: sender.image!,
-                                  title: notification.title!,
-                                  body: notification.body!,
-                                  date: '24/11/2021',
-                                  onTap: () {},
+                                    ? notification.studentSender
+                                    : notification.teacherSender;
+                                return Dismissible(
+                                  key: UniqueKey(),
+                                  onDismissed: (direction) {
+                                    cubit.deleteNotification(type,
+                                        notificationId: notification.id!);
+                                    cubit.notificationResponseModel!
+                                        .notifications!.data!
+                                        .remove(notification);
+                                  },
+                                  confirmDismiss: (direction) async {
+                                    return showDialog(
+                                        context: context,
+                                        builder: (context) => AlertDialog(
+                                              title: Text(
+                                                  'هل انت متأكد من حذف هذا التنبيه'),
+                                              actions: [
+                                                defaultTextButton(
+                                                    text: 'تأكيد',
+                                                    textColor: Colors.green,
+                                                    onPressed: () =>
+                                                        Navigator.pop(
+                                                            context, true)),
+                                                defaultTextButton(
+                                                    text: 'إلغاء',
+                                                    textColor: Colors.red,
+                                                    onPressed: () =>
+                                                        Navigator.pop(
+                                                            context, false)),
+                                              ],
+                                              content: Text('data'),
+                                            ));
+                                  },
+                                  child: NotificationBuildItem(
+                                    image: sender.image!,
+                                    title: notification.title!,
+                                    body: notification.body!,
+                                    date: notification.date!,
+                                    onTap: () {},
+                                  ),
                                 );
                               },
                             ),

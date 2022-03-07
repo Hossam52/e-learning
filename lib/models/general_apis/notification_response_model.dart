@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 class NotificationResponseModel {
   bool? status;
   Notifications? notifications;
@@ -37,19 +39,22 @@ class NotificationData {
   StudentSender? studentSender;
   dynamic teacherSender;
   bool? read;
+  String? date;
 
   NotificationData(
       {this.id,
-        this.title,
-        this.body,
-        this.studentSender,
-        this.teacherSender,
-        this.read});
+      this.title,
+      this.body,
+      this.studentSender,
+      this.teacherSender,
+      this.date,
+      this.read});
 
   NotificationData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     title = json['title'];
     body = json['body'];
+    date = DateFormat('yyyy-MM-dd').format(DateTime.parse(json['date']));
     studentSender = json['studentSender'] != null
         ? new StudentSender.fromJson(json['studentSender'])
         : null;
@@ -69,12 +74,12 @@ class StudentSender {
 
   StudentSender(
       {this.id,
-        this.name,
-        this.code,
-        this.email,
-        this.country,
-        this.classroom,
-        this.image});
+      this.name,
+      this.code,
+      this.email,
+      this.country,
+      this.classroom,
+      this.image});
 
   StudentSender.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -135,12 +140,12 @@ class Meta {
 
   Meta(
       {this.currentPage,
-        this.from,
-        this.lastPage,
-        this.path,
-        this.perPage,
-        this.to,
-        this.total});
+      this.from,
+      this.lastPage,
+      this.path,
+      this.perPage,
+      this.to,
+      this.total});
 
   Meta.fromJson(Map<String, dynamic> json) {
     currentPage = json['current_page'];
