@@ -55,6 +55,8 @@ const STUDENT_SEARCH_IN_TEACHERS = 'student/searchInTeachers';
 
 const STUDENT_CHANGE_CLASS = 'api/student/changeStudentClassroom';
 
+const STUDENT_FILTER_IN_GROUPS = 'student/filterInGroup';
+
 const RATE_TEACHER = 'student/RateTeacher';
 
 /// Home

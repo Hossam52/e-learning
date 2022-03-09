@@ -7,6 +7,8 @@ import 'package:e_learning/modules/student/student_filter_build_item.dart';
 import 'package:e_learning/shared/componants/componants.dart';
 import 'package:e_learning/shared/componants/widgets/default_loader.dart';
 import 'package:e_learning/shared/componants/widgets/no_data_widget.dart';
+import 'package:e_learning/shared/cubit/cubit.dart';
+import 'package:e_learning/shared/cubit/states.dart';
 import 'package:e_learning/shared/responsive_ui/responsive_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +27,11 @@ class DiscoverStudentGroupsTab extends StatefulWidget {
 class _DiscoverStudentGroupsTabState extends State<DiscoverStudentGroupsTab> {
   @override
   void initState() {
-    GroupCubit.get(context).getMyGroups(true, GroupType.Discover);
+    final appCubit = AppCubit.get(context);
+    if (appCubit.subjectsModel == null) {
+      appCubit.getTeacherAndStudentSubjects(true);
+    }
+    GroupCubit.get(context).discoverGroupsBySubjectId();
     super.initState();
   }
 
@@ -36,51 +42,71 @@ class _DiscoverStudentGroupsTabState extends State<DiscoverStudentGroupsTab> {
       builder: (context, state) {
         GroupCubit cubit = GroupCubit.get(context);
         return responsiveWidget(
-          responsive: (context, deviceInfo) => Conditional.single(
-              context: context,
-              conditionBuilder: (context) =>
-                  state is! GroupsTeacherGetLoadingState,
-              fallbackBuilder: (context) => DefaultLoader(),
-              widgetBuilder: (context) => cubit.discoverGroups.isEmpty
-                  ? NoDataWidget(
-                      onPressed: () {
-                        cubit.getMyGroups(true, GroupType.Discover);
-                      },
-                    )
-                  : SingleChildScrollView(
+            responsive: (context, deviceInfo) =>
+                BlocBuilder<AppCubit, AppStates>(builder: (context, state) {
+                  return Conditional.single(
+                    context: context,
+                    conditionBuilder: (context) =>
+                        state is! GetSubjectsLoadingState,
+                    fallbackBuilder: (context) => DefaultLoader(),
+                    widgetBuilder: (context) => SingleChildScrollView(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 12),
-                            child: StudentFilterBuildItem(),
+                            child: StudentFilterBuildItem(
+                              defaultSelected: GroupCubit.get(context)
+                                  .selectedSubjectNameToGetDiscoverGroups,
+                              subjects:
+                                  AppCubit.get(context).subjectsModel!.subjects,
+                            ),
                           ),
                           SizedBox(height: 22.h),
-                          ListView.builder(
-                            itemCount: cubit.discoverGroups.length,
-                            shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
-                            padding: EdgeInsets.symmetric(horizontal: 12),
-                            itemBuilder: (context, index) {
-                              var group = cubit.discoverGroups[index];
-                              return DiscoverGroupBuildItem(
-                                cubit: cubit,
-                                groupId: group.id!,
-                                groupName: group.title!,
-                                teacherName: group.teacher!.name?? 'teacher',
-                                subjectName: group.subject!,
-                                isFree: group.type == 'free' ? true : false,
-                                isJoined: cubit.joinedGroupMap[group.id!]!,
-                                onTap: () {
-                                  navigateTo(context, GroupInfoScreen(group: group));
-                                },
-                              );
-                            },
+                          Conditional.single(
+                            context: context,
+                            conditionBuilder: (context) =>
+                                state is! GroupsBySubjectIDGetLoadingState,
+                            fallbackBuilder: (context) => DefaultLoader(),
+                            widgetBuilder: (context) => cubit
+                                    .discoverGroups.isEmpty
+                                ? NoDataWidget(
+                                    onPressed: () {
+                                      cubit.discoverGroupsBySubjectId();
+                                    },
+                                  )
+                                : ListView.builder(
+                                    itemCount: cubit.discoverGroups.length,
+                                    shrinkWrap: true,
+                                    physics: NeverScrollableScrollPhysics(),
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 12),
+                                    itemBuilder: (context, index) {
+                                      var group = cubit.discoverGroups[index];
+                                      return DiscoverGroupBuildItem(
+                                        cubit: cubit,
+                                        groupId: group.id!,
+                                        groupName: group.title!,
+                                        teacherName:
+                                            group.teacher!.name ?? 'teacher',
+                                        subjectName: group.subject!,
+                                        isFree:
+                                            group.type == 'free' ? true : false,
+                                        isJoined:
+                                            cubit.joinedGroupMap[group.id!]!,
+                                        onTap: () {
+                                          navigateTo(context,
+                                              GroupInfoScreen(group: group));
+                                        },
+                                      );
+                                    },
+                                  ),
                           ),
                         ],
                       ),
-                    )),
-        );
+                    ),
+                  );
+                }));
       },
     );
   }

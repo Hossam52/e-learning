@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
+import 'package:e_learning/models/student/group/group_student_response_model.dart';
 import 'package:e_learning/models/student/rate_teacher/rate_teacher.dart';
 import 'package:e_learning/models/student/search/search_model.dart';
 import 'package:e_learning/shared/componants/constants.dart';
@@ -32,5 +33,18 @@ class StudentServices {
     );
     log(response.data.toString());
     return RateTeacherModel.fromMap(response.data);
+  }
+
+  static Future<GroupsStudentResponse> filterInGroup([int? subjectId]) async {
+    final response = await DioHelper.postFormData(
+      url: STUDENT_FILTER_IN_GROUPS,
+      token: studentToken,
+      formData: FormData.fromMap({'subject_id': subjectId}),
+    );
+    log(response.data.toString());
+    if (!response.data['status']) {
+      throw '${response.data['message']}';
+    }
+    return GroupsStudentResponse.fromJson(response.data);
   }
 }

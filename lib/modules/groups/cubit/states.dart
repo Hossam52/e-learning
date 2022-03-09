@@ -23,6 +23,12 @@ class GroupsTeacherGetSuccessState extends GroupStates {}
 
 class GroupsTeacherGetErrorState extends GroupStates {}
 
+class GroupsBySubjectIDGetLoadingState extends GroupStates {}
+
+class GroupsBySubjectIDGetSuccessState extends GroupStates {}
+
+class GroupsBySubjectIDGetErrorState extends GroupStates {}
+
 // Get public groups states
 class PublicGroupsTeacherGetLoadingState extends GroupStates {}
 
@@ -103,3 +109,5 @@ class PublicGroupLoadingState extends GroupStates {}
 class PublicGroupSuccessState extends GroupStates {}
 
 class PublicGroupErrorState extends GroupStates {}
+
+class ChangeSelectedSubjectDiscover extends GroupStates {}

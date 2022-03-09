@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "318254530068",
+    "project_id": "tag-alqema",
+    "storage_bucket": "tag-alqema.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:318254530068:android:f8f668704571a738ec7101",
+        "android_client_info": {
+          "package_name": "com.tagelqema.elearning"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "318254530068-hn06cohqv4re6j6ul6hrh4pg3aupb2fa.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDQr-hRigUb0z9yNeqXV9GEDg3yipZD-P4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "318254530068-hn06cohqv4re6j6ul6hrh4pg3aupb2fa.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

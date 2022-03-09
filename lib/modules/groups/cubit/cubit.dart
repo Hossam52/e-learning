@@ -18,8 +18,10 @@ import 'package:e_learning/models/teacher/groups/videos/group_videos_response_mo
 import 'package:e_learning/models/teacher/test/test_response_model.dart';
 import 'package:e_learning/shared/componants/componants.dart';
 import 'package:e_learning/shared/componants/constants.dart';
+import 'package:e_learning/shared/cubit/cubit.dart';
 import 'package:e_learning/shared/network/end_points.dart';
 import 'package:e_learning/shared/network/remote/dio_helper.dart';
+import 'package:e_learning/shared/network/services/student_services.dart';
 import 'package:e_learning/shared/styles/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_absolute_path/flutter_absolute_path.dart';
@@ -192,6 +194,43 @@ class GroupCubit extends Cubit<GroupStates> {
       }
     } catch (e) {
       emit(PublicGroupsTeacherGetErrorState());
+      throw e;
+    }
+  }
+
+  int? selectedSubjectIDToGetDiscoverGroups;
+  String? selectedSubjectNameToGetDiscoverGroups;
+  void updateSelectedSubjectID(BuildContext context, String selectedValue) {
+    final subjects = AppCubit.get(context).subjectsModel!.subjects!;
+    final index =
+        subjects.indexWhere((element) => element.name == selectedValue);
+    selectedSubjectNameToGetDiscoverGroups = selectedValue;
+    log(selectedValue);
+    if (index == -1)
+      selectedSubjectIDToGetDiscoverGroups = null;
+    else
+      selectedSubjectIDToGetDiscoverGroups = subjects[index].id;
+    emit(ChangeSelectedSubjectDiscover());
+  }
+
+  void discoverGroupsBySubjectId() async {
+    myGroups.clear();
+    discoverGroups.clear();
+    noGroupsData = false;
+    emit(GroupsBySubjectIDGetLoadingState());
+    try {
+      final response = await StudentServices.filterInGroup(
+          selectedSubjectIDToGetDiscoverGroups);
+      if (response.status!) {
+        groupsStudentResponse = response;
+
+        generateGroupList(GroupType.Discover);
+        noGroupsData = false;
+        emit(GroupsBySubjectIDGetSuccessState());
+      }
+    } catch (e) {
+      noGroupsData = true;
+      emit(GroupsBySubjectIDGetErrorState());
       throw e;
     }
   }
