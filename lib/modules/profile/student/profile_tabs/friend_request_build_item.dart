@@ -53,7 +53,10 @@ class FriendRequestBuildItem extends StatelessWidget {
                     onPressed: isLoading ? null : onAccept,
                     color: successColor,
                     child: isLoading
-                        ? Container(width: 20,height: 20, child: CircularProgressIndicator())
+                        ? Container(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator())
                         : Icon(Icons.check),
                     padding: EdgeInsets.zero,
                   ),
@@ -64,7 +67,10 @@ class FriendRequestBuildItem extends StatelessWidget {
                     onPressed: isLoading ? null : onReject,
                     color: errorColor,
                     child: isLoading
-                        ? Container(width: 20,height: 20, child: CircularProgressIndicator())
+                        ? Container(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator())
                         : Icon(Icons.close),
                     padding: EdgeInsets.zero,
                   ),
