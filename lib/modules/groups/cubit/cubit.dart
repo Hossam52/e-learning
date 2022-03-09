@@ -284,7 +284,11 @@ class GroupCubit extends Cubit<GroupStates> {
                 : isEdit
                     ? TEACHER_EDIT_POST
                     : TEACHER_ADD_POST,
-        token: isStudent ? studentToken : teacherToken,
+        token: isProfileTeacher
+            ? studentToken
+            : isStudent
+                ? studentToken
+                : teacherToken,
         formData: addTeacherPostFormData(model, isEdit, isProfileTeacher),
       );
       print(response.data);
@@ -909,8 +913,7 @@ class GroupCubit extends Cubit<GroupStates> {
         });
         noPublicGroupPostData = false;
         emit(GroupGetPostSuccessState());
-      } else 
-      {
+      } else {
         print(response.data['message']);
         noPublicGroupPostData = true;
         emit(GroupGetPostErrorState());

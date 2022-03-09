@@ -1,3 +1,5 @@
+import 'package:e_learning/models/teacher/test/test_response_model.dart';
+
 class SubjectsDataModel {
   dynamic status;
   List<Subjects>? subjects = [];
@@ -18,8 +20,12 @@ class Subjects {
   int? id;
   String? name;
   String? createdAt;
+  List<Test>? tests;
 
-  Subjects({this.id, this.name, this.createdAt});
+  Subjects({this.id, this.name, this.createdAt, this.tests});
+  void setTests(List<Test> tests) {
+    this.tests = List<Test>.from(tests);
+  }
 
   Subjects.fromJson(Map<String, dynamic> json) {
     id = json['id'];
