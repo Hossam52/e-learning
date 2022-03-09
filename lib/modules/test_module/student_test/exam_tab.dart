@@ -55,7 +55,7 @@ class ExamTab extends StatelessWidget {
               },
               label: textLabel(test),
               testName: test.name!,
-              teacherName: 'ا / اسم الاستاذ',
+              teacherName: test.teacher!.name!, // 'ا / اسم الاستاذ',
               isSelected:
                   TestLayoutCubit.get(context).selectedTestIndex == index
                       ? true

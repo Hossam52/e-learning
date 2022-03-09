@@ -42,6 +42,8 @@ class _FriendRequestTabState extends State<FriendRequestTab> {
                       },
                     )
                   : ListView.separated(
+                      shrinkWrap: true,
+                      primary: false,
                       itemCount: cubit.friendsRequestResponseModel!.friends!
                           .friendsData!.length,
                       padding: EdgeInsets.all(8),
