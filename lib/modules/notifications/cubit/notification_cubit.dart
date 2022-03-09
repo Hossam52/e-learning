@@ -45,6 +45,7 @@ class NotificationCubit extends Cubit<NotificationState> {
             : TEACHER_GET_ALL_NOTIFICATIONS,
         token: type == NotificationType.Student ? studentToken : teacherToken,
       );
+      print(response.data);
       if (response.data['status']) {
         notificationResponseModel =
             NotificationResponseModel.fromJson(response.data);

@@ -85,7 +85,7 @@ class _TeacherHomeScreenState extends State<TeacherHomeScreen> {
                       text: text,
                       subjects: [],
                       image:
-                          'https://userstock.io/data/wp-content/uploads/2020/06/robert-godwin-cdksyTqEXzo.jpg',
+                          'https://img.freepik.com/free-vector/cute-couple-cartoon-teachers_49924-211.jpg?w=740',
                       name: 'ا احمد',
                       onTap: () {},
                       followersCount: 2,

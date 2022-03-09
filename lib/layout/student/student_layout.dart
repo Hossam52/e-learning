@@ -104,36 +104,51 @@ class StudentLayout extends StatelessWidget {
                       icon: Icon(CupertinoIcons.search),
                       padding: EdgeInsets.zero,
                     ),
-                    Stack(
-                      children: [
-                        IconButton(
-                            padding: EdgeInsets.zero,
-                            onPressed: () {
-                              navigateTo(
-                                  context,
-                                  NotificationScreen(
-                                      type: NotificationType.Student));
-                            },
-                            icon: Icon(
-                              MyIcons.bell,
-                            )),
-                        Positioned(
-                          top: 10,
-                          right: 10,
-                          child: CircleAvatar(
-                            backgroundColor: Colors.red,
-                            radius: 7.5,
-                            child: Text(
-                              '5',
-                              style: TextStyle(
-                                fontSize:
-                                    MediaQuery.of(context).size.height * 0.015,
+                    BlocProvider(
+                                create: (context) => NotificationCubit()
+                                  ..getAllNotifications(
+                                      NotificationType.Student),
+                                child: BlocBuilder<NotificationCubit, NotificationState>(
+                                  builder: (cubitContext, state) {
+                                    return
+                                     Stack(
+                                      children: [
+                                        IconButton(
+                                            padding: EdgeInsets.zero,
+                                            onPressed: () 
+                                            {
+                                              navigateTo(
+                                                  context,
+                                                  NotificationScreen(
+                                                      type: NotificationType
+                                                          .Student,cubitContext:cubitContext));
+                                            },
+                                            icon: Icon(
+                                              MyIcons.bell,
+                                            )),
+                                        Positioned(
+                                          top: 10,
+                                          right: 10,
+                                          child: CircleAvatar(
+                                            backgroundColor: Colors.red,
+                                            radius: 7.5,
+                                            child:
+                                          state is! NotificationGetLoading?  Text(
+                                              '5',
+                                              style: TextStyle(
+                                                fontSize: MediaQuery.of(context)
+                                                        .size
+                                                        .height *
+                                                    0.015,
+                                              ),
+                                            ):CircularProgressIndicator(color: Color.fromARGB(255, 243, 25, 9),),
+                                          ),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                ),
                               ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
                   ],
                 ),
                 body: Padding(
