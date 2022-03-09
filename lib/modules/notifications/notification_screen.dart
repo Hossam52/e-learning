@@ -9,13 +9,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_conditional_rendering/conditional.dart';
 
 class NotificationScreen extends StatelessWidget {
-  const NotificationScreen({Key? key, required this.type}) : super(key: key);
+  const NotificationScreen(
+      {Key? key, required this.type, required this.cubitContext})
+      : super(key: key);
 
   final NotificationType type;
+  final BuildContext cubitContext;
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => NotificationCubit()..getAllNotifications(type),
+    return BlocProvider.value(
+      value: NotificationCubit.get(cubitContext),
       child: BlocConsumer<NotificationCubit, NotificationState>(
         listener: (context, state) {
           if (state is NotificationDeletedSuccess)
