@@ -2,6 +2,7 @@ import 'package:e_learning/shared/componants/componants.dart';
 import 'package:e_learning/shared/componants/widgets/best_avatar_build_item.dart';
 import 'package:e_learning/shared/componants/widgets/other_places_avatar_item.dart';
 import 'package:e_learning/shared/componants/widgets/student_lead_board_build_item.dart';
+import 'package:e_learning/shared/cubit/cubit.dart';
 import 'package:e_learning/shared/responsive_ui/responsive_widget.dart';
 import 'package:e_learning/shared/styles/colors.dart';
 import 'package:e_learning/shared/styles/styles.dart';
@@ -13,15 +14,16 @@ class BestStudentListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var bestStudents = AppCubit.get(context).bestStudentsModel!.students;
+
     return responsiveWidget(
       responsive: (context, deviceInfo) {
         return Container(
           decoration: BoxDecoration(
-            color: backgroundColor,
-            image: DecorationImage(
-              image: AssetImage('assets/images/Winners-bg.png'),
-            )
-          ),
+              color: backgroundColor,
+              image: DecorationImage(
+                image: AssetImage('assets/images/Winners-bg.png'),
+              )),
           child: Scaffold(
             appBar: AppBar(
               title: Text('الأعلى نقاطاً'),
@@ -29,68 +31,66 @@ class BestStudentListScreen extends StatelessWidget {
               leading: defaultBackButton(context, deviceInfo.screenHeight),
             ),
             backgroundColor: Colors.transparent,
-            body: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(22.0),
-                  child: RichText(
-                    text: TextSpan(
-                      text: 'المستخدمين الأعلى نقاطا ',
-                      style: thirdTextStyle(deviceInfo).copyWith(color: Colors.black),
-                      children: const <TextSpan>[
-                        TextSpan(text: 'الترم الاول', style: TextStyle(color: primaryColor)),
-                      ],
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 22.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.end,
+            body: bestStudents!.isEmpty
+                ? Center(
+                    child: Text('Empty'),
+                  )
+                : Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      OtherPlacesAvatarItem(
-                        deviceInfo: deviceInfo,
-                        image: 'https://www.tlnt.com/wp-content/uploads/sites/4/2015/04/graduate.jpg',
-                        name: 'صالح احمد',
-                        points: '250',
-                        place: 'المركز الثاني',
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 22.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            if (bestStudents.length > 1)
+                              OtherPlacesAvatarItem(
+                                deviceInfo: deviceInfo,
+                                image: bestStudents[1].image!,
+                                name: bestStudents[1].name!,
+                                points: bestStudents[1].points!.toString(),
+                                place: '2.st',
+                              ),
+                            BestAvatarBuildItem(
+                              deviceInfo: deviceInfo,
+                              image: bestStudents[0].image!,
+                              name: bestStudents[0].name!,
+                              points: bestStudents[0].points!.toString(),
+                            ),
+                            if (bestStudents.length > 2)
+                              OtherPlacesAvatarItem(
+                                deviceInfo: deviceInfo,
+                                image: bestStudents[2].image!,
+                                name: bestStudents[2].name!,
+                                points: bestStudents[2].points!.toString(),
+                                place: '3.st',
+                              ),
+                          ],
+                        ),
                       ),
-                      BestAvatarBuildItem(
-                        deviceInfo: deviceInfo,
-                        image: 'https://img.freepik.com/free-photo/teenager-student-girl-yellow-pointing-finger-side_1368-40175.jpg?size=626&ext=jpg',
-                        name: 'سمر محمد محمد',
-                        points: '1505',
+                      SizedBox(
+                        height: 22.5.h,
                       ),
-                      OtherPlacesAvatarItem(
-                        deviceInfo: deviceInfo,
-                        image: 'https://st.depositphotos.com/1594308/2419/i/950/depositphotos_24196475-stock-photo-student-with-copybook.jpg',
-                        name: 'غيداء خليل',
-                        points: '850',
-                        place: 'المركز الثالث',
+                      defaultDivider(),
+                      Expanded(
+                        child: ListView.separated(
+                          itemCount: bestStudents.length,
+                          padding: EdgeInsets.symmetric(horizontal: 22.w),
+                          separatorBuilder: (context, index) => Divider(),
+                          itemBuilder: (context, index) =>
+                              StudentLeadBoardBuildItem(
+                            deviceInfo: deviceInfo,
+                            name: bestStudents[index].name!,
+                            place: '${index + 1}.st',
+                            image: bestStudents[index].image!,
+                            points: bestStudents[index].points!.toString(),
+                          ),
+                        ),
                       ),
                     ],
                   ),
-                ),
-                SizedBox(height: 22.5.h,),
-                defaultDivider(),
-                Expanded(
-                  child: ListView.separated(
-                    itemCount: 10,
-                    padding: EdgeInsets.symmetric(horizontal: 22),
-                    separatorBuilder: (context, index) => Divider(),
-                    itemBuilder: (context, index) => StudentLeadBoardBuildItem(
-                      deviceInfo: deviceInfo,
-                      name: 'عبدالرحمن ابراهيم',
-                      place: 'المركز الاول',
-                      image: 'https://img.freepik.com/free-photo/female-student-with-books-paperworks_1258-48204.jpg?size=626&ext=jpg',
-                    ),
-                  ),
-                ),
-              ],
-            ),
           ),
         );
       },

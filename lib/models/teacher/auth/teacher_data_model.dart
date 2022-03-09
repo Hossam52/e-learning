@@ -27,6 +27,7 @@ class Teacher {
   int? myRate;
   int? followersCount;
   bool? authType;
+  
 
   Teacher(
       {this.id,
@@ -52,10 +53,10 @@ class Teacher {
       });
     }
     image = json['image'];
-    authStudentFollow = json['AuthStudentFollow'];
-    authStudentRate = json['AuthStudentRate'];
+    authStudentFollow = json['AuthStudentFollow']??false;
+    authStudentRate = json['AuthStudentRate']??false;
     myRate = json['myrate']??0;
-    followersCount = json['followers_num'];
+    followersCount = json['followers_num']??0;
     authType = json['authType'];
   }
 }

@@ -8,7 +8,6 @@ class ChangeLanguageState extends AppStates {}
 
 class ChangeBottomNavState extends AppStates {}
 
-
 /// Get Teacher subjects
 class GetSubjectsLoadingState extends AppStates {}
 
@@ -37,7 +36,6 @@ class GetStagesErrorState extends AppStates {}
 ///
 class ChangeStageState extends AppStates {}
 
-
 class ChangeClassState extends AppStates {}
 
 /// ----------------------------------------------------
@@ -50,11 +48,10 @@ class SubjectTeachersSuccessState extends AppStates {}
 
 class SubjectTeachersErrorState extends AppStates {}
 
-
 /// Get Image
-class GetImageSuccessState extends AppStates{}
+class GetImageSuccessState extends AppStates {}
 
-class NoGetImageState extends AppStates{}
+class NoGetImageState extends AppStates {}
 
 /// Get Friend requests Teachers
 class FriendGetLoadingState extends AppStates {}
@@ -89,4 +86,7 @@ class BestStudentsLoadingState extends AppStates {}
 
 class BestStudentsSuccessState extends AppStates {}
 
-class BestStudentsErrorState extends AppStates {}
+class BestStudentsErrorState extends AppStates {
+  final String error;
+  BestStudentsErrorState(this.error);
+}

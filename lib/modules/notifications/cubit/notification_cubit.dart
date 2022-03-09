@@ -14,6 +14,7 @@ class NotificationCubit extends Cubit<NotificationState> {
 
   // Cubit methode
   static NotificationCubit get(context) => BlocProvider.of(context);
+  int countUnreaded = 0;
 
   NotificationResponseModel? notificationResponseModel;
   bool noNotifications = false;
@@ -49,11 +50,28 @@ class NotificationCubit extends Cubit<NotificationState> {
       if (response.data['status']) {
         notificationResponseModel =
             NotificationResponseModel.fromJson(response.data);
+        countUnreaded = notificationResponseModel!.notifications!.data!.length;
       } else
         noNotifications = true;
       emit(NotificationGetSuccess());
     } catch (e) {
       emit(NotificationGetError());
+      throw e;
+    }
+  }
+
+  //read all notifications
+  Future<void> readAllNotifications(NotificationType type) async {
+    try {
+      await DioHelper.getData(
+        url: type == NotificationType.Student
+            ? STUDENT_READ_ALL_NOTIFICATIONS
+            : TEACHER_READ_ALL_NOTIFICATIONS,
+        token: type == NotificationType.Student ? studentToken : teacherToken,
+      );
+      countUnreaded = 0;
+      emit(NotificationGetSuccess());
+    } catch (e) {
       throw e;
     }
   }

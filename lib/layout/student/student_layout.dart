@@ -36,127 +36,147 @@ class StudentLayout extends StatelessWidget {
             AuthCubit authCubit = AuthCubit.get(context);
             return Conditional.single(
               context: context,
-              conditionBuilder: (context) => authCubit.profileDataLoading ==false,
+              conditionBuilder: (context) =>
+                  authCubit.profileDataLoading == false,
               fallbackBuilder: (context) => Scaffold(body: DefaultLoader()),
               widgetBuilder: (context) => authCubit.noProfileData
                   ? Scaffold(
-                  body: NoDataWidget(onPressed: ()
-                  => authCubit.getProfile(true)))
-                  :  Scaffold(
-                key: scaffoldKey,
-                backgroundColor: backgroundColor,
-                drawer: Drawer(
-                  child: StudentDrawerBuildItem(text: text, appCubit: appCubit),
-                ),
-                bottomNavigationBar: BottomNavigationBar(
-                  currentIndex: appCubit.currentIndex,
-                  onTap: (index) {
-                    appCubit.changeBottomNav(index);
-                  },
-                  elevation: 5,
-                  selectedItemColor: primaryColor,
-                  showUnselectedLabels: true,
-                  unselectedItemColor: Colors.black,
-                  items: [
-                    BottomNavigationBarItem(
-                      icon: Icon(MyIcons.home),
-                      label: text.home,
-                    ),
-                    BottomNavigationBarItem(
-                      icon: Icon(Icons.people_outline, size: 27),
-                      label: text.my_groups,
-                    ),
-                    BottomNavigationBarItem(
-                      icon: Icon(MyIcons.calendar),
-                      label: text.my_schedule,
-                    ),
-                    BottomNavigationBarItem(
-                      icon: Icon(Icons.person_outline_rounded, size: 27),
-                      label: text.my_profile,
-                    ),
-                  ],
-                ),
-                appBar: AppBar(
-                  centerTitle: true,
-                  title: Text(appCubit.selectedTitle(text)),
-                  elevation: 1,
-                  leading: Builder(
-                    builder: (BuildContext context) {
-                      return IconButton(
-                        icon: const Icon(
-                          MyIcons.menu,
-                          color: primaryColor,
-                          size: 18,
-                        ),
-                        onPressed: () {
-                          Scaffold.of(context).openDrawer();
+                      body: NoDataWidget(
+                          onPressed: () => authCubit.getProfile(true)))
+                  : Scaffold(
+                      key: scaffoldKey,
+                      backgroundColor: backgroundColor,
+                      drawer: Drawer(
+                        child: StudentDrawerBuildItem(
+                            text: text, appCubit: appCubit),
+                      ),
+                      bottomNavigationBar: BottomNavigationBar(
+                        currentIndex: appCubit.currentIndex,
+                        onTap: (index) {
+                          appCubit.changeBottomNav(index);
                         },
-                        tooltip: MaterialLocalizations.of(context)
-                            .openAppDrawerTooltip,
-                      );
-                    },
-                  ),
-                  actions: [
-                    IconButton(
-                      onPressed: () {
-                        navigateTo(context, StudentSearchScreen());
-                      },
-                      icon: Icon(CupertinoIcons.search),
-                      padding: EdgeInsets.zero,
-                    ),
-                    BlocProvider(
-                                create: (context) => NotificationCubit()
-                                  ..getAllNotifications(
-                                      NotificationType.Student),
-                                child: BlocBuilder<NotificationCubit, NotificationState>(
-                                  builder: (cubitContext, state) {
-                                    return
-                                     Stack(
-                                      children: [
-                                        IconButton(
-                                            padding: EdgeInsets.zero,
-                                            onPressed: () 
-                                            {
-                                              navigateTo(
-                                                  context,
-                                                  NotificationScreen(
-                                                      type: NotificationType
-                                                          .Student,cubitContext:cubitContext));
-                                            },
-                                            icon: Icon(
-                                              MyIcons.bell,
-                                            )),
-                                        Positioned(
-                                          top: 10,
-                                          right: 10,
-                                          child: CircleAvatar(
-                                            backgroundColor: Colors.red,
-                                            radius: 7.5,
-                                            child:
-                                          state is! NotificationGetLoading?  Text(
-                                              '5',
-                                              style: TextStyle(
-                                                fontSize: MediaQuery.of(context)
-                                                        .size
-                                                        .height *
-                                                    0.015,
-                                              ),
-                                            ):CircularProgressIndicator(color: Color.fromARGB(255, 243, 25, 9),),
-                                          ),
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                ),
+                        elevation: 5,
+                        selectedItemColor: primaryColor,
+                        showUnselectedLabels: true,
+                        unselectedItemColor: Colors.black,
+                        items: [
+                          BottomNavigationBarItem(
+                            icon: Icon(MyIcons.home),
+                            label: text.home,
+                          ),
+                          BottomNavigationBarItem(
+                            icon: Icon(Icons.people_outline, size: 27),
+                            label: text.my_groups,
+                          ),
+                          BottomNavigationBarItem(
+                            icon: Icon(MyIcons.calendar),
+                            label: text.my_schedule,
+                          ),
+                          BottomNavigationBarItem(
+                            icon: Icon(Icons.person_outline_rounded, size: 27),
+                            label: text.my_profile,
+                          ),
+                        ],
+                      ),
+                      appBar: AppBar(
+                        centerTitle: true,
+                        title: Text(appCubit.selectedTitle(text)),
+                        elevation: 1,
+                        leading: Builder(
+                          builder: (BuildContext context) {
+                            return IconButton(
+                              icon: const Icon(
+                                MyIcons.menu,
+                                color: primaryColor,
+                                size: 18,
                               ),
-                  ],
-                ),
-                body: Padding(
-                    padding: EdgeInsets.only(top: 3),
-                    child: responsiveWidget(responsive: (context, deviceInfo) {
-                      return appCubit.selectedScreens[appCubit.currentIndex];
-                    },),),
-              ),
+                              onPressed: () {
+                                Scaffold.of(context).openDrawer();
+                              },
+                              tooltip: MaterialLocalizations.of(context)
+                                  .openAppDrawerTooltip,
+                            );
+                          },
+                        ),
+                        actions: [
+                          IconButton(
+                            onPressed: () {
+                              navigateTo(context, StudentSearchScreen());
+                            },
+                            icon: Icon(CupertinoIcons.search),
+                            padding: EdgeInsets.zero,
+                          ),
+                          BlocProvider(
+                            create: (context) => NotificationCubit()
+                              ..getAllNotifications(NotificationType.Student),
+                            child: BlocBuilder<NotificationCubit,
+                                NotificationState>(
+                              builder: (cubitContext, state) {
+                                return Stack(
+                                  children: [
+                                    IconButton(
+                                        padding: EdgeInsets.zero,
+                                        onPressed: () {
+                                          navigateTo(
+                                              context,
+                                              NotificationScreen(
+                                                  type:
+                                                      NotificationType.Student,
+                                                  cubitContext: cubitContext));
+                                        },
+                                        icon: Icon(
+                                          MyIcons.bell,
+                                        )),
+                                    Positioned(
+                                      top: 10,
+                                      right: 10,
+                                      child: NotificationCubit.get(cubitContext)
+                                                  .countUnreaded ==
+                                              0
+                                          ? Container()
+                                          : CircleAvatar(
+                                              backgroundColor: Colors.red,
+                                              radius: 7.5,
+                                              child: state
+                                                      is! NotificationGetLoading
+                                                  ? FittedBox(
+                                                      child: Text(
+                                                        NotificationCubit.get(
+                                                                cubitContext)
+                                                            .countUnreaded
+                                                            .toString(),
+                                                        style: TextStyle(
+                                                          fontSize: MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .height *
+                                                              0.015,
+                                                        ),
+                                                      ),
+                                                    )
+                                                  : CircularProgressIndicator(
+                                                      color: Color.fromARGB(
+                                                          255, 243, 25, 9),
+                                                    ),
+                                            ),
+                                    ),
+                                  ],
+                                );
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                      body: Padding(
+                        padding: EdgeInsets.only(top: 3),
+                        child: responsiveWidget(
+                          responsive: (context, deviceInfo) {
+                            return appCubit
+                                .selectedScreens[appCubit.currentIndex];
+                          },
+                        ),
+                      ),
+                    ),
             );
           },
         ),

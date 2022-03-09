@@ -119,20 +119,21 @@ class TeacherLayout extends StatelessWidget {
                                 create: (context) => NotificationCubit()
                                   ..getAllNotifications(
                                       NotificationType.Teacher),
-                                child: BlocBuilder<NotificationCubit, NotificationState>(
+                                child: BlocBuilder<NotificationCubit,
+                                    NotificationState>(
                                   builder: (cubitContext, state) {
-                                    return
-                                     Stack(
+                                    return Stack(
                                       children: [
                                         IconButton(
                                             padding: EdgeInsets.zero,
-                                            onPressed: () 
-                                            {
+                                            onPressed: () {
                                               navigateTo(
                                                   context,
                                                   NotificationScreen(
                                                       type: NotificationType
-                                                          .Teacher,cubitContext:cubitContext));
+                                                          .Teacher,
+                                                      cubitContext:
+                                                          cubitContext));
                                             },
                                             icon: Icon(
                                               MyIcons.bell,
@@ -140,19 +141,34 @@ class TeacherLayout extends StatelessWidget {
                                         Positioned(
                                           top: 10,
                                           right: 10,
-                                          child: CircleAvatar(
+                                          child:NotificationCubit.get(
+                                                                  cubitContext)
+                                                              .countUnreaded==0?Container() : CircleAvatar(
                                             backgroundColor: Colors.red,
                                             radius: 7.5,
                                             child:
-                                          state is! NotificationGetLoading?  Text(
-                                              '5',
-                                              style: TextStyle(
-                                                fontSize: MediaQuery.of(context)
-                                                        .size
-                                                        .height *
-                                                    0.015,
-                                              ),
-                                            ):CircularProgressIndicator(color: Color.fromARGB(255, 243, 25, 9),),
+                                                state is! NotificationGetLoading
+                                                    ?
+                                                    FittedBox(
+                                                        child: Text(
+
+                                                          NotificationCubit.get(
+                                                                  cubitContext)
+                                                              .countUnreaded
+                                                              .toString(),
+                                                          style: TextStyle(
+                                                            fontSize: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .height *
+                                                                0.015,
+                                                          ),
+                                                        ),
+                                                      )
+                                                    : CircularProgressIndicator(
+                                                        color: Color.fromARGB(
+                                                            255, 243, 25, 9),
+                                                      ),
                                           ),
                                         ),
                                       ],
