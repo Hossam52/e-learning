@@ -47,10 +47,8 @@ class _TeacherHomeScreenState extends State<TeacherHomeScreen> {
               TextButton.icon(
                 style: TextButton.styleFrom(
                     backgroundColor: primaryColor.withOpacity(0.26)),
-                onPressed: () => navigateTo(
-                    context,
-                    TeacherPublicGroupsScreen(
-                    )),
+                onPressed: () =>
+                    navigateTo(context, TeacherPublicGroupsScreen()),
                 icon: Icon(
                   Icons.people,
                   color: primaryColor,
@@ -75,20 +73,27 @@ class _TeacherHomeScreenState extends State<TeacherHomeScreen> {
               //static
               Container(
                 height: 120.h,
-                child: Swiper(
-                  itemCount:4,
-                  viewportFraction: 1.0,
-                  itemHeight: 120.h,
-                  pagination: new SwiperPagination(),
-                  itemBuilder: (BuildContext context, int index) {
-                    return new BuildBestTeacherItem(
-                      text: text,
-                      subjects: [],
-                      image:
-                          'https://img.freepik.com/free-vector/cute-couple-cartoon-teachers_49924-211.jpg?w=740',
-                      name: 'ا احمد',
-                      onTap: () {},
-                      followersCount: 2,
+                child: BlocBuilder<AppCubit, AppStates>(
+                  builder: (context, state) {
+                    return 
+                    AppCubit.get(context).isStudentHighRateLoading ?
+                   CircularProgressIndicator() :Swiper(
+                      itemCount: AppCubit.get(context).studentHighRateTeachersModel!.teachers!.data!.length,
+                      viewportFraction: 1.0,
+                      itemHeight: 120.h,
+                      pagination: new SwiperPagination(),
+                      itemBuilder: (BuildContext context, int index) 
+                      {
+                        return new BuildBestTeacherItem(
+                          text: text,
+                          subjects: [],
+                          image:
+                              AppCubit.get(context).studentHighRateTeachersModel!.teachers!.data![index].image!,
+                          name: AppCubit.get(context).studentHighRateTeachersModel!.teachers!.data![index].name!,
+                          onTap: () {},
+                          followersCount: AppCubit.get(context).studentHighRateTeachersModel!.teachers!.data![index].followersCount!,
+                        );
+                      },
                     );
                   },
                 ),
@@ -100,14 +105,13 @@ class _TeacherHomeScreenState extends State<TeacherHomeScreen> {
               SizedBox(
                 height: 12.h,
               ),
-              
-                   BlocBuilder<AppCubit, AppStates>(
-                      builder: (context, state) {
-                        return 
-                        AppCubit.get(context).isBestStudentsListLoading ||
-                      state is BestStudentsLoadingState?
-                      CircularProgressIndicator():
-                        CarouselSlider.builder(
+
+              BlocBuilder<AppCubit, AppStates>(
+                builder: (context, state) {
+                  return AppCubit.get(context).isBestStudentsListLoading ||
+                          state is BestStudentsLoadingState
+                      ? CircularProgressIndicator()
+                      : CarouselSlider.builder(
                           itemCount: AppCubit.get(context)
                               .bestStudentsModel!
                               .students!
@@ -137,8 +141,8 @@ class _TeacherHomeScreenState extends State<TeacherHomeScreen> {
                             viewportFraction: 0.65,
                           ),
                         );
-                      },
-                    ),
+                },
+              ),
               SizedBox(
                 height: 16.h,
               ),

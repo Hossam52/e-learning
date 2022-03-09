@@ -13,7 +13,7 @@ class StudentTestLeaderBoard extends StatelessWidget {
     return responsiveWidget(
       responsive: (context, deviceInfo) {
         return Scaffold(
-          appBar:  AppBar(
+          appBar: AppBar(
             elevation: 1,
             title: Text('ترتيب المشاركين'),
             centerTitle: true,
@@ -28,9 +28,12 @@ class StudentTestLeaderBoard extends StatelessWidget {
                 child: RichText(
                   text: TextSpan(
                     text: 'المستخدمين الأعلى نقاطا ',
-                    style: thirdTextStyle(deviceInfo).copyWith(color: Colors.black),
+                    style: thirdTextStyle(deviceInfo)
+                        .copyWith(color: Colors.black),
                     children: const <TextSpan>[
-                      TextSpan(text: 'الترم الاول', style: TextStyle(color: primaryColor)),
+                      TextSpan(
+                          text: 'الترم الاول',
+                          style: TextStyle(color: primaryColor)),
                     ],
                   ),
                 ),
@@ -44,7 +47,9 @@ class StudentTestLeaderBoard extends StatelessWidget {
                     deviceInfo: deviceInfo,
                     name: 'عبدالرحمن ابراهيم',
                     place: 'المركز الاول',
-                    image: 'https://img.freepik.com/free-photo/female-student-with-books-paperworks_1258-48204.jpg?size=626&ext=jpg',
+                    points: 'static',
+                    image:
+                        'https://img.freepik.com/free-photo/female-student-with-books-paperworks_1258-48204.jpg?size=626&ext=jpg',
                   ),
                 ),
               ),

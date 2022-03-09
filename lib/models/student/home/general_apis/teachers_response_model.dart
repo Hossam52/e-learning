@@ -30,8 +30,8 @@ class Teachers {
     links = json['links'] != null ? new Links.fromJson(json['links']) : null;
     meta = json['meta'] != null ? new Meta.fromJson(json['meta']) : null;
   }
-
 }
+
 class Links {
   String? first;
   String? last;
@@ -68,12 +68,12 @@ class Meta {
 
   Meta(
       {this.currentPage,
-        this.from,
-        this.lastPage,
-        this.path,
-        this.perPage,
-        this.to,
-        this.total});
+      this.from,
+      this.lastPage,
+      this.path,
+      this.perPage,
+      this.to,
+      this.total});
 
   Meta.fromJson(Map<String, dynamic> json) {
     currentPage = json['current_page'];

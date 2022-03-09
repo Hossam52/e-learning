@@ -368,19 +368,21 @@ class AppCubit extends Cubit<AppStates> {
 
       emit(FollowingListLoadingState());
       Response response = await DioHelper.getData(
-        url: STUDENT_GET_HIGH_RATED_TEACHERS,
+        url: isStudent
+            ? STUDENT_GET_HIGH_RATED_TEACHERS
+            : TEACHER_GET_HIGHEST_RATE_TEACHERS,
         token: isStudent ? studentToken : teacherToken,
       );
       print(response.data);
-
       if (response.data['status']) {
         studentHighRateTeachersModel =
             TeachersResponseModel.fromJson(response.data);
         isStudentHighRateLoading = false;
-
         emit(FollowingListSuccessState());
       } else {
         print(response.data);
+        studentHighRateTeachersModel =
+            TeachersResponseModel(status: false, teachers: Teachers(data: []));
         emit(FollowingListErrorState());
       }
     } catch (e) {
@@ -411,10 +413,12 @@ class AppCubit extends Cubit<AppStates> {
         emit(BestStudentsSuccessState());
       } else {
         print(response.data);
-        emit(BestStudentsErrorState());
+        bestStudentsModel = StudentsListResponseModel(
+            students: [], message: response.data['message'], status: false);
+        emit(BestStudentsErrorState(response.data['message']));
       }
     } catch (e) {
-      emit(BestStudentsErrorState());
+      emit(BestStudentsErrorState('server Error'));
       throw e;
     } finally {
       isBestStudentsListLoading = false;
@@ -438,10 +442,10 @@ class AppCubit extends Cubit<AppStates> {
         emit(BestStudentsSuccessState());
       } else {
         print(response.data);
-        emit(BestStudentsErrorState());
+        emit(BestStudentsErrorState(response.data['message']));
       }
     } catch (e) {
-      emit(BestStudentsErrorState());
+      emit(BestStudentsErrorState('server error'));
       throw e;
     } finally {
       isBestStudentsListLoading = false;

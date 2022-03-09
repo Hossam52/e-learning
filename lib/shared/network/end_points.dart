@@ -67,8 +67,10 @@ const STUDENT_GET_SUBJECT_PLAYLIST_TEACHERS =
 
 const STUDENT_GET_ALL_NOTIFICATIONS = 'student/getNotifications';
 const STUDENT_DELETE_NOTIFICATION = 'student/deleteNotify';
+const STUDENT_READ_ALL_NOTIFICATIONS = 'student/readNotification';
 
 const STUDENT_GET_HIGH_RATED_TEACHERS = 'student/HighRateTecahers';
+const TEACHER_GET_HIGHEST_RATE_TEACHERS = 'Guest/HighRateTecahers';
 
 const STUDENT_GET_BEST_STUDENTS = 'Guest/getBestsStudents';
 
@@ -172,6 +174,7 @@ const TEACHER_GET_TERMS = 'teacher/getMyTerms';
 
 const TEACHER_GET_ALL_NOTIFICATIONS = 'teacher/getNotifications';
 const TEACHER_DELETE_NOTIFICATION = 'teacher/deleteNotify';
+const TEACHER_READ_ALL_NOTIFICATIONS = 'teacher/readNotification';
 
 ///-------------------------------------------------
 /// Files Module

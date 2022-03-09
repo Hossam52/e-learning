@@ -8,17 +8,35 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_conditional_rendering/conditional.dart';
 
-class NotificationScreen extends StatelessWidget {
+class NotificationScreen extends StatefulWidget {
   const NotificationScreen(
       {Key? key, required this.type, required this.cubitContext})
       : super(key: key);
 
   final NotificationType type;
   final BuildContext cubitContext;
+
+  @override
+  State<NotificationScreen> createState() => _NotificationScreenState();
+}
+
+class _NotificationScreenState extends State<NotificationScreen> {
+  bool first = true;
+  @override
+  void didChangeDependencies() {
+    if (first) 
+    {
+      NotificationCubit.get(widget.cubitContext)
+          .readAllNotifications(widget.type);
+      first = false;
+    }
+    super.didChangeDependencies();
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider.value(
-      value: NotificationCubit.get(cubitContext),
+      value: NotificationCubit.get(widget.cubitContext),
       child: BlocConsumer<NotificationCubit, NotificationState>(
         listener: (context, state) {
           if (state is NotificationDeletedSuccess)
@@ -46,7 +64,8 @@ class NotificationScreen extends StatelessWidget {
                       ? noData('لا يوجد اشعارات حتى الان')
                       : state is NotificationGetError
                           ? NoDataWidget(
-                              onPressed: () => cubit.getAllNotifications(type))
+                              onPressed: () =>
+                                  cubit.getAllNotifications(widget.type))
                           : ListView.separated(
                               itemCount: cubit.notificationResponseModel!
                                   .notifications!.data!.length,
@@ -64,7 +83,7 @@ class NotificationScreen extends StatelessWidget {
                                 return Dismissible(
                                   key: UniqueKey(),
                                   onDismissed: (direction) {
-                                    cubit.deleteNotification(type,
+                                    cubit.deleteNotification(widget.type,
                                         notificationId: notification.id!);
                                     cubit.notificationResponseModel!
                                         .notifications!.data!

@@ -21,8 +21,8 @@ class TeacherDrawerBuildItem extends StatelessWidget {
   Widget build(BuildContext context) {
     var text = AppLocalizations.of(context);
     final teacher = AuthCubit.get(context).teacherProfileModel!.teacher!;
-    print(teacher.name);
     return Container(
+      width:0.75.sw,
       color: Color(0xffEFF0FC),
       child: Column(
         children: [

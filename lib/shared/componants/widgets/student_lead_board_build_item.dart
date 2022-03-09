@@ -6,17 +6,20 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
 class StudentLeadBoardBuildItem extends StatelessWidget {
-  const StudentLeadBoardBuildItem({Key? key,
+  const StudentLeadBoardBuildItem({
+    Key? key,
     required this.deviceInfo,
     required this.name,
     required this.place,
-    required this.image
+    required this.image,
+    required this.points,
   }) : super(key: key);
 
   final DeviceInformation deviceInfo;
   final String name;
   final String place;
   final String image;
+  final String points;
 
   @override
   Widget build(BuildContext context) {
@@ -24,9 +27,7 @@ class StudentLeadBoardBuildItem extends StatelessWidget {
       color: Colors.transparent,
       elevation: 0,
       margin: EdgeInsets.zero,
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10)
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.r)),
       child: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Row(
@@ -47,17 +48,26 @@ class StudentLeadBoardBuildItem extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(place, style: thirdTextStyle(deviceInfo),),
-                SizedBox(height: 5),
-                Text(name, style: TextStyle(color: Colors.grey),),
+                Text(
+                  place,
+                  style: thirdTextStyle(deviceInfo),
+                ),
+                SizedBox(height: 5.h),
+                Text(
+                  name,
+                  style: TextStyle(color: Colors.grey),
+                ),
               ],
             ),
             Spacer(),
             Row(
               children: [
-                Text('125', style: subTextStyle(deviceInfo).copyWith(
-                  color: Colors.black,
-                ),),
+                Text(
+                  points,
+                  style: subTextStyle(deviceInfo).copyWith(
+                    color: Colors.black,
+                  ),
+                ),
                 SvgPicture.asset(
                   'assets/images/icons/points.svg',
                   width: 13.5.w,
