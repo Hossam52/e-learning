@@ -3,6 +3,7 @@ import 'package:e_learning/modules/groups/cubit/cubit.dart';
 import 'package:e_learning/modules/groups/student/group_view/home_tab/post_build_item.dart';
 import 'package:e_learning/modules/profile/teacher/teacher_profile_tab/edit_post_screen.dart';
 import 'package:e_learning/shared/componants/componants.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/cubit/cubit.dart';
 import 'package:e_learning/shared/responsive_ui/device_information.dart';
 import 'package:flutter/material.dart';
@@ -75,7 +76,7 @@ class GroupStudentTab extends StatelessWidget {
               // }
             },
             postId: post.id!,
-            name: post.student ?? 'student',
+            name: post.student ?? context.tr.student,
             image: post.studentImage ?? post.teacherImage,
             commentCount: post.comments!.length,
             likesCount: isPost

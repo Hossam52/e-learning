@@ -1,5 +1,6 @@
 import 'package:e_learning/modules/auth/cubit/cubit.dart';
 import 'package:e_learning/modules/auth/cubit/states.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/componants/widgets/default_form_field.dart';
 import 'package:e_learning/shared/componants/widgets/default_gesture_widget.dart';
 import 'package:e_learning/shared/componants/widgets/default_progress_button.dart';
@@ -37,17 +38,22 @@ class ResetPasswordScreen extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          SizedBox(height: height * 0.05,),
+                          SizedBox(
+                            height: height * 0.05,
+                          ),
                           Text(
-                            'إعادة تعيين كلمة المرور',
+                            context.tr.reset_password,
                             style: TextStyle(
                               fontSize: width * 0.06,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
-                          SizedBox(height: height * 0.02,),
+                          SizedBox(
+                            height: height * 0.02,
+                          ),
                           Text(
-                            'أدخل الرمز المرسل إلى بريدك الإلكتروني ، وقم بتغيير كلمة المرور الخاصة بك',
+                            context.tr.enter_code_to_change_password,
+                            // 'أدخل الرمز المرسل إلى بريدك الإلكتروني ، وقم بتغيير كلمة المرور الخاصة بك',
                             style: TextStyle(
                               fontSize: width * 0.04,
                               fontWeight: FontWeight.w400,
@@ -61,50 +67,66 @@ class ResetPasswordScreen extends StatelessWidget {
                           DefaultFormField(
                             controller: codeController,
                             type: TextInputType.text,
-                            labelText: 'الرمز',
+                            labelText: context.tr.code,
                             validation: (email) {
                               if (email == null || email.isEmpty)
-                                return 'من فضلك ادخل الرمز';
+                                return context.tr.enter_pin_code;
                               return null;
                             },
                           ),
-                          SizedBox(height: height * 0.05,),
+                          SizedBox(
+                            height: height * 0.05,
+                          ),
+
                           /// password
                           DefaultFormField(
-                            hintText: 'ادخل كلمة السر الجديدة',
-                            labelText: 'كلمة السر الجديدة',
+                            hintText: context.tr
+                                .enter_new_password, //'ادخل كلمة السر الجديدة',
+                            labelText:
+                                context.tr.new_password, //'كلمة السر الجديدة',
                             controller: passwordController,
                             type: TextInputType.visiblePassword,
                             secure: cubit.isSecure,
                             suffix: cubit.suffix,
-                            suffixPressed: () => cubit.changePasswordVisibility(),
+                            suffixPressed: () =>
+                                cubit.changePasswordVisibility(),
                             validation: (value) {
-                              if(value == null || value.isEmpty){
-                                return 'هذا الحقل مطلوب';
+                              if (value == null || value.isEmpty) {
+                                return context.tr
+                                    .this_field_is_required; //ذا الحقل مطلوب';
                               } else {
-                                return value.length < 6 ?
-                                'يجب ان يكون 6 احرف او اكثر'
+                                return value.length < 6
+                                    ? context.tr
+                                        .must_more_than // 'يجب ان يكون 6 احرف او اكثر'
                                     : null;
                               }
                             },
                           ),
-                          SizedBox(height: height * 0.05,),
+                          SizedBox(
+                            height: height * 0.05,
+                          ),
 
                           /// password Confirmation
                           DefaultFormField(
-                            hintText: 'تاكيد كلمة السر',
-                            labelText: 'تاكيد كلمة السر',
+                            hintText: context
+                                .tr.confirm_password, //'تاكيد كلمة السر',
+                            labelText: context
+                                .tr.confirm_password, //'تاكيد كلمة السر',
                             controller: passwordConfirmation,
                             type: TextInputType.visiblePassword,
                             secure: cubit.isSecure,
                             suffix: cubit.suffix,
-                            suffixPressed: () => cubit.changePasswordVisibility(),
+                            suffixPressed: () =>
+                                cubit.changePasswordVisibility(),
                             validation: (value) {
-                              if(value == null || value.isEmpty){
-                                return 'هذا الحقل مطلوب';
+                              if (value == null || value.isEmpty) {
+                                return context.tr.this_field_is_required;
+                                // 'هذا الحقل مطلوب';
                               } else {
-                                return passwordConfirmation.text != passwordController.text ?
-                                'كلمة التى ادخلتها غير صحيحة'
+                                return passwordConfirmation.text !=
+                                        passwordController.text
+                                    ? context.tr
+                                        .password_not_correct // 'كلمة التى ادخلتها غير صحيحة'
                                     : null;
                               }
                             },
@@ -112,10 +134,12 @@ class ResetPasswordScreen extends StatelessWidget {
                           SizedBox(height: height * 0.08),
                           DefaultProgressButton(
                             buttonState: cubit.resetPasswordButtonState,
-                            idleText: 'تغيير كلمة المرور',
-                            loadingText: 'Loading',
-                            failText: 'حدث خطأ',
-                            successText: 'تم التسجيل',
+                            idleText: context
+                                .tr.change_password, // 'تغيير كلمة المرور',
+                            loadingText: context.tr.loading, // 'Loading',
+                            failText: context.tr.error_happened, // 'حدث خطأ',
+                            successText:
+                                context.tr.success_register, // 'تم التسجيل',
                             onPressed: () {
                               _formKey.currentState!.save();
                               if (_formKey.currentState!.validate()) {
@@ -125,7 +149,8 @@ class ResetPasswordScreen extends StatelessWidget {
                                   isStudent: isStudent,
                                   code: codeController.text,
                                   password: passwordController.text,
-                                  passwordConfirmation: passwordConfirmation.text,
+                                  passwordConfirmation:
+                                      passwordConfirmation.text,
                                 );
                               }
                             },

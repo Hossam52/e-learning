@@ -4,6 +4,7 @@ import 'package:e_learning/models/enums/enums.dart';
 import 'package:e_learning/modules/test_module/student_test/test_view/test_start_alert_screen.dart';
 import 'package:e_learning/shared/componants/componants.dart';
 import 'package:e_learning/shared/componants/constants.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/componants/widgets/default_loader.dart';
 import 'package:e_learning/shared/componants/widgets/default_refresh_widget.dart';
 import 'package:e_learning/shared/componants/widgets/no_data_widget.dart';
@@ -71,9 +72,10 @@ class _StudentMyChallengesState extends State<StudentMyChallenges> {
                             deviceInfo: deviceInfo,
                             backgroundColor: successColor,
                             buttonText: generateButtonText(test.result),
-                            status: 'بطوله جاريه الان',
+                            status: context.tr.tournment_now,
                             testName: test.name!,
-                            onPressed: generateButtonFunction(test.result, test),
+                            onPressed:
+                                generateButtonFunction(test.result, test),
                           );
                         },
                       ),
@@ -84,22 +86,23 @@ class _StudentMyChallengesState extends State<StudentMyChallenges> {
       },
     );
   }
+
   String generateButtonText(String? result) {
-    if(result != null) {
-      return 'تم اشتراك';
-    } else if(authType == false) {
-      return 'لا يمكنك الاشتراك';
+    if (result != null) {
+      return context.tr.done_subscription;
+    } else if (authType == false) {
+      return context.tr.you_could_not_join;
     } else {
-      return 'اشتراك';
+      return context.tr.join;
     }
   }
+
   Function()? generateButtonFunction(String? result, Test test) {
-    if(result != null || authType == false) {
+    if (result != null || authType == false) {
       return null;
     } else {
       return () {
-        navigateTo(
-            context, TestStartAlertScreen(test: test));
+        navigateTo(context, TestStartAlertScreen(test: test));
       };
     }
   }

@@ -5,6 +5,7 @@ import 'package:e_learning/layout/student/cubit/cubit.dart';
 import 'package:e_learning/layout/student/cubit/states.dart';
 import 'package:e_learning/models/enums/enums.dart';
 import 'package:e_learning/modules/test_module/cubit/cubit.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/componants/widgets/default_loader.dart';
 import 'package:e_learning/shared/componants/widgets/no_data_widget.dart';
 import 'package:e_learning/shared/responsive_ui/responsive_widget.dart';
@@ -48,7 +49,7 @@ class _StudentExamScreenState extends State<StudentExamScreen> {
               fallbackBuilder: (context) => DefaultLoader(),
               widgetBuilder: (context) => subjects.length == 0
                   ? NoDataWidget(
-                      text: 'عذرا لا يوجد بيانات',
+                      text: context.tr.no_data,
                       onPressed: () {
                         cubit.getMySubjects();
                       },

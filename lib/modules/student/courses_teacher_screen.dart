@@ -2,6 +2,7 @@ import 'package:e_learning/modules/pdfs_module/teacher/pdfs_screen.dart';
 import 'package:e_learning/modules/student/student_subject_teachers_build_item.dart';
 import 'package:e_learning/modules/video_module/student/student_playlists_screen.dart';
 import 'package:e_learning/shared/componants/componants.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/componants/widgets/default_loader.dart';
 import 'package:e_learning/shared/cubit/cubit.dart';
 import 'package:e_learning/shared/cubit/states.dart';
@@ -43,10 +44,10 @@ class _CoursesTeacherScreenState extends State<CoursesTeacherScreen> {
   @override
   Widget build(BuildContext context) {
     return responsiveWidget(
-      responsive: (context, deviceInfo) {
+      responsive: (_, deviceInfo) {
         return Scaffold(
           appBar: AppBar(
-            title: Text('المعلمين'),
+            title: Text(context.tr.teachers),
             centerTitle: true,
             leading: defaultBackButton(context, deviceInfo.screenHeight),
           ),
@@ -60,7 +61,7 @@ class _CoursesTeacherScreenState extends State<CoursesTeacherScreen> {
                     state is! SubjectTeachersLoadingState,
                 fallbackBuilder: (context) => DefaultLoader(),
                 widgetBuilder: (context) => cubit.noSubjectTeachersData
-                    ? noData('لا يوجد معلمين حتى الان')
+                    ? noData(context.tr.no_teachers_up_till_now)
                     : Container(
                         color: Colors.white,
                         child: ListView.separated(

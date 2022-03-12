@@ -1,6 +1,7 @@
 import 'package:e_learning/modules/pdfs_module/cubit/cubit.dart';
 import 'package:e_learning/modules/pdfs_module/cubit/states.dart';
 import 'package:e_learning/shared/componants/componants.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/componants/widgets/default_drop_down.dart';
 import 'package:e_learning/shared/componants/widgets/default_form_field.dart';
 import 'package:e_learning/shared/componants/widgets/default_gesture_widget.dart';
@@ -52,7 +53,7 @@ class _AddPdfScreenState extends State<AddPdfScreen> {
       child: DefaultGestureWidget(
         child: Scaffold(
           appBar: AppBar(
-            title: Text("اضافة ${widget.title}"),
+            title: Text("${context.tr.add} ${widget.title}"),
             elevation: 1,
             centerTitle: true,
             leading: defaultBackButton(context, widget.deviceInfo.screenHeight),
@@ -82,26 +83,26 @@ class _AddPdfScreenState extends State<AddPdfScreen> {
                             SizedBox(height: 40.h),
                             DefaultFormField(
                               controller: fileName,
-                              labelText: 'آسم الملف',
-                              hintText: 'آسم الملف',
+                              labelText: context.tr.file_name,
+                              hintText: context.tr.file_name,
                               haveBackground: true,
                               validation: (value) {
                                 if (value == null || value.isEmpty)
-                                  return 'هذا الحقل مطلوب';
+                                  return context.tr.this_field_is_required;
                                 return null;
                               },
                             ),
                             SizedBox(height: 17.h),
                             DefaultDropDown(
-                              label: 'المرحله',
-                              hint: 'المرحله',
+                              label: context.tr.stage,
+                              hint: context.tr.stage,
                               haveBackground: true,
                               onChanged: (value) {
                                 appCubit.onChangeStage(value);
                               },
                               validator: (value) {
                                 if (value == null || value.isEmpty)
-                                  return 'هذا الحقل مطلوب';
+                                  return context.tr.this_field_is_required;
                                 return null;
                               },
                               items: appCubit.stageNamesList,
@@ -110,15 +111,15 @@ class _AddPdfScreenState extends State<AddPdfScreen> {
                             ),
                             SizedBox(height: 17.h),
                             DefaultDropDown(
-                              label: 'السنه',
-                              hint: 'السنه',
+                              label: context.tr.year,
+                              hint: context.tr.year,
                               haveBackground: true,
                               onChanged: (value) {
                                 appCubit.onChangeClass(value);
                               },
                               validator: (value) {
                                 if (value == null || value.isEmpty)
-                                  return 'هذا الحقل مطلوب';
+                                  return context.tr.this_field_is_required;
                                 return null;
                               },
                               items: appCubit.classNamesList,
@@ -126,15 +127,15 @@ class _AddPdfScreenState extends State<AddPdfScreen> {
                             ),
                             SizedBox(height: 17.h),
                             DefaultDropDown(
-                              label: 'الترم',
-                              hint: 'الترم',
+                              label: context.tr.semster,
+                              hint: context.tr.semster,
                               haveBackground: true,
                               onChanged: (value) {
                                 appCubit.onTermChange(value);
                               },
                               validator: (value) {
                                 if (value == null || value.isEmpty)
-                                  return 'هذا الحقل مطلوب';
+                                  return context.tr.this_field_is_required;
                                 return null;
                               },
                               items: appCubit.termNamesList,
@@ -143,15 +144,15 @@ class _AddPdfScreenState extends State<AddPdfScreen> {
                             ),
                             SizedBox(height: 17.h),
                             DefaultDropDown(
-                              label: 'الماده',
-                              hint: 'الماده',
+                              label: context.tr.subject,
+                              hint: context.tr.subject,
                               haveBackground: true,
                               onChanged: (value) {
                                 appCubit.onSubjectChange(value);
                               },
                               validator: (value) {
                                 if (value == null || value.isEmpty)
-                                  return 'هذا الحقل مطلوب';
+                                  return context.tr.this_field_is_required;
                                 return null;
                               },
                               items: appCubit.subjectNamesList,
@@ -161,12 +162,12 @@ class _AddPdfScreenState extends State<AddPdfScreen> {
                             DefaultFormField(
                               validation: (value) {
                                 if (value == null || value.isEmpty)
-                                  return 'هذا الحقل مطلوب';
+                                  return context.tr.this_field_is_required;
                                 return null;
                               },
                               controller: url,
-                              labelText: 'الصق الرابط',
-                              hintText: 'الصق الرابط',
+                              labelText: context.tr.paste_link,
+                              hintText: context.tr.paste_link,
                               haveBackground: true,
                             ),
                             if (cubit.hasFileError)
@@ -174,7 +175,7 @@ class _AddPdfScreenState extends State<AddPdfScreen> {
                                 width: double.infinity,
                                 padding: EdgeInsets.only(top: 10.h),
                                 child: Text(
-                                  'خطا فى الرابط برجاء التأكد من الرابط و المحاولة مجددا',
+                                  context.tr.link_error_try_again,
                                   style: TextStyle(color: errorColor),
                                   textAlign: TextAlign.start,
                                 ),
@@ -182,10 +183,10 @@ class _AddPdfScreenState extends State<AddPdfScreen> {
                             SizedBox(height: 50.h),
                             DefaultProgressButton(
                               buttonState: cubit.addFileButtonState,
-                              idleText: 'اضافة',
-                              loadingText: 'Loading',
-                              failText: 'حدث خطأ',
-                              successText: 'تم الاضافة بنجاح',
+                              idleText: context.tr.add,
+                              loadingText: context.tr.loading,
+                              failText: context.tr.error_happened,
+                              successText: context.tr.success_adding,
                               onPressed: () async {
                                 formKey.currentState!.save();
                                 if (formKey.currentState!.validate()) {

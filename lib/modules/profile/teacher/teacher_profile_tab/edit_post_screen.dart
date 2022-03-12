@@ -3,6 +3,7 @@ import 'package:e_learning/models/teacher/groups/in_group/post_response_model.da
 import 'package:e_learning/modules/groups/cubit/cubit.dart';
 import 'package:e_learning/modules/groups/cubit/states.dart';
 import 'package:e_learning/shared/componants/componants.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/componants/widgets/default_loader.dart';
 import 'package:e_learning/shared/componants/widgets/default_text_field.dart';
 import 'package:e_learning/shared/cubit/cubit.dart';
@@ -37,7 +38,7 @@ class _EditPostScreenState extends State<EditPostScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Edit Post'),
+        title: Text(context.tr.edit_post),
       ),
       body: ProgressHUD(
         child: BlocProvider(
@@ -103,7 +104,8 @@ class _EditPostScreenState extends State<EditPostScreen> {
                                     bgColor: Colors.grey[200]!,
                                     validator: (value) {
                                       if (value == null || value.isEmpty)
-                                        return 'text.general_validate';
+                                        return context
+                                            .tr.this_field_is_required;
                                       return null;
                                     },
                                   ),
@@ -142,7 +144,8 @@ class _EditPostScreenState extends State<EditPostScreen> {
                                                   images: cubit.selectedImages,
                                                   groupId: -1,
                                                   type: 'post',
-                                                  teacherId: widget.publicGroup3,
+                                                  teacherId:
+                                                      widget.publicGroup3,
                                                   postId: widget.post.id,
                                                 ),
                                                 isStudent:
@@ -154,7 +157,7 @@ class _EditPostScreenState extends State<EditPostScreen> {
                                               );
                                             }
                                           },
-                                          text: 'Edit',
+                                          text: context.tr.edit,
                                           icon: cubit.isStudentPostEdit
                                               ? Icons.edit
                                               : Icons.post_add,
@@ -172,7 +175,9 @@ class _EditPostScreenState extends State<EditPostScreen> {
                                               cubit.clearImageList();
                                             }
                                           },
-                                          text: noImages ? 'add' : 'Remove',
+                                          text: noImages
+                                              ? context.tr.add
+                                              : context.tr.remove,
                                           icon: noImages
                                               ? Icons.photo
                                               : Icons.close,

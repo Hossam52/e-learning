@@ -9,6 +9,7 @@ import 'package:e_learning/models/student/auth/student_model.dart';
 import 'package:e_learning/modules/auth/cubit/cubit.dart';
 import 'package:e_learning/shared/componants/componants.dart';
 import 'package:e_learning/shared/componants/constants.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/componants/widgets/membership_widgets/student_star.dart';
 import 'package:e_learning/shared/cubit/cubit.dart';
 import 'package:e_learning/shared/responsive_ui/device_information.dart';
@@ -106,7 +107,8 @@ class StudentProfileInfoBuild extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              'عدد النقاط',
+                              context.tr.points_count,
+                              // 'عدد النقاط',
                               style: thirdTextStyle(deviceInfo).copyWith(
                                 color: Colors.white,
                               ),
@@ -146,10 +148,12 @@ class StudentProfileInfoBuild extends StatelessWidget {
                               Row(
                                 children: [
                                   Text(
-                                    'رقم ',
+                                    context.tr.number,
+                                    // 'رقم ',
                                   ),
                                   Text(
-                                    'ID',
+                                    // 'ID',
+                                    context.tr.id,
                                   ),
                                 ],
                               ),
@@ -170,14 +174,14 @@ class StudentProfileInfoBuild extends StatelessWidget {
                                 onTap: () {
                                   Clipboard.setData(ClipboardData(text: code));
                                   showToast(
-                                      msg: 'تم النسخ الكود',
+                                      msg: context.tr.copied_to_clipboard,
                                       state: ToastStates.SUCCESS);
                                 },
                                 child: Container(
                                   padding: EdgeInsets.symmetric(
                                       horizontal: 12, vertical: 5),
                                   child: Text(
-                                    'نسخ',
+                                    context.tr.copy,
                                     style: thirdTextStyle(deviceInfo)
                                         .copyWith(color: Colors.white),
                                   ),
@@ -244,7 +248,7 @@ class ProfileImage extends StatelessWidget {
                         enableCamera: true,
                         cupertinoOptions: CupertinoOptions(
                           takePhotoIcon: "E-learning app",
-                          doneButtonTitle: "Done",
+                          doneButtonTitle: context.tr.done,
                         ),
                         materialOptions: MaterialOptions(
                           actionBarColor: "#4C5FFB",
@@ -273,7 +277,7 @@ class ProfileImage extends StatelessWidget {
                     } catch (e) {
                       log(e.toString());
                       showToast(
-                          msg: 'يوجد خطا من فضلك ادخل الصور مجددا',
+                          msg: context.tr.error_happened_enter_images_again,
                           state: ToastStates.WARNING);
                     }
                   },
@@ -315,7 +319,7 @@ class ProfileImage extends StatelessWidget {
         selectedAssets: images,
         cupertinoOptions: CupertinoOptions(
           takePhotoIcon: "E-learning app",
-          doneButtonTitle: "Done",
+          doneButtonTitle: context.tr.done,
         ),
         materialOptions: MaterialOptions(
           actionBarColor: "#4C5FFB",
@@ -351,7 +355,8 @@ class ProfileImage extends StatelessWidget {
     } catch (e) {
       print(e);
       showToast(
-          msg: 'يوجد خطا من فضلك ادخل الصور مجددا', state: ToastStates.WARNING);
+          msg: context.tr.error_happened_enter_images_again,
+          state: ToastStates.WARNING);
       throw e;
     }
   }

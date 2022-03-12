@@ -7,6 +7,7 @@ import 'package:e_learning/modules/auth/student/register/choose_country_screen.d
 import 'package:e_learning/modules/auth/teacher/register/build_subjects_item.dart';
 import 'package:e_learning/modules/profile/add_avatar_build_item.dart';
 import 'package:e_learning/shared/componants/componants.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/componants/widgets/default_form_field.dart';
 import 'package:e_learning/shared/componants/widgets/default_gesture_widget.dart';
 import 'package:e_learning/shared/componants/widgets/default_progress_button.dart';
@@ -75,7 +76,7 @@ class _TeacherEditProfileTabState extends State<TeacherEditProfileTab> {
           builder: (context, state) {
             var cubit = AuthCubit.get(context);
             return DefaultGestureWidget(
-              child: responsiveWidget(responsive: (context, deviceInfo) {
+              child: responsiveWidget(responsive: (_, deviceInfo) {
                 return SafeArea(
                   child: Padding(
                     padding:
@@ -217,8 +218,8 @@ class _TeacherEditProfileTabState extends State<TeacherEditProfileTab> {
                           ),
                           DefaultProgressButton(
                             buttonState: cubit.teacherRegisterState,
-                            idleText: 'حفظ',
-                            loadingText: 'Loading',
+                            idleText: context.tr.save,
+                            loadingText: context.tr.loading,
                             failText: text.failed,
                             successText: text.success_sign,
                             onPressed: () {

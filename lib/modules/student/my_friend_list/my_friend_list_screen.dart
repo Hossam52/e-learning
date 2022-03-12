@@ -2,6 +2,7 @@ import 'package:e_learning/modules/profile/student_profile_view.dart';
 import 'package:e_learning/modules/student/cubit/cubit/cubit.dart';
 import 'package:e_learning/modules/student/cubit/cubit/states.dart';
 import 'package:e_learning/shared/componants/componants.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/componants/widgets/default_button.dart';
 import 'package:e_learning/shared/componants/widgets/default_loader.dart';
 import 'package:e_learning/shared/componants/widgets/default_text_field.dart';
@@ -44,10 +45,10 @@ class _MyFriendListScreenState extends State<MyFriendListScreen> {
       builder: (context, state) {
         StudentCubit cubit = StudentCubit.get(context);
         return responsiveWidget(
-          responsive: (context, deviceInfo) {
+          responsive: (_, deviceInfo) {
             return Scaffold(
               appBar: AppBar(
-                title: Text('أصدقائي'),
+                title: Text(context.tr.my_friends),
                 centerTitle: true,
                 leading: defaultBackButton(context, deviceInfo.screenHeight),
               ),
@@ -67,11 +68,11 @@ class _MyFriendListScreenState extends State<MyFriendListScreen> {
                               flex: 3,
                               child: DefaultTextField(
                                 controller: codeController,
-                                hint: 'ID أدخل معرف ',
+                                hint: context.tr.enter_id,
                                 bgColor: Color(0xffDDDDDD).withOpacity(0.4),
                                 validator: (value) {
                                   if (value == null || value.isEmpty)
-                                    return 'هذا الحقل مطلوب';
+                                    return context.tr.this_field_is_required;
                                   return null;
                                 },
                               ),
@@ -90,7 +91,7 @@ class _MyFriendListScreenState extends State<MyFriendListScreen> {
                                     );
                                   }
                                 },
-                                text: 'أضف',
+                                text: context.tr.add,
                                 textStyle: thirdTextStyle(deviceInfo),
                                 background: primaryColor,
                                 isLoading: cubit.addFriendWithCodeLoading,
@@ -144,7 +145,7 @@ class _MyFriendListScreenState extends State<MyFriendListScreen> {
                                               child:
                                                   CircularProgressIndicator(),
                                             )
-                                          : Text('حذف',
+                                          : Text(context.tr.remove,
                                               style: thirdTextStyle(null)
                                                   .copyWith(color: errorColor)),
                                     ),

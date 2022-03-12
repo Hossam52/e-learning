@@ -1,6 +1,7 @@
 import 'package:e_learning/modules/notifications/cubit/notification_cubit.dart';
 import 'package:e_learning/modules/notifications/notification_build_item.dart';
 import 'package:e_learning/shared/componants/componants.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/componants/widgets/default_loader.dart';
 import 'package:e_learning/shared/componants/widgets/no_data_widget.dart';
 import 'package:e_learning/shared/responsive_ui/responsive_widget.dart';
@@ -24,8 +25,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
   bool first = true;
   @override
   void didChangeDependencies() {
-    if (first) 
-    {
+    if (first) {
       NotificationCubit.get(widget.cubitContext)
           .readAllNotifications(widget.type);
       first = false;
@@ -51,7 +51,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
             responsive: (_, deviceInfo) {
               return Scaffold(
                 appBar: AppBar(
-                  title: Text('التنبيهات'),
+                  title: Text(context.tr.notifications),
                   centerTitle: true,
                   leading: defaultBackButton(context, deviceInfo.screenHeight),
                 ),
@@ -61,7 +61,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                       state is! NotificationGetLoading,
                   fallbackBuilder: (context) => DefaultLoader(),
                   widgetBuilder: (context) => cubit.noNotifications
-                      ? noData('لا يوجد اشعارات حتى الان')
+                      ? noData(context.tr.no_notifications_up_till_now)
                       : state is NotificationGetError
                           ? NoDataWidget(
                               onPressed: () =>
@@ -93,23 +93,23 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                     return showDialog(
                                         context: context,
                                         builder: (context) => AlertDialog(
-                                              title: Text(
-                                                  'هل انت متأكد من حذف هذا التنبيه'),
+                                              title: Text(context
+                                                  .tr.sure_delete_notification),
                                               actions: [
                                                 defaultTextButton(
-                                                    text: 'تأكيد',
+                                                    text: context.tr.confirm,
                                                     textColor: Colors.green,
                                                     onPressed: () =>
                                                         Navigator.pop(
                                                             context, true)),
                                                 defaultTextButton(
-                                                    text: 'إلغاء',
+                                                    text: context.tr.cancel,
                                                     textColor: Colors.red,
                                                     onPressed: () =>
                                                         Navigator.pop(
                                                             context, false)),
                                               ],
-                                              content: Text('data'),
+                                              content: Text(context.tr.data),
                                             ));
                                   },
                                   child: NotificationBuildItem(

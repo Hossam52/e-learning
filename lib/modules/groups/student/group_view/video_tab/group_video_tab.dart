@@ -5,6 +5,7 @@ import 'package:e_learning/modules/groups/student/group_view/video_tab/grouo_add
 import 'package:e_learning/modules/video_module/video_screens/video_player_screen.dart';
 import 'package:e_learning/modules/video_module/video_screens/video_title_build_item.dart';
 import 'package:e_learning/shared/componants/componants.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/componants/widgets/default_dimissible_widget.dart';
 import 'package:e_learning/shared/componants/widgets/default_loader.dart';
 import 'package:e_learning/shared/componants/widgets/default_refresh_widget.dart';
@@ -79,7 +80,7 @@ class _GroupVideoTabState extends State<GroupVideoTab> {
               fallbackBuilder: (context) => DefaultLoader(),
               widgetBuilder: (context) => cubit.noGroupVideoData
                   ? NoDataWidget(
-                      text: 'عذرا لا يوجد بيانات',
+                      text: context.tr.no_data,
                       onPressed: () {
                         cubit.getGroupVideosAndStudent(widget.groupId,
                             isStudent: widget.isStudent, isMembers: false);

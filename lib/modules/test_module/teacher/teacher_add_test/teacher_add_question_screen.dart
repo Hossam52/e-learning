@@ -4,6 +4,7 @@ import 'package:e_learning/models/teacher/test/test_response_model.dart';
 import 'package:e_learning/modules/test_module/cubit/cubit.dart';
 import 'package:e_learning/modules/test_module/cubit/states.dart';
 import 'package:e_learning/shared/componants/componants.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/componants/widgets/default_button.dart';
 import 'package:e_learning/shared/componants/widgets/default_form_field.dart';
 import 'package:e_learning/shared/componants/widgets/default_gesture_widget.dart';
@@ -77,11 +78,12 @@ class _TeacherAddQuestionScreenState extends State<TeacherAddQuestionScreen> {
     return BlocProvider(
       create: (context) => TestCubit(),
       child: responsiveWidget(
-        responsive: (context, deviceInfo) => DefaultGestureWidget(
+        responsive: (_, deviceInfo) => DefaultGestureWidget(
           child: Scaffold(
             appBar: AppBar(
-              title:
-                  Text(widget.groupId != null ? 'انشاء واجب' : "انشاء اختبار"),
+              title: Text(widget.groupId != null
+                  ? context.tr.create_homework
+                  : context.tr.create_test),
               elevation: 1,
               centerTitle: true,
               leading: defaultBackButton(context, deviceInfo.screenHeight),
@@ -168,12 +170,15 @@ class _TeacherAddQuestionScreenState extends State<TeacherAddQuestionScreen> {
                                                 validation: (value) {
                                                   if (value == null ||
                                                       value.isEmpty)
-                                                    return 'هذا الحقل مطلوب';
+                                                    return context.tr
+                                                        .this_field_is_required;
                                                   return null;
                                                 },
                                                 controller: questionController,
-                                                labelText: 'اضف سؤال',
-                                                hintText: 'اضف سؤال',
+                                                labelText:
+                                                    context.tr.add_question,
+                                                hintText:
+                                                    context.tr.add_question,
                                                 haveBackground: true,
                                               ),
                                             ),
@@ -232,7 +237,7 @@ class _TeacherAddQuestionScreenState extends State<TeacherAddQuestionScreen> {
                                                     : Colors.grey,
                                             controller:
                                                 chooseControllerList[index],
-                                            hintText: 'اجابه',
+                                            hintText: context.tr.answer,
                                             hasAnswer: cubit.hasAnswer,
                                             image: cubit.answerImages
                                                     .asMap()
@@ -261,7 +266,7 @@ class _TeacherAddQuestionScreenState extends State<TeacherAddQuestionScreen> {
                                         ),
                                         if (cubit.answerNumber < 4)
                                           ListTile(
-                                            title: Text('اضف اجابه'),
+                                            title: Text(context.tr.add_answer),
                                             trailing: Icon(Icons.add),
                                             onTap: () {
                                               cubit.addAnswer();
@@ -284,7 +289,7 @@ class _TeacherAddQuestionScreenState extends State<TeacherAddQuestionScreen> {
                           children: [
                             Expanded(
                               child: DefaultAppButton(
-                                text: 'السابق',
+                                text: context.tr.previous,
                                 isLoading: false,
                                 textStyle: thirdTextStyle(deviceInfo),
                                 isDisabled: false,
@@ -310,7 +315,9 @@ class _TeacherAddQuestionScreenState extends State<TeacherAddQuestionScreen> {
                             SizedBox(width: 35),
                             Expanded(
                               child: DefaultAppButton(
-                                text: isLast ? 'انهاء' : 'التالي',
+                                text: isLast
+                                    ? context.tr.finish
+                                    : context.tr.next,
                                 isLoading: false,
                                 background: isLast ? successColor : null,
                                 textStyle: thirdTextStyle(deviceInfo),
@@ -320,7 +327,8 @@ class _TeacherAddQuestionScreenState extends State<TeacherAddQuestionScreen> {
                                   if (formKey.currentState!.validate()) {
                                     if (cubit.hasAnswer) {
                                       addQuestionData(cubit, currentIndex);
-                                      if (isLast == false) nextPageFunction(cubit);
+                                      if (isLast == false)
+                                        nextPageFunction(cubit);
                                       if (cubit.questionList
                                           .asMap()
                                           .containsKey(currentIndex))
@@ -331,7 +339,7 @@ class _TeacherAddQuestionScreenState extends State<TeacherAddQuestionScreen> {
                                       if (isLast) endTest(cubit);
                                     } else {
                                       showToast(
-                                          msg: 'اختر الاجابة الصحيحة',
+                                          msg: context.tr.choose_right_answer,
                                           state: ToastStates.WARNING);
                                     }
                                   }

@@ -5,6 +5,7 @@ import 'package:e_learning/modules/groups/student/group_info_screen.dart';
 import 'package:e_learning/modules/groups/student/group_tabs/discover_group_build_item.dart';
 import 'package:e_learning/modules/student/student_filter_build_item.dart';
 import 'package:e_learning/shared/componants/componants.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/componants/widgets/default_loader.dart';
 import 'package:e_learning/shared/componants/widgets/no_data_widget.dart';
 import 'package:e_learning/shared/cubit/cubit.dart';
@@ -87,8 +88,8 @@ class _DiscoverStudentGroupsTabState extends State<DiscoverStudentGroupsTab> {
                                         cubit: cubit,
                                         groupId: group.id!,
                                         groupName: group.title!,
-                                        teacherName:
-                                            group.teacher!.name ?? 'teacher',
+                                        teacherName: group.teacher!.name ??
+                                            context.tr.teacher,
                                         subjectName: group.subject!,
                                         isFree:
                                             group.type == 'free' ? true : false,

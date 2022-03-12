@@ -176,7 +176,7 @@
 	"semster" : "الترم" ,
 	"first_semster" : "الترم الاول" ,
 	"second_semster" : "الترم التاني" ,
-	"academic_semster" : "الترم الدارسي" ,
+	"academic_semster" : "الترم الدراسي" ,
 	"comments" : "التعليقات" ,
 	"rate" : "التقييم" ,
 	"official_groups_for_my_subjects" : "الجروبات الرسمية لموادك" ,
@@ -191,7 +191,6 @@
 	"cancel" : "الغاء" ,
 	"videos" : "فيديوهات" ,
 	"language" : "اللغة" ,
-	"arabic_language" : "اللغة العربية" ,
 	"followers" : "متابعًا" ,
 	"groups" : "المجموعات" ,
 	"time_taken" : "المده المستغرق" ,
@@ -307,11 +306,35 @@
 	"homework_results" : "نتائج الواجب" ,
 	"copy" : "نسخ" ,
 	"group_type" : "نوع المجموعة" ,
-	"sure_delete_alarm" : "هل انت متأكد من حذف هذا التنبيه" ,
+	"sure_delete_notification" : "هل انت متأكد من حذف هذا الاشعار" ,
 	"sure_delete_comment" : "هل تريد حقا مسح هذا الكومنت" ,
 	"sure_delete_post" : "هل تريد حقا مسح هذا المنشور" ,
 	"group_description" : "وصف المجموعة" ,
 	"must_more_than" : "يجب ان يكون 6 احرف او اكثر" ,
 	"can_know_results_after_all_finished" : "يمكنك معرفه النتيجه واجباتك الصحيحه عند انتهاء جميع المستخدمين من المشاركه او انتهاء الوقت " ,
-	"error_happened_enter_images_again" : "يوجد خطا من فضلك ادخل الصور مجددا" 
+	"error_happened_enter_images_again" : "يوجد خطا من فضلك ادخل الصور مجددا" ,
+	"please_enter_correct_code": "الرجاء إدخال رمز صحيح",
+	"code_not_sent": "لم يصلك الكود؟",
+	"resend_code": "اعادة ارسال الكود",
+	"enter_code_to_change_password": "أدخل الرمز المرسل إلى بريدك الإلكتروني ، وقم بتغيير كلمة المرور الخاصة بك",
+	"highest_points": "الاعلي نقطا",
+	"do_you_really_want_to_delete_this_group":"هل تريد حقا حذف هذه المجموعة؟",
+	"all_followers" : "المتابعين",
+	"finished" : "انتهت!!",
+	"correct_answers" : "الاجابات الصحيحة",
+	"your_answer_is" : "اجابتك هي ",
+	"right_answer_is" : "الاجابة الصحيحة هي",
+	"confirm_exit_all_answered_will_be_deleted":"هل تريد ان تخرج من الاختبار كل ما اجبته سوف يحذف؟",
+	"confirm_start_test_now" : "هل تريد بدأ هذا الاختبار الان؟",
+	"create_test": "انشاء اختبار",
+	"edit_test": "تعديل الاختبار",
+	"sure_to_delete" : "هل انت متأكد من انك تريد حذف",
+	"choose_image_from" : "اختر صورة من "
+
+
+
+
+
+
+
 }

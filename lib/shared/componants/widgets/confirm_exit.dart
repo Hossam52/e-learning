@@ -1,3 +1,4 @@
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -20,16 +21,18 @@ class ConfirmExit extends StatelessWidget {
   }
 
   Widget _confirmDialogWidget() {
-    return AlertDialog(
-      title: Text(
-        'Are you sure to exit',
-        style: TextStyle(fontSize: 19.sp, fontWeight: FontWeight.bold),
-      ),
-      actions: [
-        _confirmAction('Yes', true, Colors.red),
-        _confirmAction('No', false, Colors.black),
-      ],
-    );
+    return Builder(builder: (context) {
+      return AlertDialog(
+        title: Text(
+          context.tr.are_you_sure_to_exit,
+          style: TextStyle(fontSize: 19.sp, fontWeight: FontWeight.bold),
+        ),
+        actions: [
+          _confirmAction(context.tr.yes, true, Colors.red),
+          _confirmAction(context.tr.no, false, Colors.black),
+        ],
+      );
+    });
   }
 
   Widget _confirmAction(String text, bool val, Color color) {

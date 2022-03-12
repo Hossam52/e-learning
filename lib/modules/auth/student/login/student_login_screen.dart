@@ -11,6 +11,7 @@ import 'package:e_learning/shared/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 
 class StudentLoginScreen extends StatelessWidget {
   final TextEditingController email = TextEditingController();
@@ -33,7 +34,7 @@ class StudentLoginScreen extends StatelessWidget {
               return DefaultGestureWidget(
                 child: Scaffold(
                   extendBodyBehindAppBar: true,
-                  body: responsiveWidget(responsive: (context, deviceInfo) {
+                  body: responsiveWidget(responsive: (_context, deviceInfo) {
                     return SafeArea(
                       child: SingleChildScrollView(
                         child: Padding(
@@ -90,7 +91,8 @@ class StudentLoginScreen extends StatelessWidget {
                                     DefaultProgressButton(
                                       buttonState: cubit.loginButtonState,
                                       idleText: text.sign_in,
-                                      loadingText: 'Loading',
+                                      loadingText:
+                                          context.tr.loading, // 'Loading',
                                       failText: text.failed,
                                       successText: text.success_sign,
                                       onPressed: () {

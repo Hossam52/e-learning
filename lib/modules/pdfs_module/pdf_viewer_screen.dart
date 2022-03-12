@@ -1,6 +1,7 @@
 import 'package:e_learning/modules/pdfs_module/cubit/cubit.dart';
 import 'package:e_learning/modules/pdfs_module/cubit/states.dart';
 import 'package:e_learning/shared/componants/componants.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
@@ -34,23 +35,23 @@ class PdfViewerScreen extends StatelessWidget {
                   FilesCubit cubit = FilesCubit.get(context);
 
                   return IconButton(
-                    icon: state is! FileDownloadLoadingState
-                        ? Icon(state is! FileDownloadSuccessState
-                            ? Icons.download
-                            : Icons.done)
-                        : Container(
-                            width: 20,
-                            height: 20,
-                            child: CircularProgressIndicator(
-                              value: cubit.precentage,
-                              color: Colors.red,
-                            )),
-                    tooltip: 'download',
-                    onPressed: () => state is! FileDownloadSuccessState
-                        ? cubit.downloadFile(url, title)
-                        : showSnackBar(
-                            context: context, text: 'تم تحميل الملف من قبل'),
-                  );
+                      icon: state is! FileDownloadLoadingState
+                          ? Icon(state is! FileDownloadSuccessState
+                              ? Icons.download
+                              : Icons.done)
+                          : Container(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(
+                                value: cubit.precentage,
+                                color: Colors.red,
+                              )),
+                      tooltip: context.tr.download,
+                      onPressed: () => state is! FileDownloadSuccessState
+                          ? cubit.downloadFile(url, title)
+                          : showSnackBar(
+                              context: context,
+                              text: context.tr.file_downloaded_before));
                 },
               ),
             )

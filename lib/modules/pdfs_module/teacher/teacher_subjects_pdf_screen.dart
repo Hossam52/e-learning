@@ -1,6 +1,7 @@
 import 'package:e_learning/modules/pdfs_module/teacher/pdfs_screen.dart';
 import 'package:e_learning/modules/teacher/teacher_subject_build_item.dart';
 import 'package:e_learning/shared/componants/componants.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/componants/home_components.dart';
 import 'package:e_learning/shared/componants/widgets/default_loader.dart';
 import 'package:e_learning/shared/cubit/cubit.dart';
@@ -10,9 +11,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_conditional_rendering/conditional.dart';
 
-
 class TeacherSubjectsPdfScreen extends StatefulWidget {
-  TeacherSubjectsPdfScreen({Key? key, required this.title, required this.type}) : super(key: key);
+  TeacherSubjectsPdfScreen({Key? key, required this.title, required this.type})
+      : super(key: key);
 
   final String title;
   final String type;
@@ -50,15 +51,13 @@ class _TeacherSubjectsPdfScreenState extends State<TeacherSubjectsPdfScreen> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(top: 22),
-                    child:
-                        buildTitleHome(deviceInfo: deviceInfo, title: 'المواد'),
+                    child: buildTitleHome(
+                        deviceInfo: deviceInfo, title: context.tr.subjects),
                   ),
                   Expanded(
                     child: ListView.builder(
-                      itemCount: AppCubit.get(context)
-                          .subjectsModel!
-                          .subjects!
-                          .length,
+                      itemCount:
+                          AppCubit.get(context).subjectsModel!.subjects!.length,
                       padding: EdgeInsets.all(22),
                       itemBuilder: (context, index) => TeacherSubjectsBuildItem(
                         title: AppCubit.get(context)

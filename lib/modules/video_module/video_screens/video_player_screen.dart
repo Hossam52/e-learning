@@ -11,6 +11,7 @@ import 'package:e_learning/modules/test_module/teacher/teacher_add_test/test_com
 import 'package:e_learning/modules/video_module/video_teacher_screens/cubit/cubit.dart';
 import 'package:e_learning/modules/video_module/video_teacher_screens/cubit/states.dart';
 import 'package:e_learning/shared/componants/componants.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/componants/widgets/default_gesture_widget.dart';
 import 'package:e_learning/shared/cubit/cubit.dart';
 import 'package:e_learning/shared/cubit/states.dart';
@@ -173,7 +174,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
                                                             defaultLikeButton(
                                                           deviceInfo:
                                                               deviceInfo,
-                                                          text: 'اعجاب',
+                                                          text: context.tr.like,
                                                           icon: videosCubit
                                                                   .isVideoLiked
                                                               ? FontAwesomeIcons
@@ -213,7 +214,8 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
                                                             defaultLikeButton(
                                                           deviceInfo:
                                                               deviceInfo,
-                                                          text: 'تعليق',
+                                                          text: context
+                                                              .tr.comment,
                                                           icon: FontAwesomeIcons
                                                               .commentAlt,
                                                           padding:
@@ -251,14 +253,18 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
                                                               'delete') {
                                                             defaultAlertDialog(
                                                               context: context,
-                                                              title:
-                                                                  'مسح الكومنت',
-                                                              subTitle:
-                                                                  'هل تريد حقا مسح هذا الكومنت',
+                                                              title: context.tr
+                                                                  .remove_comment,
+                                                              subTitle: context
+                                                                  .tr
+                                                                  .sure_delete_comment,
+                                                              // 'هل تريد حقا مسح هذا الكومنت',
                                                               buttonConfirm:
-                                                                  "مسح",
+                                                                  context.tr
+                                                                      .delete,
                                                               buttonReject:
-                                                                  "عوده",
+                                                                  context
+                                                                      .tr.back,
                                                               onConfirm:
                                                                   () async {
                                                                 await groupCubit

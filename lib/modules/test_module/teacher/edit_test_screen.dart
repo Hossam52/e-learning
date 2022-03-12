@@ -5,6 +5,7 @@ import 'package:e_learning/modules/test_module/cubit/states.dart';
 import 'package:e_learning/modules/test_module/teacher/teacher_add_test/test_componants/teacher_question_card_build_item.dart';
 import 'package:e_learning/modules/test_module/teacher/teacher_add_test/test_componants/test_stepper_build_item.dart';
 import 'package:e_learning/shared/componants/componants.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/componants/widgets/default_button.dart';
 import 'package:e_learning/shared/componants/widgets/default_gesture_widget.dart';
 import 'package:e_learning/shared/responsive_ui/responsive_widget.dart';
@@ -51,9 +52,10 @@ class _EditTestScreenState extends State<EditTestScreen> {
     TestCubit cubit = TestCubit.get(context);
     questionController.text = widget.questionDataModel.questionText;
     cubit.questionImage = widget.questionDataModel.questionImage;
-    for(int index = 0; index < 4; index++) {
-      if(widget.questionDataModel.chooseList!.asMap().containsKey(index)) {
-        cubit.answerImages[index] = widget.questionDataModel.chooseList![index].chooseImage;
+    for (int index = 0; index < 4; index++) {
+      if (widget.questionDataModel.chooseList!.asMap().containsKey(index)) {
+        cubit.answerImages[index] =
+            widget.questionDataModel.chooseList![index].chooseImage;
       }
     }
     cubit.hasAnswer = true;
@@ -71,10 +73,10 @@ class _EditTestScreenState extends State<EditTestScreen> {
   @override
   Widget build(BuildContext context) {
     return responsiveWidget(
-      responsive: (context, deviceInfo) => DefaultGestureWidget(
+      responsive: (_, deviceInfo) => DefaultGestureWidget(
         child: Scaffold(
           appBar: AppBar(
-            title: const Text("تعديل الاختبار"),
+            title: Text(context.tr.edit_test),
             elevation: 1,
             centerTitle: true,
             leading: defaultBackButton(context, deviceInfo.screenHeight),
@@ -111,7 +113,7 @@ class _EditTestScreenState extends State<EditTestScreen> {
                         children: [
                           Expanded(
                             child: DefaultAppButton(
-                              text: 'عودة',
+                              text: context.tr.back,
                               isLoading: false,
                               textStyle: thirdTextStyle(deviceInfo),
                               isDisabled: false,
@@ -126,7 +128,7 @@ class _EditTestScreenState extends State<EditTestScreen> {
                           SizedBox(width: 35),
                           Expanded(
                             child: DefaultAppButton(
-                              text: 'تعديل',
+                              text: context.tr.edit,
                               isLoading: false,
                               textStyle: thirdTextStyle(deviceInfo),
                               isDisabled: false,
@@ -140,16 +142,19 @@ class _EditTestScreenState extends State<EditTestScreen> {
                                       answerIndex: cubit.correctAnswerIndex!,
                                       currentIndex: widget.currentIndex,
                                       chooseList: List.generate(
-                                          cubit.answerNumber, (index) => Choose(
+                                          cubit.answerNumber,
+                                          (index) => Choose(
                                                 chooseText:
-                                                    chooseControllerList[index].text,
-                                                chooseImage: cubit.answerImages[index],
+                                                    chooseControllerList[index]
+                                                        .text,
+                                                chooseImage:
+                                                    cubit.answerImages[index],
                                               )),
                                     );
                                     Navigator.of(context).pop('update');
                                   } else {
                                     showToast(
-                                        msg: 'اختر الاجابة الصحيحة',
+                                        msg: context.tr.choose_right_answer,
                                         state: ToastStates.WARNING);
                                   }
                                 }

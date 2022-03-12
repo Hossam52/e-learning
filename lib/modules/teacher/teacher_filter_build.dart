@@ -1,4 +1,5 @@
 import 'package:e_learning/modules/teacher/filter_drop_down.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/responsive_ui/device_information.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -26,43 +27,45 @@ class TeacherFilterBuild extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ExpansionTile(
-      title: Text('تصنيف'),
-      trailing: selectedStage != null
-          ? Chip(label: Text(selectedStage!),) : null,
-      childrenPadding: EdgeInsets.symmetric(horizontal: 22),
-      tilePadding: EdgeInsets.symmetric(horizontal: 22),
-      children:[
-        FilterDropDown(
-          width: double.infinity,
-          onChanged: (value) {
-            onStageChanged(value);
-          },
-          label: 'المرحلة',
-          items: stageItems,
-          selectedValue: selectedStage,
-        ),
-        SizedBox(height: 17.h),
-        FilterDropDown(
-          width: double.infinity,
-          onChanged: (value) {
-            onStageChanged(value);
-          },
-          label: 'السنة الدراسية',
-          items: stageItems,
-          selectedValue: selectedStage,
-        ),
-        SizedBox(height: 17.h),
-        FilterDropDown(
-          width: double.infinity,
-          onChanged: (value) {
-            onStageChanged(value);
-          },
-          label: 'الترم',
-          items: stageItems,
-          selectedValue: selectedStage,
-        ),
-        SizedBox(height: 17.h),
-      ]
-    );
+        title: Text(context.tr.classification),
+        trailing: selectedStage != null
+            ? Chip(
+                label: Text(selectedStage!),
+              )
+            : null,
+        childrenPadding: EdgeInsets.symmetric(horizontal: 22),
+        tilePadding: EdgeInsets.symmetric(horizontal: 22),
+        children: [
+          FilterDropDown(
+            width: double.infinity,
+            onChanged: (value) {
+              onStageChanged(value);
+            },
+            label: context.tr.stage,
+            items: stageItems,
+            selectedValue: selectedStage,
+          ),
+          SizedBox(height: 17.h),
+          FilterDropDown(
+            width: double.infinity,
+            onChanged: (value) {
+              onStageChanged(value);
+            },
+            label: context.tr.academic_year,
+            items: stageItems,
+            selectedValue: selectedStage,
+          ),
+          SizedBox(height: 17.h),
+          FilterDropDown(
+            width: double.infinity,
+            onChanged: (value) {
+              onStageChanged(value);
+            },
+            label: context.tr.semster,
+            items: stageItems,
+            selectedValue: selectedStage,
+          ),
+          SizedBox(height: 17.h),
+        ]);
   }
 }

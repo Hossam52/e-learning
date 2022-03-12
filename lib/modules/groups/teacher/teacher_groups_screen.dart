@@ -4,6 +4,7 @@ import 'package:e_learning/modules/groups/cubit/states.dart';
 import 'package:e_learning/modules/groups/student/group_build_item.dart';
 import 'package:e_learning/modules/groups/teacher/create_group/create_group_screen.dart';
 import 'package:e_learning/shared/componants/componants.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/componants/widgets/default_loader.dart';
 import 'package:e_learning/shared/componants/widgets/no_data_widget.dart';
 import 'package:e_learning/shared/responsive_ui/responsive_widget.dart';
@@ -20,9 +21,8 @@ class TeacherGroupsScreen extends StatelessWidget {
     return BlocProvider(
       create: (context) => GroupCubit()..getMyGroups(false, GroupType.Teacher),
       child: BlocConsumer<GroupCubit, GroupStates>(
-        listener: (context, state) 
-        {
-          if(state is GroupGeneralDeleteSuccessState)
+        listener: (context, state) {
+          if (state is GroupGeneralDeleteSuccessState)
             GroupCubit.get(context).getMyGroups(false, GroupType.Teacher);
         },
         builder: (context, state) {
@@ -38,7 +38,7 @@ class TeacherGroupsScreen extends StatelessWidget {
                 fallbackBuilder: (context) => DefaultLoader(),
                 widgetBuilder: (context) => cubit.noGroupsData
                     ? NoDataWidget(
-                        text: 'عذرا لا يوجد بيانات',
+                        text: context.tr.no_data,
                         onPressed: () {
                           cubit.getMyGroups(false, GroupType.Teacher);
                         },
@@ -62,12 +62,13 @@ class TeacherGroupsScreen extends StatelessWidget {
                             onDelete: () {
                               defaultAlertDialog(
                                 context: context,
-                                title: 'حذف المجموعة',
-                                subTitle: "هل تريد حقا حذف هذه المجموعة؟",
-                                buttonConfirm: "حذف",
-                                buttonReject: "رجوع",
+                                title: context.tr.remove_group,
+                                subTitle: context
+                                    .tr.do_you_really_want_to_delete_this_group,
+                                buttonConfirm: context.tr.delete,
+                                buttonReject: context.tr.back,
                                 confirmButtonColor: errorColor,
-                                onConfirm: () async{
+                                onConfirm: () async {
                                   await cubit.deleteMethod(
                                       group.id!, GroupDeleteType.GROUP);
                                   Navigator.pop(context);
@@ -78,7 +79,8 @@ class TeacherGroupsScreen extends StatelessWidget {
                               );
                             },
                             onEdit: () {
-                              navigateTo(context, CreateGroupScreen(group: group));
+                              navigateTo(
+                                  context, CreateGroupScreen(group: group));
                             },
                           );
                         }),

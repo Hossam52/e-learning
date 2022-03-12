@@ -2,6 +2,7 @@ import 'package:e_learning/layout/student/cubit/cubit.dart';
 import 'package:e_learning/models/teacher/test/test_response_model.dart';
 import 'package:e_learning/modules/test_module/student_test/student_test_build_item.dart';
 import 'package:e_learning/shared/componants/componants.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/responsive_ui/device_information.dart';
 import 'package:e_learning/shared/styles/colors.dart';
 import 'package:flutter/material.dart';
@@ -41,8 +42,7 @@ class ExamTab extends StatelessWidget {
               onTap: () {
                 if (test.result != null) {
                   showSnackBar(
-                      context: context,
-                      text: 'لقد قمت بأداء هذا الامتحان من قبل');
+                      context: context, text: context.tr.taken_exam_before);
                 } else if (isChampion) {
                   TestLayoutCubit.get(context).changeSelectedTest(index);
                 } else {
@@ -53,7 +53,7 @@ class ExamTab extends StatelessWidget {
                       ));
                 }
               },
-              label: textLabel(test),
+              label: textLabel(context, test),
               testName: test.name!,
               teacherName: test.teacher!.name!, // 'ا / اسم الاستاذ',
               isSelected:
@@ -61,19 +61,20 @@ class ExamTab extends StatelessWidget {
                       ? true
                       : false,
               labelColor: test.result != null
-                  ? resultPercentageColor(textLabel(test, isText: false))
+                  ? resultPercentageColor(
+                      textLabel(context, test, isText: false))
                   : primaryColor,
             );
           }),
     );
   }
 
-  dynamic textLabel(Test test, {bool isText = true}) {
+  dynamic textLabel(BuildContext context, Test test, {bool isText = true}) {
     if (test.result != null) {
       int percent =
           ((num.parse(test.result!) / test.questions!.length) * 100).toInt();
       return isText ? "$percent%" : percent;
     } else
-      return 'جديد';
+      return context.tr.new_word;
   }
 }

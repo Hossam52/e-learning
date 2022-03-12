@@ -1,6 +1,7 @@
 import 'package:e_learning/models/teacher/test/test_response_model.dart';
 import 'package:e_learning/modules/test_module/cubit/cubit.dart';
 import 'package:e_learning/shared/componants/componants.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/componants/widgets/default_button.dart';
 import 'package:e_learning/shared/responsive_ui/device_information.dart';
 import 'package:e_learning/shared/styles/colors.dart';
@@ -66,7 +67,7 @@ class StudentResultsCardBuildItem extends StatelessWidget {
                         color: Colors.white,
                       ),
                       color: successColor,
-                      title: 'الاجابات الصحيحه',
+                      title: context.tr.correct_answers,
                       result: '${cubit.correctAnswersCount}',
                     ),
                     SizedBox(
@@ -79,7 +80,7 @@ class StudentResultsCardBuildItem extends StatelessWidget {
                         color: Colors.white,
                       ),
                       color: errorColor,
-                      title: 'الاجابات الخاطئه',
+                      title: context.tr.wrong_answer,
                       result: '${cubit.wrongAnswersCount}',
                     ),
                     SizedBox(
@@ -92,7 +93,7 @@ class StudentResultsCardBuildItem extends StatelessWidget {
                           color: Colors.white,
                         ),
                         color: thirdColor,
-                        title: 'المده المستغرق',
+                        title: context.tr.time_taken,
                         result: _mapTime(cubit.elapsedTime)
                         // '${cubit.elapsedTime} دقائق',
                         ),
@@ -106,7 +107,7 @@ class StudentResultsCardBuildItem extends StatelessWidget {
                         color: Colors.white,
                       ),
                       color: thirdColor,
-                      title: 'النسبه المئويه',
+                      title: context.tr.percentage,
                       result: '$testResultPercentage%',
                       textColor: resultPercentageColor(testResultPercentage),
                     ),
@@ -117,7 +118,7 @@ class StudentResultsCardBuildItem extends StatelessWidget {
                       deviceInfo: deviceInfo,
                       icon: SvgPicture.asset('assets/images/icons/points.svg'),
                       color: thirdColor,
-                      title: 'عدد النقاط',
+                      title: context.tr.points_count,
                       result: '١٥',
                     ),
                   ],
@@ -128,7 +129,7 @@ class StudentResultsCardBuildItem extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(bottom: 40.h),
             child: DefaultAppButton(
-              text: 'عرض الاجابات الصحيحه',
+              text: context.tr.show_correct_answers,
               isLoading: false,
               textStyle: thirdTextStyle(deviceInfo),
               isDisabled: false,

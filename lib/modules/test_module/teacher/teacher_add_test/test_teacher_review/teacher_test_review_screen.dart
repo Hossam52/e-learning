@@ -5,6 +5,7 @@ import 'package:e_learning/modules/test_module/cubit/cubit.dart';
 import 'package:e_learning/modules/test_module/cubit/states.dart';
 import 'package:e_learning/modules/test_module/teacher/edit_test_screen.dart';
 import 'package:e_learning/shared/componants/componants.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/componants/widgets/default_button.dart';
 import 'package:e_learning/shared/componants/widgets/default_progress_button.dart';
 import 'package:e_learning/shared/responsive_ui/responsive_widget.dart';
@@ -86,8 +87,8 @@ class _TeacherTestReviewScreenState extends State<TeacherTestReviewScreen> {
                                   EdgeInsets.only(top: 32.0.h, bottom: 20.h),
                               child: Text(
                                 widget.groupId != null
-                                    ? 'اسألة الواجب'
-                                    : 'اسألة الاختبار',
+                                    ? context.tr.homework_questions
+                                    : context.tr.test_questions,
                                 style: secondaryTextStyle(deviceInfo)
                                     .copyWith(fontWeight: FontWeight.w400),
                               ),
@@ -159,8 +160,8 @@ class _TeacherTestReviewScreenState extends State<TeacherTestReviewScreen> {
                                 children: [
                                   Text(
                                     widget.groupId != null
-                                        ? 'تحديد وقت الواجب'
-                                        : 'تحديد وقت الاختبار',
+                                        ? context.tr.specify_homework_time
+                                        : context.tr.specify_exam_time,
                                     style: secondaryTextStyle(deviceInfo)
                                         .copyWith(fontWeight: FontWeight.w400),
                                   ),
@@ -216,7 +217,7 @@ class _TeacherTestReviewScreenState extends State<TeacherTestReviewScreen> {
                       if (widget.isEdit == false)
                         Expanded(
                           child: DefaultAppButton(
-                            text: 'تعديل',
+                            text: context.tr.edit,
                             textStyle: thirdTextStyle(deviceInfo),
                             width: 140.w,
                             background: thirdColor,
@@ -230,10 +231,10 @@ class _TeacherTestReviewScreenState extends State<TeacherTestReviewScreen> {
                         flex: 2,
                         child: DefaultProgressButton(
                           buttonState: cubit.uploadTestButtonState,
-                          idleText: 'انهاء',
-                          loadingText: 'Loading',
-                          failText: 'حدث خطأ',
-                          successText: 'تم الاضافة بنجاح',
+                          idleText: context.tr.finish,
+                          loadingText: context.tr.loading,
+                          failText: context.tr.error_happened,
+                          successText: context.tr.success_adding,
                           borderRadius: 12.0,
                           onPressed: () async {
                             cubit.addTestMethod(
@@ -256,17 +257,14 @@ class _TeacherTestReviewScreenState extends State<TeacherTestReviewScreen> {
       ),
     );
   }
+
   TestDataModel generateTestModel() => TestDataModel(
-      name: widget.testName,
-      stageId:
-      widget.generalAddTeacherDataModel.stageId,
-      classroomId: widget
-          .generalAddTeacherDataModel.classroomId,
-      termId:
-      widget.generalAddTeacherDataModel.termId,
-      subjectId:
-      widget.generalAddTeacherDataModel.subjectId,
-      minuteNumber: widget.duration.inMinutes,
-      questionDataModel: widget.test,
-    );
+        name: widget.testName,
+        stageId: widget.generalAddTeacherDataModel.stageId,
+        classroomId: widget.generalAddTeacherDataModel.classroomId,
+        termId: widget.generalAddTeacherDataModel.termId,
+        subjectId: widget.generalAddTeacherDataModel.subjectId,
+        minuteNumber: widget.duration.inMinutes,
+        questionDataModel: widget.test,
+      );
 }

@@ -3,6 +3,7 @@ import 'package:e_learning/models/teacher/groups/in_group/comment_model.dart';
 import 'package:e_learning/modules/groups/cubit/cubit.dart';
 import 'package:e_learning/shared/componants/componants.dart';
 import 'package:e_learning/shared/componants/constants.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/componants/widgets/default_form_field.dart';
 import 'package:e_learning/shared/cubit/cubit.dart';
 import 'package:e_learning/shared/styles/colors.dart';
@@ -44,12 +45,13 @@ class CommentTextFieldBuildItem extends StatelessWidget {
         Expanded(
           child: DefaultFormField(
             validation: (value) {
-              if (value == null || value.isEmpty) return 'هذا الحقل مطلوب';
+              if (value == null || value.isEmpty)
+                return context.tr.this_field_is_required;
               return null;
             },
             controller: commentController,
             haveBackground: true,
-            hintText: 'اكتب تعليق هنا',
+            hintText: context.tr.write_comment_here,
             suffix: authType ? Icons.photo : null,
             suffixPressed: () {
               alertDialogImagePicker(

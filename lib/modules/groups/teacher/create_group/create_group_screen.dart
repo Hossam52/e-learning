@@ -3,6 +3,7 @@ import 'package:e_learning/models/teacher/groups/group_response_model.dart';
 import 'package:e_learning/modules/groups/cubit/cubit.dart';
 import 'package:e_learning/modules/groups/cubit/states.dart';
 import 'package:e_learning/shared/componants/componants.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/componants/widgets/default_drop_down.dart';
 import 'package:e_learning/shared/componants/widgets/default_form_field.dart';
 import 'package:e_learning/shared/componants/widgets/default_gesture_widget.dart';
@@ -73,15 +74,15 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
 
             return DefaultGestureWidget(
               child: responsiveWidget(
-                responsive: (context, deviceInfo) => Scaffold(
+                responsive: (_, deviceInfo) => Scaffold(
                   appBar: AppBar(
-                    title: Text('إنشاء مجموعة'),
+                    title: Text(context.tr.create_group),
                     centerTitle: true,
                     leading:
                         defaultBackButton(context, deviceInfo.screenHeight),
                   ),
-                  body: SingleChildScrollView(child:
-                      responsiveWidget(responsive: (context, deviceInfo) {
+                  body: SingleChildScrollView(
+                      child: responsiveWidget(responsive: (_, deviceInfo) {
                     return Padding(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 16,
@@ -98,10 +99,10 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
                             DefaultFormField(
                                 controller: groupTitle,
                                 type: TextInputType.text,
-                                labelText: 'عنوان المجموعة',
+                                labelText: context.tr.group_title,
                                 validation: (title) {
                                   if (title == null || title.isEmpty)
-                                    return 'من فضلك ادخل اسم المجموعة';
+                                    return context.tr.enter_group_name;
                                   return null;
                                 }),
                             SizedBox(height: 26.h),
@@ -109,10 +110,10 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
                                 maxLines: 3,
                                 controller: groupDescription,
                                 type: TextInputType.multiline,
-                                labelText: 'وصف المجموعة',
+                                labelText: context.tr.group_description,
                                 validation: (description) {
                                   if (description!.isEmpty)
-                                    return 'من فضلك ادخل وصف المجموعة';
+                                    return context.tr.enter_group_description;
                                   return null;
                                 }),
                             SizedBox(height: 26.h),
@@ -120,13 +121,14 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
                               children: [
                                 Expanded(
                                   child: DefaultDropDown(
-                                    label: "المرحله الدراسيه",
+                                    label: context.tr.academic_year,
                                     onChanged: (value) {
                                       appCubit.onChangeStage(value);
                                     },
                                     validator: (value) {
                                       if (value == null || value.isEmpty)
-                                        return 'هذا الحقل مطلوب';
+                                        return context
+                                            .tr.this_field_is_required;
                                       return null;
                                     },
                                     items: appCubit.stageNamesList,
@@ -140,13 +142,15 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
                                 ),
                                 Expanded(
                                   child: DefaultDropDown(
-                                    label: 'الصف الدراسي',
+                                    // label: 'الصف الدراسي',
+                                    label: context.tr.classroom,
                                     onChanged: (value) {
                                       appCubit.onChangeClass(value);
                                     },
                                     validator: (value) {
                                       if (value == null || value.isEmpty)
-                                        return 'هذا الحقل مطلوب';
+                                        return context
+                                            .tr.this_field_is_required;
                                       return null;
                                     },
                                     items: appCubit.classNamesList,
@@ -160,13 +164,15 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
                               children: [
                                 Expanded(
                                   child: DefaultDropDown(
-                                    label: 'الترم الدارسي',
+                                    // label: 'الترم الدارسي',
+                                    label: context.tr.academic_semster,
                                     onChanged: (value) {
                                       appCubit.onTermChange(value);
                                     },
                                     validator: (value) {
                                       if (value == null || value.isEmpty)
-                                        return 'هذا الحقل مطلوب';
+                                        return context
+                                            .tr.this_field_is_required;
                                       return null;
                                     },
                                     items: appCubit.termNamesList,
@@ -179,13 +185,14 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
                                 ),
                                 Expanded(
                                   child: DefaultDropDown(
-                                    label: 'المادة',
+                                    label: context.tr.subject,
                                     onChanged: (value) {
                                       appCubit.onSubjectChange(value);
                                     },
                                     validator: (value) {
                                       if (value == null || value.isEmpty)
-                                        return 'هذا الحقل مطلوب';
+                                        return context
+                                            .tr.this_field_is_required;
                                       return null;
                                     },
                                     items: appCubit.subjectNamesList,
@@ -196,7 +203,7 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
                             ),
                             SizedBox(height: 26.h),
                             Text(
-                              'نوع المجموعة',
+                              context.tr.group_type,
                               style: thirdTextStyle(deviceInfo),
                             ),
                             SizedBox(
@@ -207,7 +214,7 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
                               children: [
                                 Expanded(
                                   child: RadioListTile(
-                                    title: Text('عامة'),
+                                    title: Text(context.tr.public),
                                     value: 'free',
                                     groupValue: cubit.groupType,
                                     onChanged: (value) {
@@ -220,7 +227,7 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
                                 ),
                                 Expanded(
                                   child: RadioListTile(
-                                    title: Text('خاصة'),
+                                    title: Text(context.tr.private),
                                     value: 'private',
                                     groupValue: cubit.groupType,
                                     onChanged: (value) {
@@ -233,11 +240,14 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
                             SizedBox(height: 40.h),
                             DefaultProgressButton(
                               buttonState: cubit.createGroupButtonState,
-                              idleText:
-                                  widget.group != null ? 'تعديل' : 'إنشاء',
-                              loadingText: 'Loading',
-                              failText: 'حدث خطأ',
-                              successText: 'تم الاضافة بنجاح',
+                              idleText: widget.group != null
+                                  ?
+                                  //  'تعديل' : 'إنشاء',
+                                  context.tr.edit
+                                  : context.tr.create,
+                              loadingText: context.tr.loading,
+                              failText: context.tr.error_happened,
+                              successText: context.tr.success_adding,
                               onPressed: () async {
                                 formKey.currentState!.save();
                                 if (formKey.currentState!.validate() &&
@@ -261,7 +271,7 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
                                 } else {
                                   showSnackBar(
                                     context: context,
-                                    text: 'من فضلك اكمل بيناتك',
+                                    text: context.tr.please_complete_your_data,
                                     backgroundColor: errorColor,
                                   );
                                 }

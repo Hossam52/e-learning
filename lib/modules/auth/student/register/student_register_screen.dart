@@ -4,6 +4,7 @@ import 'package:e_learning/modules/auth/cubit/cubit.dart';
 import 'package:e_learning/modules/auth/cubit/states.dart';
 import 'package:e_learning/modules/auth/student/login/student_login_screen.dart';
 import 'package:e_learning/shared/componants/componants.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/componants/widgets/default_form_field.dart';
 import 'package:e_learning/shared/componants/widgets/default_gesture_widget.dart';
 import 'package:e_learning/shared/componants/widgets/default_progress_button.dart';
@@ -39,7 +40,7 @@ class StudentRegisterScreen extends StatelessWidget {
         return DefaultGestureWidget(
           child: Scaffold(
             extendBodyBehindAppBar: true,
-            body: responsiveWidget(responsive: (context, deviceInfo) {
+            body: responsiveWidget(responsive: (_, deviceInfo) {
               return SafeArea(
                 child: SingleChildScrollView(
                   child: Padding(
@@ -240,7 +241,7 @@ class StudentRegisterScreen extends StatelessWidget {
                           DefaultProgressButton(
                             buttonState: cubit.studentRegisterState,
                             idleText: text.create_account,
-                            loadingText: 'Loading',
+                            loadingText: context.tr.loading, // 'Loading',
                             failText: text.failed,
                             successText: text.success_sign,
                             onPressed: () {

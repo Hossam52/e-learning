@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:e_learning/modules/auth/cubit/cubit.dart';
 import 'package:e_learning/modules/auth/cubit/states.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/componants/widgets/default_button.dart';
 import 'package:e_learning/shared/responsive_ui/responsive_widget.dart';
 import 'package:e_learning/shared/styles/colors.dart';
@@ -13,20 +14,20 @@ import 'package:pin_code_fields/pin_code_fields.dart';
 
 // ignore: must_be_immutable
 class EmailVerifyScreen extends StatelessWidget {
-  EmailVerifyScreen({Key? key, required this.email, required this.isStudent}) : super(key: key);
+  EmailVerifyScreen({Key? key, required this.email, required this.isStudent})
+      : super(key: key);
   final String email;
   final bool isStudent;
 
   TextEditingController codeController = TextEditingController();
 
-  StreamController<ErrorAnimationType> errorController = StreamController<ErrorAnimationType>();
+  StreamController<ErrorAnimationType> errorController =
+      StreamController<ErrorAnimationType>();
 
   final formKey = GlobalKey<FormState>();
 
-
   @override
   Widget build(BuildContext context) {
-
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
 
@@ -34,8 +35,8 @@ class EmailVerifyScreen extends StatelessWidget {
       responsive: (context, deviceInfo) {
         return BlocConsumer<AuthCubit, AuthStates>(
           listener: (context, state) {
-            if(state is VerifySuccessState) {
-              if(AuthCubit.get(context).hasVerifyError){
+            if (state is VerifySuccessState) {
+              if (AuthCubit.get(context).hasVerifyError) {
                 errorController.add(ErrorAnimationType.shake);
               }
             }
@@ -68,13 +69,16 @@ class EmailVerifyScreen extends StatelessWidget {
                         ),
                         SizedBox(height: height * 0.035),
                         Text(
-                          'تأكيد البريد الالكتروني',
+                          context.tr.confirm_email,
+                          // 'تأكيد البريد الالكتروني',
                           style: TextStyle(
                             fontSize: width * 0.074,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
-                        SizedBox(height: height * 0.01,),
+                        SizedBox(
+                          height: height * 0.01,
+                        ),
                         RichText(
                           text: TextSpan(
                             text: 'أدخل الرمز المرسل إلى ',
@@ -83,13 +87,12 @@ class EmailVerifyScreen extends StatelessWidget {
                               color: Colors.grey,
                             ),
                             children: <TextSpan>[
-                              TextSpan(text: email, style:
-                              TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black,
-                                  fontSize: width * 0.04
-                              )
-                              ),
+                              TextSpan(
+                                  text: email,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black,
+                                      fontSize: width * 0.04)),
                             ],
                           ),
                         ),
@@ -110,8 +113,9 @@ class EmailVerifyScreen extends StatelessWidget {
                                 length: 6,
                                 animationType: AnimationType.fade,
                                 validator: (value) {
-                                  if (value!.length < 6 ) {
-                                    return "الرجاء إدخال الرمز الذي تلقيته";
+                                  if (value!.length < 6) {
+                                    return context.tr.enter_pin_code;
+                                    //  "الرجاء إدخال الرمز الذي تلقيته";
                                   } else {
                                     return null;
                                   }
@@ -149,11 +153,10 @@ class EmailVerifyScreen extends StatelessWidget {
                                   if (formKey.currentState!.validate()) {
                                     formKey.currentState!.save();
                                     cubit.codeVerification(
-                                      code: codeController.text,
-                                      isStudent: isStudent,
-                                      context: context,
-                                      deviceInfo: deviceInfo
-                                    );
+                                        code: codeController.text,
+                                        isStudent: isStudent,
+                                        context: context,
+                                        deviceInfo: deviceInfo);
                                   }
                                 },
                                 onChanged: (value) {},
@@ -166,7 +169,9 @@ class EmailVerifyScreen extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 30.0),
                           child: Text(
-                            cubit.hasVerifyError ? "الرجاء إدخال رمز صحيح" : "",
+                            cubit.hasVerifyError
+                                ? context.tr.please_enter_correct_code
+                                : "",
                             style: TextStyle(
                                 color: Colors.red,
                                 fontSize: 12,
@@ -178,15 +183,15 @@ class EmailVerifyScreen extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              "لم يصلك الرمز؟ ",
-                              style: TextStyle(color: Colors.black54, fontSize: 15),
+                              context.tr.code_not_sent,
+                              // "لم يصلك الرمز؟ ",
+                              style: TextStyle(
+                                  color: Colors.black54, fontSize: 15),
                             ),
                             TextButton(
-                                onPressed: () {
-
-                                },
+                                onPressed: () {},
                                 child: Text(
-                                  "أعد الإرسال",
+                                  context.tr.resend_code,
                                   style: TextStyle(
                                       color: Color(0xFF91D3B3),
                                       fontWeight: FontWeight.bold,
@@ -194,7 +199,9 @@ class EmailVerifyScreen extends StatelessWidget {
                                 ))
                           ],
                         ),
-                        SizedBox(height: height * 0.015,),
+                        SizedBox(
+                          height: height * 0.015,
+                        ),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 30),
                           child: DefaultAppButton(
@@ -203,14 +210,13 @@ class EmailVerifyScreen extends StatelessWidget {
                               if (formKey.currentState!.validate()) {
                                 formKey.currentState!.save();
                                 cubit.codeVerification(
-                                  code: codeController.text,
-                                  isStudent: isStudent,
-                                  context: context,
-                                  deviceInfo: deviceInfo
-                                );
+                                    code: codeController.text,
+                                    isStudent: isStudent,
+                                    context: context,
+                                    deviceInfo: deviceInfo);
                               }
                             },
-                            text: 'تحقق',
+                            text: context.tr.verify,
                             background: secondaryColor,
                             isLoading: cubit.isVerifyLoading,
                             width: double.infinity,

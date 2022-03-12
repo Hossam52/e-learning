@@ -4,6 +4,7 @@ import 'package:e_learning/modules/groups/cubit/cubit.dart';
 import 'package:e_learning/modules/groups/cubit/states.dart';
 import 'package:e_learning/modules/groups/student/group_member_build_item.dart';
 import 'package:e_learning/shared/componants/componants.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/componants/widgets/default_button.dart';
 import 'package:e_learning/shared/componants/widgets/default_circle_image.dart';
 import 'package:e_learning/shared/componants/widgets/default_rating_bar.dart';
@@ -84,7 +85,9 @@ class GroupInfoScreen extends StatelessWidget {
                         Center(
                           child: Chip(
                             label: Text(
-                                "${group.type == 'free' ? 'مجموعة عامة' : 'مجموعة خاصة'}"),
+                              // "${group.type == 'free' ? 'مجموعة عامة' : 'مجموعة خاصة'}",
+                              "${group.type == 'free' ? context.tr.public_group : context.tr.private_group}",
+                            ),
                             avatar: Icon(
                               group.type == 'free'
                                   ? Icons.visibility
@@ -111,7 +114,7 @@ class GroupInfoScreen extends StatelessWidget {
                         _personsInGroup(),
                         SizedBox(height: 22.h),
                         DefaultAppButton(
-                          text: 'انضم الى المجموعة',
+                          text: context.tr.joing_group,
                           textStyle: thirdTextStyle(null),
                           isLoading: cubit.isJoinGroupLoading,
                           onPressed: () {
@@ -128,7 +131,7 @@ class GroupInfoScreen extends StatelessWidget {
                     child: Column(
                       children: [
                         ListTile(
-                          title: Text('عن المعلم'),
+                          title: Text(context.tr.about_teacher),
                           contentPadding: EdgeInsets.zero,
                         ),
                         ListTile(

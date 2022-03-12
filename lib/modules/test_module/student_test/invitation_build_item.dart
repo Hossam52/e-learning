@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/styles/colors.dart';
 import 'package:e_learning/shared/styles/styles.dart';
 import 'package:flutter/material.dart';
@@ -47,7 +48,8 @@ class InvitationChallengeBuildItem extends StatelessWidget {
                 ),
                 SizedBox(height: 5),
                 Text(
-                  'لقد دعاك الي مسابقه',
+                  context.tr.invite_to_competition,
+                  // 'لقد دعاك الي مسابقه',
                   style: TextStyle(color: Colors.grey),
                 ),
               ],

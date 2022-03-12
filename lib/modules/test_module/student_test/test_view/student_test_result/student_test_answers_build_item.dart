@@ -1,3 +1,4 @@
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/responsive_ui/device_information.dart';
 import 'package:e_learning/shared/styles/colors.dart';
 import 'package:e_learning/shared/styles/styles.dart';
@@ -36,8 +37,9 @@ class StudentAnswersBuildItem extends StatelessWidget {
         color: Colors.white,
       ),
       child: ExpansionTile(
-        title: Text('Question number $questionNumber'),
-        subtitle: _buildRowAnswer('Your answer is :', wrongAnswer, errorColor),
+        title: Text('${context.tr.questions_num} $questionNumber'),
+        subtitle: _buildRowAnswer(
+            '${context.tr.your_answer_is} :', wrongAnswer, errorColor),
         leading: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -62,9 +64,11 @@ class StudentAnswersBuildItem extends StatelessWidget {
                       .copyWith(fontWeight: FontWeight.w400),
                 ),
                 SizedBox(height: 8.h),
-                _buildRowAnswer('Your answer is :', wrongAnswer, errorColor),
+                _buildRowAnswer(
+                    '${context.tr.your_answer_is} :', wrongAnswer, errorColor),
                 SizedBox(height: 8.h),
-                _buildRowAnswer('Right answer is :', rightAnswer, successColor),
+                _buildRowAnswer('${context.tr.right_answer_is} :', rightAnswer,
+                    successColor),
               ],
             ),
           ),

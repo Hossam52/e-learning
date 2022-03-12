@@ -1,4 +1,5 @@
 import 'package:e_learning/modules/video_module/video_teacher_screens/cubit/cubit.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/componants/widgets/default_button.dart';
 import 'package:e_learning/shared/componants/widgets/default_form_field.dart';
 import 'package:e_learning/shared/componants/widgets/default_gesture_widget.dart';
@@ -65,33 +66,36 @@ class _AddVideoModalSheetState extends State<AddVideoModalSheet> {
                 DefaultFormField(
                   validation: (value) {
                     if (value == null || value.isEmpty)
-                      return 'من فضلك ادخل عنوان الفيديو';
+                      return context
+                          .tr.enter_video_title; //'من فضلك ادخل عنوان الفيديو';
                     return null;
                   },
                   controller: videoNameController,
-                  labelText: 'عنوان الفديو',
-                  hintText: 'عنوان الفديو',
+                  labelText: context.tr.video_title,
+                  hintText: context.tr.video_title,
                   haveBackground: true,
                 ),
                 SizedBox(height: 20.h),
                 DefaultFormField(
                   validation: (value) {
                     if (value == null || value.isEmpty)
-                      return 'من فضلك ادخل رابط الفيديو';
+                      return context
+                          .tr.enter_video_url; // 'من فضلك ادخل رابط الفيديو';
                     else if (widget.cubit.validateAndConvertVideoUrl(value) ==
                         null)
-                      return 'خطا فى الرابط برجاء التأكد من الرابط و المحاولة مجددا';
+                      return context.tr
+                          .link_error_try_again; // 'خطا فى الرابط برجاء التأكد من الرابط و المحاولة مجددا';
                     else
                       return null;
                   },
                   controller: videoUrlController,
-                  labelText: 'الصق الرابط',
-                  hintText: 'الصق الرابط',
+                  labelText: context.tr.paste_link,
+                  hintText: context.tr.paste_link,
                   haveBackground: true,
                 ),
                 SizedBox(height: 20.h),
                 DefaultAppButton(
-                  text: widget.index != null ? 'تعديل' : 'اضافة',
+                  text: widget.index != null ? context.tr.edit : context.tr.add,
                   textStyle: thirdTextStyle(widget.deviceInfo),
                   width: 120.w,
                   onPressed: () {

@@ -3,6 +3,7 @@ import 'package:e_learning/modules/groups/cubit/cubit.dart';
 import 'package:e_learning/modules/groups/cubit/states.dart';
 import 'package:e_learning/modules/groups/student/group_view/discuss_tab/group_question_tab.dart';
 import 'package:e_learning/shared/componants/componants.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/componants/shared_methods.dart';
 import 'package:e_learning/shared/componants/widgets/default_loader.dart';
 import 'package:e_learning/shared/componants/widgets/default_text_field.dart';
@@ -47,7 +48,7 @@ class _ProfilePostsTabState extends State<ProfilePostsTab> {
             fallbackBuilder: (context) => DefaultLoader(),
             widgetBuilder: (context) => cubit.noPostData
                 ? NoDataWidget(
-                    text: 'عذرا لا يوجد منشورات',
+                    text: context.tr.no_posts,
                     onPressed: () => GroupCubit.get(context)
                         .getAllPostsAndQuestions('share', 0, true,
                             isProfile: true),

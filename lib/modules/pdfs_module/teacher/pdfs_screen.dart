@@ -2,6 +2,7 @@ import 'package:e_learning/modules/pdfs_module/cubit/cubit.dart';
 import 'package:e_learning/modules/pdfs_module/cubit/states.dart';
 import 'package:e_learning/shared/componants/componants.dart';
 import 'package:e_learning/shared/componants/constants.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/componants/widgets/default_loader.dart';
 import 'package:e_learning/shared/componants/widgets/file_tile_build_item.dart';
 import 'package:e_learning/shared/responsive_ui/device_information.dart';
@@ -81,7 +82,7 @@ class PdfsScreen extends StatelessWidget {
                   state is! GetSubjectFilesLoadingState,
               fallbackBuilder: (context) => DefaultLoader(),
               widgetBuilder: (context) => cubit.noFilesFound
-                  ? noData('لا يوجد ملفات حتى الان')
+                  ? noData(context.tr.no_files_up_till_now)
                   : ListView.separated(
                       itemCount: cubit.getSubjectFilesModel!.files!.length,
                       padding: EdgeInsets.all(22),

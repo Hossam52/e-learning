@@ -1,3 +1,4 @@
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/styles/colors.dart';
 import 'package:e_learning/shared/styles/styles.dart';
 import 'package:flutter/material.dart';
@@ -27,12 +28,13 @@ class DefaultProgressButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      clipBehavior: onPressed == null
-          ? Clip.antiAliasWithSaveLayer : Clip.none,
-      decoration: onPressed == null ? BoxDecoration(
-        color: Colors.grey[300],
-        borderRadius: BorderRadius.circular(borderRadius),
-      ) : null,
+      clipBehavior: onPressed == null ? Clip.antiAliasWithSaveLayer : Clip.none,
+      decoration: onPressed == null
+          ? BoxDecoration(
+              color: Colors.grey[300],
+              borderRadius: BorderRadius.circular(borderRadius),
+            )
+          : null,
       child: ProgressButton.icon(
         radius: borderRadius,
         textStyle: thirdTextStyle(null),
@@ -44,7 +46,8 @@ class DefaultProgressButton extends StatelessWidget {
                 size: 0,
               ),
               color: primaryColor),
-          ButtonState.loading: IconedButton(text: 'Loading', color: primaryColor),
+          ButtonState.loading:
+              IconedButton(text: context.tr.loading, color: primaryColor),
           ButtonState.fail: IconedButton(
               text: failText,
               icon: Icon(Icons.cancel, color: Colors.white),

@@ -6,6 +6,7 @@ import 'package:e_learning/modules/groups/group_type_badge_build_item.dart';
 import 'package:e_learning/modules/groups/teacher/teacher_public_group_screen.dart';
 import 'package:e_learning/modules/student/public_group/public_grouo_home_screen.dart';
 import 'package:e_learning/shared/componants/componants.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/responsive_ui/device_information.dart';
 import 'package:e_learning/shared/styles/colors.dart';
 import 'package:e_learning/shared/styles/styles.dart';
@@ -51,12 +52,12 @@ class GroupBuildItem extends StatelessWidget {
             menuWidth: deviceInfo.screenwidth * 0.6,
             menuItems: [
               FocusedMenuItem(
-                title: Text('تعديل'),
+                title: Text(context.tr.edit),
                 onPressed: onEdit,
                 trailingIcon: Icon(Icons.edit),
               ),
               FocusedMenuItem(
-                title: Text('حذف'),
+                title: Text(context.tr.delete),
                 onPressed: onDelete,
                 trailingIcon: Icon(Icons.delete, color: errorColor),
               ),
@@ -86,7 +87,10 @@ class GroupBuildItem extends StatelessWidget {
                       ));
                 else
                   navigateTo(
-                      context, PublicGroupTeacherHomeScreen(group: group!,));
+                      context,
+                      PublicGroupTeacherHomeScreen(
+                        group: group!,
+                      ));
               } else {
                 navigateTo(
                   context,

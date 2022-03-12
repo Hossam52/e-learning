@@ -7,6 +7,7 @@ import 'package:e_learning/models/teacher/auth/teacher_data_model.dart';
 import 'package:e_learning/modules/student/cubit/cubit/states.dart';
 import 'package:e_learning/shared/componants/componants.dart';
 import 'package:e_learning/shared/componants/constants.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/network/end_points.dart';
 import 'package:e_learning/shared/network/remote/dio_helper.dart';
 import 'package:e_learning/shared/network/services/student_services.dart';
@@ -113,7 +114,7 @@ class StudentCubit extends Cubit<StudentStates> {
       }
     } catch (e) {
       showToast(
-        msg: 'عذرا حدث خطا حاول مرة اخرى',
+        msg: context.tr.error_happened_try_again,
         state: ToastStates.ERROR,
       );
       emit(GroupFriendWithCodeErrorState());
@@ -167,7 +168,7 @@ class StudentCubit extends Cubit<StudentStates> {
     followCount = count;
   }
 
-  void toggleTeacherFollow(int teacherId) async {
+  void toggleTeacherFollow(BuildContext context, int teacherId) async {
     try {
       followCount += isFollowed ? -1 : 1;
       isFollowed = !isFollowed;
@@ -183,13 +184,13 @@ class StudentCubit extends Cubit<StudentStates> {
       } else {
         isFollowed = !isFollowed;
         followCount += isFollowed ? -1 : 1;
-        showToast(msg: 'an error has occurred', state: ToastStates.ERROR);
+        showToast(msg: context.tr.error_happened, state: ToastStates.ERROR);
         emit(ToggleFollowErrorState());
       }
     } catch (e) {
       isFollowed = !isFollowed;
       followCount += isFollowed ? -1 : 1;
-      showToast(msg: 'an error has occurred', state: ToastStates.ERROR);
+      showToast(msg: context.tr.error_happened, state: ToastStates.ERROR);
       emit(ToggleFollowErrorState());
       throw e;
     }

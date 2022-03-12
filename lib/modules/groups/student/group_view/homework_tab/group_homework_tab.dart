@@ -5,6 +5,7 @@ import 'package:e_learning/modules/teacher/results/results_view/home_work_result
 import 'package:e_learning/modules/test_module/student_test/test_view/student_test_quetion.dart';
 import 'package:e_learning/modules/test_module/teacher/teacher_add_test/teacher_add_test_details.dart';
 import 'package:e_learning/shared/componants/componants.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/componants/widgets/default_loader.dart';
 import 'package:e_learning/shared/componants/widgets/homework_build_item.dart';
 import 'package:e_learning/shared/componants/widgets/no_data_widget.dart';
@@ -61,25 +62,34 @@ class _GroupHomeworkTabState extends State<GroupHomeworkTab> {
                 fallbackBuilder: (context) => DefaultLoader(),
                 widgetBuilder: (context) => cubit.noHomeworkData
                     ? NoDataWidget(
-                        text: 'عذرا لا يوجد بيانات',
+                        text: context.tr.no_data,
                         onPressed: () => cubit.getGroupHomework(
                             widget.groupId, widget.isStudent))
                     : ListView.builder(
                         itemCount:
                             cubit.homeWorkResponseModel!.homework!.length,
                         padding: EdgeInsets.all(16),
-                        itemBuilder: (context, index) {
+                        itemBuilder: (_, index) {
                           var homework =
                               cubit.homeWorkResponseModel!.homework![index];
                           return HomeworkBuildItem(
                             deviceInfo: deviceInfo,
                             title: homework.name!,
-                            buttonText:
-                                widget.isStudent ? 'حل واجب' : 'نتائج الواجب',
+                            buttonText: widget.isStudent
+                                ?
+                                //  'حل واجب'
+                                //  : 'نتائج الواجب',
+                                context.tr.solve_homework
+                                : context.tr.homework_results,
                             result: homework.result,
                             onPressed: () {
                               if (widget.isStudent)
-                                navigateTo(context,StudentTestQuestion( test: homework, isChampion: false,));
+                                navigateTo(
+                                    context,
+                                    StudentTestQuestion(
+                                      test: homework,
+                                      isChampion: false,
+                                    ));
                               else
                                 navigateTo(
                                     context,

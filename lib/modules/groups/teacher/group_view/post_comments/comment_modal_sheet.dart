@@ -7,6 +7,7 @@ import 'package:e_learning/modules/groups/student/group_view/home_tab/comment_te
 import 'package:e_learning/modules/groups/teacher/group_view/post_comments/comment_build_item.dart';
 import 'package:e_learning/modules/test_module/teacher/teacher_add_test/test_componants/test_image_remove_button.dart';
 import 'package:e_learning/shared/componants/componants.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/componants/widgets/default_gesture_widget.dart';
 import 'package:e_learning/shared/cubit/cubit.dart';
 import 'package:e_learning/shared/cubit/states.dart';
@@ -65,7 +66,7 @@ class CommentModalSheet extends StatelessWidget {
                 outsideCubit.getAllPostsAndQuestions(type, groupId, isStudent);
               }
               if (state is GroupAddStudentWithCodeSuccessState) {
-                showSnackBar(context: context, text: 'تم حذر هذا العضو');
+                showSnackBar(context: context, text: context.tr.blocked_user);
                 outsideCubit.getAllPostsAndQuestions(type, groupId, isStudent);
                 Navigator.pop(context);
               }
@@ -90,7 +91,7 @@ class CommentModalSheet extends StatelessWidget {
                                 defaultBackButton(context,
                                     MediaQuery.of(context).size.height),
                                 Text(
-                                  'التعليقات',
+                                  context.tr.comments,
                                   style: secondaryTextStyle(null),
                                   textAlign: TextAlign.center,
                                 ),
@@ -103,7 +104,7 @@ class CommentModalSheet extends StatelessWidget {
                               conditionBuilder: (context) =>
                                   comments!.isNotEmpty,
                               fallbackBuilder: (context) =>
-                                  noData('لا يوجد تعليقات حتى الان'),
+                                  noData(context.tr.no_comments_up_till_now),
                               widgetBuilder: (context) => ListView.separated(
                                   itemCount: comments!.length,
                                   padding: EdgeInsets.symmetric(
@@ -133,11 +134,11 @@ class CommentModalSheet extends StatelessWidget {
                                         if (value.toString() == 'delete') {
                                           defaultAlertDialog(
                                             context: context,
-                                            title: 'مسح المنشور',
-                                            subTitle:
-                                                'هل تريد حقا مسح هذا المنشور',
-                                            buttonConfirm: "مسح",
-                                            buttonReject: "عوده",
+                                            title: context.tr.remove_post,
+                                            subTitle: context.tr
+                                                .do_you_really_want_to_delete_this_post,
+                                            buttonConfirm: context.tr.delete,
+                                            buttonReject: context.tr.back,
                                             onConfirm: () async {
                                               await cubit.deleteMethod(
                                                   comment.id!,

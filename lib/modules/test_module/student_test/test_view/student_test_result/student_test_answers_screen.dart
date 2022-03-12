@@ -1,6 +1,7 @@
 import 'package:e_learning/models/teacher/test/test_response_model.dart';
 import 'package:e_learning/modules/test_module/cubit/cubit.dart';
 import 'package:e_learning/shared/componants/componants.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/responsive_ui/responsive_widget.dart';
 import 'package:e_learning/shared/styles/styles.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +19,7 @@ class StudentTestAnswersScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return responsiveWidget(
-      responsive: (context, deviceInfo) {
+      responsive: (_, deviceInfo) {
         return Scaffold(
           appBar: AppBar(
             elevation: 1,
@@ -39,14 +40,14 @@ class StudentTestAnswersScreen extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12)),
                       child: cubit.wrongQuestionsIndex.length == 0
-                          ? noData('لا يوجد لديك اجابات خاطئة')
+                          ? noData(context.tr.no_wrong_answers)
                           : Column(
                               children: [
                                 Padding(
                                   padding: EdgeInsets.only(
                                       top: 32.0.h, bottom: 20.h),
                                   child: Text(
-                                    'الاجابات الصحيحه',
+                                    context.tr.correct_answers,
                                     style: secondaryTextStyle(deviceInfo)
                                         .copyWith(fontWeight: FontWeight.w400),
                                   ),

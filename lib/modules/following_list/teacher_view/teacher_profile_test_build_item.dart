@@ -4,6 +4,7 @@ import 'package:e_learning/modules/test_module/student_test/student_champion/cha
 import 'package:e_learning/modules/test_module/student_test/student_champion/create_champion_screen.dart';
 import 'package:e_learning/modules/test_module/student_test/test_view/test_start_alert_screen.dart';
 import 'package:e_learning/shared/componants/componants.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/styles/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -33,8 +34,9 @@ class TeacherProfileTestBuildItem extends StatelessWidget {
                 onPressed: () {
                   if (test.result != null) {
                     showSnackBar(
-                        context: context,
-                        text: 'لقد قمت بأداء هذا الامتحان من قبل');
+                        context: context, text: context.tr.taken_exam_before
+                        // 'لقد قمت بأداء هذا الامتحان من قبل'
+                        );
                   } else {
                     navigateTo(
                         context,
@@ -43,19 +45,23 @@ class TeacherProfileTestBuildItem extends StatelessWidget {
                         ));
                   }
                 },
-                child: Text('اختبر'),
+                child: Text(context.tr.make_test
+                    // 'اختبر'
+                    ),
               ),
               SizedBox(width: 5),
               TextButton(
                 child: Text(
-                  'نافس',
+                  context.tr.compete,
+                  // 'نافس',
                   style: TextStyle(color: successColor),
                 ),
                 onPressed: () {
                   if (test.result != null) {
                     showSnackBar(
-                        context: context,
-                        text: 'لقد قمت بأداء هذا الامتحان من قبل');
+                        context: context, text: context.tr.taken_exam_before
+                        //  'لقد قمت بأداء هذا الامتحان من قبل'
+                        );
                   } else {
                     navigateTo(
                         context,

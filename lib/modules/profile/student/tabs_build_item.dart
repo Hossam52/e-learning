@@ -4,6 +4,7 @@ import 'package:e_learning/modules/auth/cubit/states.dart';
 import 'package:e_learning/modules/profile/student/profile_tabs/edit_profile_tab.dart';
 import 'package:e_learning/modules/profile/student/profile_tabs/friend_request_tab.dart';
 import 'package:e_learning/modules/profile/student/profile_tabs/profile_posts_tab.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/styles/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -53,9 +54,9 @@ class _TabsBuildItemState extends State<TabsBuildItem>
               unselectedLabelStyle:
                   TextStyle(fontSize: 13.sp, fontFamily: 'NeoSansArabic'),
               tabs: [
-                Tab(text: 'حسابي'),
-                Tab(text: 'طلبات الصداقه'),
-                Tab(text: 'المنشورات'),
+                Tab(text: context.tr.my_profile),
+                Tab(text: context.tr.friend_requests),
+                Tab(text: context.tr.posts),
               ],
             ),
           ),

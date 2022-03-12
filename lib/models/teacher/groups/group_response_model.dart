@@ -1,9 +1,12 @@
+import 'package:e_learning/models/general_apis/notification_response_model.dart';
 import 'package:e_learning/models/teacher/auth/teacher_data_model.dart';
 
 class GroupResponseModel {
   bool? status;
   String? message;
   List<Group>? groups = [];
+  Meta? meta;
+  Links? links;
 
   GroupResponseModel({this.status, this.message, this.groups});
 
@@ -11,9 +14,11 @@ class GroupResponseModel {
     status = json['status'];
     message = json['message'];
     if (json['group'] != null) {
-      json['group'].forEach((v) {
+      json['group']['data'].forEach((v) {
         groups!.add(new Group.fromJson(v));
       });
+      meta = Meta.fromJson(json['group']['meta']);
+      links = Links.fromJson(json['group']['links']);
     }
   }
 }

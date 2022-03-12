@@ -1,6 +1,7 @@
 import 'package:e_learning/layout/student/cubit/cubit.dart';
 import 'package:e_learning/layout/student/cubit/states.dart';
 import 'package:e_learning/shared/componants/componants.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/responsive_ui/responsive_widget.dart';
 import 'package:e_learning/shared/styles/colors.dart';
 import 'package:flutter/material.dart';
@@ -41,40 +42,50 @@ class TestLayout extends StatelessWidget {
                   unselectedItemColor: Colors.black,
                   items: [
                     BottomNavigationBarItem(
-                      icon: SvgPicture.asset('assets/images/icons/test_inactive.svg',
+                      icon: SvgPicture.asset(
+                        'assets/images/icons/test_inactive.svg',
                         width: 20,
                       ),
-                      activeIcon: SvgPicture.asset('assets/images/icons/test_active.svg',
+                      activeIcon: SvgPicture.asset(
+                        'assets/images/icons/test_active.svg',
                         width: 25,
                       ),
-                      label: 'اختبار',
+                      label: context.tr.test,
                     ),
                     BottomNavigationBarItem(
-                      icon: SvgPicture.asset('assets/images/icons/challenge_inactive.svg',
+                      icon: SvgPicture.asset(
+                        'assets/images/icons/challenge_inactive.svg',
                         width: 20,
                       ),
-                      activeIcon: SvgPicture.asset('assets/images/icons/challenge_active.svg',
+                      activeIcon: SvgPicture.asset(
+                        'assets/images/icons/challenge_active.svg',
                         width: 25,
                       ),
-                      label: 'منافسة',
+                      label: context.tr.competition,
                     ),
                     BottomNavigationBarItem(
-                      icon: SvgPicture.asset('assets/images/icons/my-challenges_inactive.svg',
+                      icon: SvgPicture.asset(
+                        'assets/images/icons/my-challenges_inactive.svg',
                         width: 20,
                       ),
-                      activeIcon: SvgPicture.asset('assets/images/icons/my-challenges_active.svg',
+                      activeIcon: SvgPicture.asset(
+                        'assets/images/icons/my-challenges_active.svg',
                         width: 25,
                       ),
-                      label: 'بطولات',
+                      // label: 'بطولات',
+                      label: context.tr.championships,
                     ),
                     BottomNavigationBarItem(
-                      icon: SvgPicture.asset('assets/images/icons/invite_freind_inactive.svg',
+                      icon: SvgPicture.asset(
+                        'assets/images/icons/invite_freind_inactive.svg',
                         width: 20,
                       ),
-                      activeIcon: SvgPicture.asset('assets/images/icons/invite_freind_active.svg',
+                      activeIcon: SvgPicture.asset(
+                        'assets/images/icons/invite_freind_active.svg',
                         width: 25,
                       ),
-                      label: 'دعواتي',
+                      // label: 'دعواتي',
+                      label: context.tr.my_invitation,
                     ),
                   ],
                 ),

@@ -1,5 +1,6 @@
 import 'package:e_learning/modules/auth/cubit/cubit.dart';
 import 'package:e_learning/modules/auth/cubit/states.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/componants/widgets/default_button.dart';
 import 'package:e_learning/shared/componants/widgets/default_form_field.dart';
 import 'package:e_learning/shared/componants/widgets/default_gesture_widget.dart';
@@ -29,15 +30,16 @@ class ForgetPasswordDialog extends StatelessWidget {
             titleTextStyle:
                 secondaryTextStyle(deviceInfo).copyWith(color: Colors.black),
             title: Text(
-              'ادخل البريد الالكتروني الخاص بك لكي تصلك رسالة للتأكيد  لأنشاء كلمة مرور جديدة',
+              context.tr.enter_email_for_new_password,
+              // 'ادخل البريد الالكتروني الخاص بك لكي تصلك رسالة للتأكيد  لأنشاء كلمة مرور جديدة',
             ),
             content: DefaultFormField(
                 controller: email,
                 type: TextInputType.emailAddress,
-                labelText: 'البريد الالكتروني',
+                labelText: context.tr.email,
                 validation: (email) {
                   if (email == null || email.isEmpty)
-                    return 'من فضلك ادخل البريد الالكتروني';
+                    return context.tr.enter_email;
                   return null;
                 }),
             actions: [
@@ -54,7 +56,7 @@ class ForgetPasswordDialog extends StatelessWidget {
                           context: context,
                         );
                       },
-                      text: 'متابعة',
+                      text: context.tr.follow,
                       width: 100,
                       isLoading: cubit.forgetPasswordLoading,
                       textStyle: thirdTextStyle(deviceInfo),

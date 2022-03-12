@@ -1,3 +1,4 @@
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/componants/widgets/default_button.dart';
 import 'package:e_learning/shared/componants/widgets/default_form_field.dart';
 import 'package:e_learning/shared/responsive_ui/device_information.dart';
@@ -250,15 +251,17 @@ Future<void> forgetPasswordDialog(
             titleTextStyle:
                 secondaryTextStyle(deviceInfo).copyWith(color: Colors.black),
             title: Text(
-              'ادخل البريد الالكتروني الخاص بك لكي تصلك رسالة للتأكيد  لأنشاء كلمة مرور جديدة',
+              context.tr.enter_email_for_new_password,
+              // 'ادخل البريد الالكتروني الخاص بك لكي تصلك رسالة للتأكيد  لأنشاء كلمة مرور جديدة',
             ),
             content: DefaultFormField(
                 controller: TextEditingController(),
                 type: TextInputType.emailAddress,
-                labelText: 'البريد الالكتروني',
+                labelText: context.tr.email, //'البريد الالكتروني',
                 validation: (email) {
                   if (email == null || email.isEmpty)
-                    return 'من فضلك ادخل البريد الالكتروني';
+                    return context.tr.enter_email;
+                  // 'من فضلك ادخل البريد الالكتروني';
                   return null;
                 }),
             actions: [
@@ -269,7 +272,7 @@ Future<void> forgetPasswordDialog(
                   children: [
                     DefaultAppButton(
                       onPressed: () {},
-                      text: 'متابعة',
+                      text: context.tr.follow,
                       width: 100,
                       isLoading: false,
                       textStyle: thirdTextStyle(deviceInfo),
@@ -279,7 +282,7 @@ Future<void> forgetPasswordDialog(
                         onPressed: () {
                           Navigator.pop(context);
                         },
-                        child: Text('رجوع'))
+                        child: Text(context.tr.back))
                   ],
                 ),
               )
@@ -504,7 +507,9 @@ Future<void> alertDialogImagePicker({
     context: context,
     builder: (con) {
       return AlertDialog(
-        title: Text('اختر الصورة من :'),
+        title: Text(
+          context.tr.choose_image_from + ' :',
+        ),
         content: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
@@ -589,11 +594,11 @@ void showDeleteDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          content: Text("هل أنت متأكد أنك تريد حذف $name؟"),
+          content: Text("${context.tr.sure_to_delete} $name؟"),
           actions: <Widget>[
             TextButton(
               child: Text(
-                "الغاء",
+                context.tr.cancel,
                 style: TextStyle(color: Colors.black),
               ),
               onPressed: () {
@@ -602,7 +607,7 @@ void showDeleteDialog(
             ),
             TextButton(
               child: Text(
-                "مسح",
+                context.tr.delete,
                 style: TextStyle(color: Colors.red),
               ),
               onPressed: onDelete ?? () {},

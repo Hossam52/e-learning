@@ -3,6 +3,7 @@ import 'package:e_learning/models/teacher/test/test_response_model.dart';
 import 'package:e_learning/modules/test_module/cubit/cubit.dart';
 import 'package:e_learning/modules/test_module/student_test/test_view/student_test_result/student_result_statistics_screen/student_results_card_build_item.dart';
 import 'package:e_learning/shared/componants/componants.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/responsive_ui/responsive_widget.dart';
 import 'package:e_learning/shared/styles/colors.dart';
 import 'package:flutter/cupertino.dart';
@@ -12,7 +13,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../student_test_leader_board.dart';
 
 class StudentTestResultScreen extends StatelessWidget {
-  const StudentTestResultScreen({Key? key, required this.test, required this.cubit})
+  const StudentTestResultScreen(
+      {Key? key, required this.test, required this.cubit})
       : super(key: key);
 
   final Test test;
@@ -21,7 +23,7 @@ class StudentTestResultScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return responsiveWidget(
-      responsive: (context, deviceInfo) {
+      responsive: (_, deviceInfo) {
         return Scaffold(
           appBar: AppBar(
             elevation: 1,
@@ -53,7 +55,7 @@ class StudentTestResultScreen extends StatelessWidget {
                             navigateTo(context, StudentTestLeaderBoard());
                           },
                           icon: Icons.leaderboard_outlined,
-                          text: 'الترتيب',
+                          text: context.tr.rank,
                           backgroundColor: successColor,
                           height: 15,
                           textColor: Colors.white,
@@ -69,7 +71,7 @@ class StudentTestResultScreen extends StatelessWidget {
                             navigateToAndFinish(context, StudentLayout());
                           },
                           icon: Icons.close,
-                          text: 'انهاء',
+                          text: context.tr.finish,
                           backgroundColor: errorColor,
                           textColor: Colors.white,
                         ),

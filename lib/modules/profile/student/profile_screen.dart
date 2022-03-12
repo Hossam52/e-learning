@@ -3,6 +3,7 @@ import 'package:e_learning/modules/auth/cubit/states.dart';
 import 'package:e_learning/modules/profile/student/tabs_build_item.dart';
 import 'package:e_learning/modules/profile/student/student_profile_info_build.dart';
 import 'package:e_learning/shared/componants/constants.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/componants/widgets/default_loader.dart';
 import 'package:e_learning/shared/componants/widgets/no_data_widget.dart';
 import 'package:e_learning/shared/responsive_ui/responsive_widget.dart';
@@ -34,7 +35,7 @@ class ProfileScreen extends StatelessWidget {
                     widgetBuilder: (context) {
                       return cubit.noProfileData
                           ? NoDataWidget(
-                              text: 'عذرا لا يوجد بيانات',
+                              text: context.tr.no_data,
                               onPressed: () {
                                 cubit.getProfile(true);
                               },

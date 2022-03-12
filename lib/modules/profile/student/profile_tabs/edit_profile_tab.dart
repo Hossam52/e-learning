@@ -6,6 +6,7 @@ import 'package:e_learning/modules/auth/cubit/states.dart';
 import 'package:e_learning/modules/auth/student/register/choose_country_screen.dart';
 import 'package:e_learning/modules/profile/add_avatar_build_item.dart';
 import 'package:e_learning/shared/componants/componants.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/componants/widgets/default_drop_down.dart';
 import 'package:e_learning/shared/componants/widgets/default_form_field.dart';
 import 'package:e_learning/shared/componants/widgets/default_progress_button.dart';
@@ -66,7 +67,7 @@ class _EditProfileTabState extends State<EditProfileTab> {
           builder: (context, state) {
             AppCubit appCubit = AppCubit.get(context);
             return responsiveWidget(
-              responsive: (context, deviceInfo) => SingleChildScrollView(
+              responsive: (_, deviceInfo) => SingleChildScrollView(
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                   child: Form(
@@ -80,10 +81,10 @@ class _EditProfileTabState extends State<EditProfileTab> {
                         DefaultFormField(
                             controller: name,
                             type: TextInputType.name,
-                            labelText: 'الأسم',
+                            labelText: context.tr.name,
                             validation: (name) {
                               if (name == null || name.isEmpty)
-                                return 'من فضلك ادخل الاسم';
+                                return context.tr.enter_name;
                               return null;
                             }),
                         SizedBox(
@@ -92,11 +93,11 @@ class _EditProfileTabState extends State<EditProfileTab> {
                         DefaultFormField(
                             controller: email,
                             type: TextInputType.emailAddress,
-                            labelText: 'البريد الالكتروني',
+                            labelText: context.tr.email,
                             readOnly: true,
                             validation: (value) {
                               if (value == null || value.isEmpty)
-                                return 'من فضلك ادخل الايميل';
+                                return context.tr.enter_email;
                               return null;
                             }),
                         SizedBox(
@@ -141,10 +142,12 @@ class _EditProfileTabState extends State<EditProfileTab> {
                           children: [
                             Expanded(
                               child: DefaultDropDown(
-                                label: 'الصف الدراسي',
+                                // label: 'الصف الدراسي',
+                                label: context.tr.classroom,
                                 selectedValue: cubit.selectedStageName,
-                                validator: (value) =>
-                                    value == null ? 'field required' : null,
+                                validator: (value) => value == null
+                                    ? context.tr.field_required
+                                    : null,
                                 onChanged: (value) {
                                   cubit.onChangeStage(value);
                                 },
@@ -159,7 +162,8 @@ class _EditProfileTabState extends State<EditProfileTab> {
                             ),
                             Expanded(
                               child: DefaultDropDown(
-                                label: 'الترم الدراسي',
+                                // label: 'الترم الدراسي',
+                                label: context.tr.academic_semster,
                                 selectedValue: cubit.selectedClassName,
                                 validator: (value) =>
                                     value == null ? 'field required' : null,
@@ -181,8 +185,8 @@ class _EditProfileTabState extends State<EditProfileTab> {
                           alignment: Alignment.topRight,
                           child: DefaultProgressButton(
                             buttonState: cubit.studentRegisterState,
-                            idleText: 'حفظ',
-                            loadingText: 'Loading',
+                            idleText: context.tr.save,
+                            loadingText: context.tr.loading,
                             failText: text.failed,
                             successText: text.success_sign,
                             onPressed: () {

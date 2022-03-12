@@ -2,6 +2,7 @@ import 'package:e_learning/modules/test_module/cubit/cubit.dart';
 import 'package:e_learning/modules/test_module/teacher/teacher_add_test/test_componants/teacher_answer_build_item.dart';
 import 'package:e_learning/modules/test_module/teacher/teacher_add_test/test_componants/test_image_remove_button.dart';
 import 'package:e_learning/shared/componants/componants.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/componants/widgets/default_form_field.dart';
 import 'package:e_learning/shared/styles/colors.dart';
 import 'package:flutter/material.dart';
@@ -43,12 +44,12 @@ class TeacherQuestionCardBuildItem extends StatelessWidget {
                     child: DefaultFormField(
                       validation: (value) {
                         if (value == null || value.isEmpty)
-                          return 'هذا الحقل مطلوب';
+                          return context.tr.this_field_is_required;
                         return null;
                       },
                       controller: questionController,
-                      labelText: 'اضف سؤال',
-                      hintText: 'اضف سؤال',
+                      labelText: context.tr.add_question,
+                      hintText: context.tr.add_question,
                       haveBackground: true,
                     ),
                   ),
@@ -96,7 +97,7 @@ class TeacherQuestionCardBuildItem extends StatelessWidget {
                       ? successColor
                       : Colors.grey,
                   controller: chooseControllerList[index],
-                  hintText: 'اجابه',
+                  hintText: context.tr.answer,
                   hasAnswer: cubit.hasAnswer,
                   image: cubit.answerImages.asMap().containsKey(index)
                       ? cubit.answerImages[index]
@@ -117,7 +118,7 @@ class TeacherQuestionCardBuildItem extends StatelessWidget {
               ),
               if (cubit.answerNumber < 4)
                 ListTile(
-                  title: Text('اضف اجابه'),
+                  title: Text(context.tr.add_answer),
                   trailing: Icon(Icons.add),
                   onTap: () {
                     cubit.addAnswer();

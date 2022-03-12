@@ -5,6 +5,7 @@ import 'package:e_learning/modules/following_list/teacher_view/teachers_tests_pr
 import 'package:e_learning/modules/profile/teacher/teacher_profile_tab/teacher_edit_profile_tab.dart';
 import 'package:e_learning/modules/profile/teacher/teacher_profile_tab/teacher_profile_posts_tab.dart';
 import 'package:e_learning/modules/profile/teacher/teacher_profile_tab/teacher_profile_question_tab.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/cubit/cubit.dart';
 import 'package:e_learning/shared/cubit/states.dart';
 import 'package:e_learning/shared/styles/colors.dart';
@@ -66,15 +67,15 @@ class _TabsBuildItemState extends State<TeacherTabBuild>
                 ),
                 tabs: widget.isStudent
                     ? [
-                  Tab(text: 'اسأل المعلم'),
-                  Tab(text: 'المجموعات'),
-                  Tab(text: 'الأختبارات'),
-                ]
+                        Tab(text: context.tr.ask_teacher),
+                        Tab(text: context.tr.groups),
+                        Tab(text: context.tr.tests),
+                      ]
                     : [
-                  Tab(text: 'حسابي'),
-                  Tab(text: 'المنشورات'),
-                  Tab(text: 'اسال المعلم'),
-                ],
+                        Tab(text: context.tr.my_account),
+                        Tab(text: context.tr.posts),
+                        Tab(text: context.tr.ask_teacher),
+                      ],
               ),
             ),
             generateBody(index, widget.isStudent, widget.teacher),
@@ -83,16 +84,19 @@ class _TabsBuildItemState extends State<TeacherTabBuild>
       },
     );
   }
+
   Widget generateBody(int index, bool isStudent, Teacher teacher) {
-    List<Widget> widgets = isStudent ? [
-      TeacherQuestionsTab(teacherId: teacher.id!),
-      TeacherGroupsProfileTab(teacherId: teacher.id!),
-      TeacherTestsProfileTab(teacherId: teacher.id!),
-    ] : [
-      TeacherEditProfileTab(teacher: teacher),
-      TeacherProfilePostsTab(teacher.id!),
-      TeacherProfileQuestionTab(),
-    ];
+    List<Widget> widgets = isStudent
+        ? [
+            TeacherQuestionsTab(teacherId: teacher.id!),
+            TeacherGroupsProfileTab(teacherId: teacher.id!),
+            TeacherTestsProfileTab(teacherId: teacher.id!),
+          ]
+        : [
+            TeacherEditProfileTab(teacher: teacher),
+            TeacherProfilePostsTab(teacher.id!),
+            TeacherProfileQuestionTab(),
+          ];
 
     return widgets[index];
   }

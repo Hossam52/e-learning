@@ -9,6 +9,7 @@ import 'package:e_learning/modules/groups/student/group_view/home_tab/post_build
 import 'package:e_learning/modules/profile/teacher/teacher_profile_tab/edit_post_screen.dart';
 import 'package:e_learning/modules/student/public_group/public_group_info_screen.dart';
 import 'package:e_learning/shared/componants/componants.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/componants/widgets/default_gesture_widget.dart';
 import 'package:e_learning/shared/componants/widgets/default_loader.dart';
 import 'package:e_learning/shared/componants/widgets/default_text_field.dart';
@@ -80,7 +81,7 @@ class _PublicGroupTeacherHomeScreenState
             responsive: (_, deviceInfo) {
               return Scaffold(
                 appBar: AppBar(
-                  title: Text(widget.group.title ?? 'loading..'),
+                  title: Text(widget.group.title ?? '${context.tr.loading}..'),
                   centerTitle: true,
                   leading: defaultBackButton(context, deviceInfo.screenHeight),
                   actions: [
@@ -114,7 +115,7 @@ class _PublicGroupTeacherHomeScreenState
                         fallbackBuilder: (context) => DefaultLoader(),
                         widgetBuilder: (context) => cubit.noPostData
                             ? NoDataWidget(
-                                text: 'عذرا لا يوجد منشورات',
+                                text: context.tr.no_posts,
                                 onPressed: () => cubit.getAllPublicGroupPosts(
                                     widget.group.id!,
                                     isStudent: false))
@@ -257,7 +258,7 @@ class _PublicGroupTeacherHomeScreenState
                                                       : post.studentId!,
                                               name: post.student ??
                                                   post.teacher ??
-                                                  'Unknown',
+                                                  context.tr.unknown,
                                               deviceInfo: deviceInfo,
                                               isMe: post.studentPost! ||
                                                   post.teacherPost!,

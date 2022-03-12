@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:e_learning/models/general_apis/subjects_data_model.dart';
 import 'package:e_learning/modules/groups/cubit/cubit.dart';
 import 'package:e_learning/modules/groups/cubit/states.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/componants/widgets/default_drop_down.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,7 +21,7 @@ class StudentFilterBuildItem extends StatefulWidget {
 
 class _StudentFilterBuildItemState extends State<StudentFilterBuildItem> {
   String all = 'All';
-
+  bool firstRun = false;
   @override
   void initState() {
     super.initState();
@@ -30,12 +31,13 @@ class _StudentFilterBuildItemState extends State<StudentFilterBuildItem> {
   Widget build(BuildContext context) {
     return BlocBuilder<GroupCubit, GroupStates>(
       builder: (context, state) {
-        String selectedValue = widget.defaultSelected ?? 'All';
+        all = context.tr.all;
+        String selectedValue = widget.defaultSelected ?? context.tr.all;
         log(selectedValue);
         return SizedBox(
           width: MediaQuery.of(context).size.width * 0.5,
           child: DefaultDropDown(
-            label: 'Subject',
+            label: context.tr.subject,
             onChanged: (value) {
               GroupCubit.get(context).updateSelectedSubjectID(context, value);
               GroupCubit.get(context).discoverGroupsBySubjectId();

@@ -1,4 +1,5 @@
 import 'package:e_learning/shared/componants/componants.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/componants/widgets/default_button.dart';
 import 'package:e_learning/shared/componants/widgets/default_drop_down.dart';
 import 'package:e_learning/shared/componants/widgets/default_form_field.dart';
@@ -38,7 +39,7 @@ class _TeacherAddPlaylistState extends State<TeacherAddPlaylist> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('فديوهاتي'),
+        title: Text(context.tr.my_videos),
         centerTitle: true,
         leading: defaultBackButton(context, widget.deviceInfo.screenHeight),
       ),
@@ -57,7 +58,7 @@ class _TeacherAddPlaylistState extends State<TeacherAddPlaylist> {
                     DefaultFormField(
                       validation: (value) {
                         if (value == null || value.isEmpty)
-                          return 'هذا الحقل مطلوب';
+                          return context.tr.this_field_is_required;
                         return null;
                       },
                       controller: playlistNameController,
@@ -75,7 +76,7 @@ class _TeacherAddPlaylistState extends State<TeacherAddPlaylist> {
                       },
                       validator: (value) {
                         if (value == null || value.isEmpty)
-                          return 'هذا الحقل مطلوب';
+                          return context.tr.this_field_is_required;
                         return null;
                       },
                       items: appCubit.stageNamesList,
@@ -84,15 +85,15 @@ class _TeacherAddPlaylistState extends State<TeacherAddPlaylist> {
                     ),
                     SizedBox(height: 17.h),
                     DefaultDropDown(
-                      label: 'السنه',
-                      hint: 'السنه',
+                      label: context.tr.year,
+                      hint: context.tr.year,
                       haveBackground: true,
                       onChanged: (value) {
                         appCubit.onChangeClass(value);
                       },
                       validator: (value) {
                         if (value == null || value.isEmpty)
-                          return 'هذا الحقل مطلوب';
+                          return context.tr.this_field_is_required;
                         return null;
                       },
                       items: appCubit.classNamesList,
@@ -100,15 +101,15 @@ class _TeacherAddPlaylistState extends State<TeacherAddPlaylist> {
                     ),
                     SizedBox(height: 17.h),
                     DefaultDropDown(
-                      label: 'الترم',
-                      hint: 'الترم',
+                      label: context.tr.semster,
+                      hint: context.tr.semster,
                       haveBackground: true,
                       onChanged: (value) {
                         appCubit.onTermChange(value);
                       },
                       validator: (value) {
                         if (value == null || value.isEmpty)
-                          return 'هذا الحقل مطلوب';
+                          return context.tr.this_field_is_required;
                         return null;
                       },
                       items: appCubit.termNamesList,
@@ -117,15 +118,15 @@ class _TeacherAddPlaylistState extends State<TeacherAddPlaylist> {
                     ),
                     SizedBox(height: 17.h),
                     DefaultDropDown(
-                      label: 'الماده',
-                      hint: 'الماده',
+                      label: context.tr.subject,
+                      hint: context.tr.subject,
                       haveBackground: true,
                       onChanged: (value) {
                         appCubit.onSubjectChange(value);
                       },
                       validator: (value) {
                         if (value == null || value.isEmpty)
-                          return 'هذا الحقل مطلوب';
+                          return context.tr.this_field_is_required;
                         return null;
                       },
                       items: appCubit.subjectNamesList,
@@ -134,7 +135,7 @@ class _TeacherAddPlaylistState extends State<TeacherAddPlaylist> {
                     ),
                     SizedBox(height: 30.h),
                     DefaultAppButton(
-                      text: 'اضافة',
+                      text: context.tr.add,
                       textStyle: thirdTextStyle(widget.deviceInfo),
                       onPressed: () {
                         formKey.currentState!.save();

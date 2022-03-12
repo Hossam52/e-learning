@@ -18,6 +18,7 @@ import 'package:e_learning/modules/student/public_group/public_grouo_home_screen
 import 'package:e_learning/modules/test_module/student_test/test_view/test_start_alert_screen.dart';
 import 'package:e_learning/modules/video_module/video_teacher_screens/subjects_video_screen.dart';
 import 'package:e_learning/shared/componants/componants.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/componants/home_components.dart';
 import 'package:e_learning/shared/componants/widgets/confirm_exit.dart';
 import 'package:e_learning/shared/componants/widgets/default_loader.dart';
@@ -120,7 +121,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                                     widgetBuilder: (context) => cubit
                                                 .studentHighRateTeachersModel ==
                                             null
-                                        ? noData('لا يوجد بيانات')
+                                        ? noData(context.tr.no_data)
                                         : Container(
                                             height: 130.h,
                                             child: Swiper(
@@ -185,7 +186,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                                     widgetBuilder: (context) => cubit
                                                 .bestStudentsModelAuthorized ==
                                             null
-                                        ? noData('لا يوجد بيانات')
+                                        ? noData(context.tr.no_data)
                                         : CarouselSlider.builder(
                                             itemCount: cubit
                                                 .bestStudentsModelAuthorized!
@@ -267,7 +268,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                                     widgetBuilder: (context) => TestLayoutCubit
                                                 .get(context)
                                             .noLatestTestsData
-                                        ? noData('لا يوجد')
+                                        ? noData(context.tr.no_found)
                                         : Container(
                                             height: 75.h,
                                             child: ListView.separated(
@@ -300,8 +301,8 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                                                     } else {
                                                       showSnackBar(
                                                         context: context,
-                                                        text:
-                                                            'لقد قمت بأداء هذا الامتحان من قبل',
+                                                        text: context.tr
+                                                            .taken_exam_before,
                                                       );
                                                     }
                                                   },

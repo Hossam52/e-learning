@@ -5,6 +5,7 @@ import 'package:e_learning/models/teacher/test/test_response_model.dart';
 import 'package:e_learning/modules/test_module/cubit/cubit.dart';
 import 'package:e_learning/modules/test_module/cubit/states.dart';
 import 'package:e_learning/shared/componants/componants.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/componants/widgets/default_button.dart';
 import 'package:e_learning/shared/responsive_ui/responsive_widget.dart';
 import 'package:e_learning/shared/styles/colors.dart';
@@ -66,7 +67,7 @@ class _StudentTestQuestionState extends State<StudentTestQuestion> {
                 ? showErrorWidget(cubit, context)
                 : null,
             child: responsiveWidget(
-              responsive: (context, deviceInfo) {
+              responsive: (_, deviceInfo) {
                 return Scaffold(
                     appBar: AppBar(
                       elevation: 1,
@@ -78,11 +79,12 @@ class _StudentTestQuestionState extends State<StudentTestQuestion> {
                       onWillPop: () async {
                         defaultAlertDialog(
                           context: context,
-                          title: 'خروج من الاختبار',
-                          subTitle:
-                              'هل تريد ان تخرج من الاختبار كل ما اجبته سوف يحذف؟',
-                          buttonConfirm: 'خروج',
-                          buttonReject: 'الغاء',
+                          title: context.tr.exit_from_exam,
+                          subTitle: context
+                              .tr.confirm_exit_all_answered_will_be_deleted,
+                          // 'هل تريد ان تخرج من الاختبار كل ما اجبته سوف يحذف؟',
+                          buttonConfirm: context.tr.exit,
+                          buttonReject: context.tr.cancel,
                           onConfirm: () {
                             navigateToAndFinish(context, StudentLayout());
                           },
@@ -178,7 +180,7 @@ class _StudentTestQuestionState extends State<StudentTestQuestion> {
                                   return StudentTestQuestionBuildItem(
                                     deviceInfo: deviceInfo,
                                     questionNumber:
-                                        'السوأل ${cubit.studentCurrentIndex + 1}/${widget.test.questions!.length}',
+                                        '${context.tr.question} ${cubit.studentCurrentIndex + 1}/${widget.test.questions!.length}',
                                     cubit: cubit,
                                     question: question,
                                     questionIndex: index,
@@ -193,7 +195,7 @@ class _StudentTestQuestionState extends State<StudentTestQuestion> {
                               children: [
                                 Expanded(
                                   child: DefaultAppButton(
-                                    text: 'السابق',
+                                    text: context.tr.previous,
                                     isLoading: false,
                                     textStyle: thirdTextStyle(deviceInfo),
                                     isDisabled: false,
@@ -211,7 +213,9 @@ class _StudentTestQuestionState extends State<StudentTestQuestion> {
                                 SizedBox(width: 25),
                                 Expanded(
                                   child: DefaultAppButton(
-                                    text: isLast ? 'انهاء' : 'التالي',
+                                    text: isLast
+                                        ? context.tr.finish
+                                        : context.tr.next,
                                     isLoading: false,
                                     background: isLast ? successColor : null,
                                     textStyle: thirdTextStyle(deviceInfo),
@@ -253,7 +257,7 @@ class _StudentTestQuestionState extends State<StudentTestQuestion> {
 
   void showAnswerToast() {
     showToast(
-      msg: 'من فضلك اختر اجابة',
+      msg: context.tr.please_select_answer,
       state: ToastStates.WARNING,
     );
   }
@@ -277,7 +281,7 @@ class _StudentTestQuestionState extends State<StudentTestQuestion> {
                 isChampion: widget.isChampion,
               );
             },
-            child: Text('Try again'),
+            child: Text(context.tr.try_again),
           ),
         ],
       ));

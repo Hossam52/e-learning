@@ -1,4 +1,5 @@
 import 'package:e_learning/models/teacher/groups/group_response_model.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/responsive_ui/responsive_widget.dart';
 import 'package:e_learning/shared/styles/styles.dart';
 import 'package:flutter/material.dart';
@@ -43,7 +44,7 @@ class PublicGroupInfoScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'وصف المجموعه',
+                      context.tr.group_description,
                       style: secondaryTextStyle(deviceInfo),
                     ),
                     SizedBox(

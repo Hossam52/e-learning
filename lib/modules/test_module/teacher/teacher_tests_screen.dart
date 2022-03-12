@@ -4,6 +4,7 @@ import 'package:e_learning/modules/teacher/teacher_filter_build.dart';
 import 'package:e_learning/modules/test_module/cubit/cubit.dart';
 import 'package:e_learning/modules/test_module/cubit/states.dart';
 import 'package:e_learning/shared/componants/componants.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/componants/widgets/default_loader.dart';
 import 'package:e_learning/shared/cubit/cubit.dart';
 import 'package:e_learning/shared/responsive_ui/device_information.dart';
@@ -36,7 +37,7 @@ class TeacherTestsScreen extends StatelessWidget {
       create: (context) => TestCubit()..getTeacherTestsMethod(subjectId),
       child: Scaffold(
         appBar: AppBar(
-          title: Text('اختبارات'),
+          title: Text(context.tr.tests),
           elevation: 1,
           centerTitle: true,
           leading: defaultBackButton(context, deviceInfo.screenHeight),
@@ -63,7 +64,7 @@ class TeacherTestsScreen extends StatelessWidget {
                   state is! GetTeacherTestsLoadingState,
               fallbackBuilder: (context) => DefaultLoader(),
               widgetBuilder: (context) => cubit.noTeacherTestsData
-                  ? noData('لا يوجد لديك امتحانات حتى الان')
+                  ? noData(context.tr.no_exams_up_til_now)
                   : Column(
                       children: [
                         TeacherFilterBuild(

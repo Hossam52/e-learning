@@ -8,6 +8,7 @@ import 'package:e_learning/modules/student/public_group/public_grouo_home_screen
 import 'package:e_learning/modules/test_module/teacher/test_subjects_screen.dart';
 import 'package:e_learning/modules/video_module/video_teacher_screens/subjects_video_screen.dart';
 import 'package:e_learning/shared/componants/componants.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/componants/home_components.dart';
 import 'package:e_learning/shared/componants/widgets/confirm_exit.dart';
 import 'package:e_learning/shared/cubit/cubit.dart';
@@ -41,7 +42,7 @@ class _TeacherHomeScreenState extends State<TeacherHomeScreen> {
     var text = AppLocalizations.of(context)!;
     return ConfirmExit(
       child: responsiveWidget(
-        responsive: (context, deviceInfo) => SingleChildScrollView(
+        responsive: (_, deviceInfo) => SingleChildScrollView(
           child: Column(
             children: [
               TextButton.icon(
@@ -56,7 +57,7 @@ class _TeacherHomeScreenState extends State<TeacherHomeScreen> {
                 label: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 30.w),
                   child: Text(
-                    'الجروبات الرسمية لموادك',
+                    context.tr.official_groups_for_my_subjects,
                     style: subTextStyle(deviceInfo).copyWith(
                       color: primaryColor,
                     ),
@@ -75,26 +76,40 @@ class _TeacherHomeScreenState extends State<TeacherHomeScreen> {
                 height: 120.h,
                 child: BlocBuilder<AppCubit, AppStates>(
                   builder: (context, state) {
-                    return 
-                    AppCubit.get(context).isStudentHighRateLoading ?
-                   CircularProgressIndicator() :Swiper(
-                      itemCount: AppCubit.get(context).studentHighRateTeachersModel!.teachers!.data!.length,
-                      viewportFraction: 1.0,
-                      itemHeight: 120.h,
-                      pagination: new SwiperPagination(),
-                      itemBuilder: (BuildContext context, int index) 
-                      {
-                        return new BuildBestTeacherItem(
-                          text: text,
-                          subjects: [],
-                          image:
-                              AppCubit.get(context).studentHighRateTeachersModel!.teachers!.data![index].image!,
-                          name: AppCubit.get(context).studentHighRateTeachersModel!.teachers!.data![index].name!,
-                          onTap: () {},
-                          followersCount: AppCubit.get(context).studentHighRateTeachersModel!.teachers!.data![index].followersCount!,
-                        );
-                      },
-                    );
+                    return AppCubit.get(context).isStudentHighRateLoading
+                        ? CircularProgressIndicator()
+                        : Swiper(
+                            itemCount: AppCubit.get(context)
+                                .studentHighRateTeachersModel!
+                                .teachers!
+                                .data!
+                                .length,
+                            viewportFraction: 1.0,
+                            itemHeight: 120.h,
+                            pagination: new SwiperPagination(),
+                            itemBuilder: (BuildContext context, int index) {
+                              return new BuildBestTeacherItem(
+                                text: text,
+                                subjects: [],
+                                image: AppCubit.get(context)
+                                    .studentHighRateTeachersModel!
+                                    .teachers!
+                                    .data![index]
+                                    .image!,
+                                name: AppCubit.get(context)
+                                    .studentHighRateTeachersModel!
+                                    .teachers!
+                                    .data![index]
+                                    .name!,
+                                onTap: () {},
+                                followersCount: AppCubit.get(context)
+                                    .studentHighRateTeachersModel!
+                                    .teachers!
+                                    .data![index]
+                                    .followersCount!,
+                              );
+                            },
+                          );
                   },
                 ),
               ),

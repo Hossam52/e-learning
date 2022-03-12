@@ -1,8 +1,10 @@
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/styles/colors.dart';
 import 'package:flutter/material.dart';
 
 class DefaultDismissibleWidget extends StatelessWidget {
-  const DefaultDismissibleWidget({Key? key,
+  const DefaultDismissibleWidget({
+    Key? key,
     required this.child,
     required this.onDelete,
     required this.onEdit,
@@ -29,12 +31,11 @@ class DefaultDismissibleWidget extends StatelessWidget {
               context: context,
               builder: (BuildContext context) {
                 return AlertDialog(
-                  content: Text(
-                      "هل أنت متأكد أنك تريد حذف $name؟"),
+                  content: Text("${context.tr.sure_to_delete} $name؟"),
                   actions: <Widget>[
                     TextButton(
                       child: Text(
-                        "الغاء",
+                        context.tr.cancel,
                         style: TextStyle(color: Colors.black),
                       ),
                       onPressed: () {
@@ -43,7 +44,7 @@ class DefaultDismissibleWidget extends StatelessWidget {
                     ),
                     TextButton(
                       child: Text(
-                        "مسح",
+                        context.tr.delete,
                         style: TextStyle(color: Colors.red),
                       ),
                       onPressed: () {
@@ -61,25 +62,26 @@ class DefaultDismissibleWidget extends StatelessWidget {
       child: child,
     );
   }
+
   Widget deleteWidget() => Container(
-    alignment: Alignment.centerLeft,
-    padding: EdgeInsets.symmetric(horizontal: 20),
-    color: errorColor,
-    child: Icon(
-      Icons.delete_outline,
-      color: Colors.white,
-      size: 32,
-    ),
-  );
+        alignment: Alignment.centerLeft,
+        padding: EdgeInsets.symmetric(horizontal: 20),
+        color: errorColor,
+        child: Icon(
+          Icons.delete_outline,
+          color: Colors.white,
+          size: 32,
+        ),
+      );
 
   Widget editWidget() => Container(
-    alignment: Alignment.centerRight,
-    padding: EdgeInsets.symmetric(horizontal: 20),
-    color: hasEdit ? primaryColor : errorColor,
-    child: Icon(
-      hasEdit ? Icons.edit_outlined : Icons.delete_outline,
-      color: Colors.white,
-      size: 32,
-    ),
-  );
+        alignment: Alignment.centerRight,
+        padding: EdgeInsets.symmetric(horizontal: 20),
+        color: hasEdit ? primaryColor : errorColor,
+        child: Icon(
+          hasEdit ? Icons.edit_outlined : Icons.delete_outline,
+          color: Colors.white,
+          size: 32,
+        ),
+      );
 }

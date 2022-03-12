@@ -1,5 +1,6 @@
 import 'package:e_learning/modules/video_module/video_teacher_screens/cubit/cubit.dart';
 import 'package:e_learning/modules/video_module/video_teacher_screens/cubit/states.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/componants/widgets/default_form_field.dart';
 import 'package:e_learning/shared/componants/widgets/default_gesture_widget.dart';
 import 'package:e_learning/shared/componants/widgets/default_progress_button.dart';
@@ -26,7 +27,7 @@ class GroupAddVideoScreen extends StatelessWidget {
           VideosCubit cubit = VideosCubit.get(context);
           return Scaffold(
             appBar: AppBar(
-              title: Text('اضافة'),
+              title: Text(context.tr.add),
             ),
             body: DefaultGestureWidget(
               child: Padding(
@@ -42,37 +43,37 @@ class GroupAddVideoScreen extends StatelessWidget {
                       DefaultFormField(
                         validation: (value) {
                           if (value == null || value.isEmpty)
-                            return 'من فضلك ادخل عنوان الفيديو';
+                            return context.tr.enter_video_title;
                           return null;
                         },
                         controller: videoNameController,
-                        labelText: 'عنوان الفديو',
-                        hintText: 'عنوان الفديو',
+                        labelText: context.tr.video_title,
+                        hintText: context.tr.video_title,
                         haveBackground: true,
                       ),
                       SizedBox(height: 30.h),
                       DefaultFormField(
                         validation: (value) {
                           if (value == null || value.isEmpty)
-                            return 'من فضلك ادخل رابط الفيديو';
+                            return context.tr.enter_video_url;
                           else if (cubit.validateAndConvertVideoUrl(value) ==
                               null)
-                            return 'خطا فى الرابط برجاء التأكد من الرابط و المحاولة مجددا';
+                            return context.tr.link_error_try_again;
                           else
                             return null;
                         },
                         controller: videoUrlController,
-                        labelText: 'الصق الرابط',
-                        hintText: 'الصق الرابط',
+                        labelText: context.tr.paste_link,
+                        hintText: context.tr.paste_link,
                         haveBackground: true,
                       ),
                       SizedBox(height: 40.h),
                       DefaultProgressButton(
                         buttonState: cubit.teacherAddVideoGroupButtonStates,
-                        idleText: 'اضافة',
-                        loadingText: 'Loading',
-                        failText: 'حدث خطأ',
-                        successText: 'تم الاضافة بنجاح',
+                        idleText: context.tr.add,
+                        loadingText: context.tr.loading,
+                        failText: context.tr.error_happened,
+                        successText: context.tr.success_adding,
                         onPressed: () {
                           formKey.currentState!.save();
                           if (formKey.currentState!.validate()) {

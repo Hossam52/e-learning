@@ -9,6 +9,7 @@ import 'package:e_learning/modules/student/cubit/cubit/cubit.dart';
 import 'package:e_learning/modules/student/cubit/cubit/states.dart';
 import 'package:e_learning/shared/componants/componants.dart';
 import 'package:e_learning/shared/componants/constants.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/componants/widgets/default_loader.dart';
 import 'package:e_learning/shared/componants/widgets/no_data_widget.dart';
 import 'package:e_learning/shared/cubit/cubit.dart';
@@ -89,7 +90,7 @@ class _StudentProfileViewState extends State<StudentProfileView> {
                       : Scaffold(
                           appBar: AppBar(
                             title: Text(
-                              'الملف الشخصى',
+                              context.tr.personal_profile,
                               style: TextStyle(color: Colors.white),
                             ),
                             centerTitle: true,
@@ -178,14 +179,14 @@ class _StudentProfileViewState extends State<StudentProfileView> {
   String get getActionString {
     switch (widget.student!.friendType) {
       case FriendType.Friend:
-        return 'Remove friend';
+        return context.tr.remove_friend;
       case FriendType.NotFriend:
-        return 'Add friend';
+        return context.tr.add_friend;
       case FriendType.Pending:
-        return 'Pending';
+        return context.tr.pending;
 
       default:
-        return 'Unknown';
+        return context.tr.unknown;
     }
   }
 
@@ -239,8 +240,8 @@ class _StudentProfileViewState extends State<StudentProfileView> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Follow', style: secondaryTextStyle(deviceInfo)),
-              Text('View all',
+              Text(context.tr.follow, style: secondaryTextStyle(deviceInfo)),
+              Text(context.tr.view_all,
                   style: secondaryTextStyle(deviceInfo)
                       .copyWith(color: Colors.grey)),
             ],

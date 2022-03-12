@@ -2,6 +2,7 @@ import 'package:e_learning/modules/teacher/teacher_filter_build.dart';
 import 'package:e_learning/modules/video_module/video_screens/video_titles_screen.dart';
 import 'package:e_learning/modules/video_module/video_teacher_screens/cubit/states.dart';
 import 'package:e_learning/shared/componants/componants.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/componants/widgets/default_loader.dart';
 import 'package:e_learning/shared/responsive_ui/responsive_widget.dart';
 import 'package:flutter/material.dart';
@@ -36,7 +37,7 @@ class MyVideosTeacherScreen extends StatelessWidget {
               VideosCubit cubit = VideosCubit.get(context);
               return Scaffold(
                 appBar: AppBar(
-                  title: Text('فديوهاتي'),
+                  title: Text(context.tr.my_videos),
                   centerTitle: true,
                   leading: defaultBackButton(context, deviceInfo.screenHeight),
                 ),
@@ -80,7 +81,7 @@ class MyVideosTeacherScreen extends StatelessWidget {
                                         navigateTo(
                                             context,
                                             VideoTitlesScreen(
-                                              videos: playlist.videos?? [],
+                                              videos: playlist.videos ?? [],
                                               isStudent: false,
                                               teacherId: index,
                                               subjectId: index,
@@ -103,7 +104,7 @@ class MyVideosTeacherScreen extends StatelessWidget {
                             ),
                           ],
                         )
-                      : noData('لا يوجد فيديوهات'),
+                      : noData(context.tr.no_videos),
                 ),
               );
             },

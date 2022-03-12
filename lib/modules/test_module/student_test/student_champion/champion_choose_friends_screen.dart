@@ -3,6 +3,7 @@ import 'package:e_learning/layout/student/cubit/states.dart';
 import 'package:e_learning/models/teacher/test/test_response_model.dart';
 import 'package:e_learning/modules/test_module/student_test/student_champion/chamion_friend_build_item.dart';
 import 'package:e_learning/shared/componants/componants.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/componants/widgets/default_loader.dart';
 import 'package:e_learning/shared/componants/widgets/default_progress_button.dart';
 import 'package:e_learning/shared/componants/widgets/no_data_widget.dart';
@@ -33,10 +34,10 @@ class ChampionChooseFriendScreen extends StatelessWidget {
         builder: (context, state) {
           TestLayoutCubit cubit = TestLayoutCubit.get(context);
           return responsiveWidget(
-            responsive: (context, deviceInfo) {
+            responsive: (_, deviceInfo) {
               return Scaffold(
                 appBar: AppBar(
-                  title: Text('اختر المنافسين'),
+                  title: Text(context.tr.choose_challengers),
                   centerTitle: true,
                   elevation: 1,
                   leading: defaultBackButton(context, deviceInfo.screenHeight),
@@ -48,7 +49,7 @@ class ChampionChooseFriendScreen extends StatelessWidget {
                   fallbackBuilder: (context) => DefaultLoader(),
                   widgetBuilder: (context) => cubit.noFriendsData
                       ? NoDataWidget(
-                          text: 'عذرا لا يوجد بيانات',
+                          text: context.tr.no_data,
                           onPressed: () {
                             cubit.getStudentChampionFriends(testId);
                           },
@@ -78,8 +79,8 @@ class ChampionChooseFriendScreen extends StatelessWidget {
                             padding: const EdgeInsets.all(22.0),
                             child: DefaultProgressButton(
                               buttonState: cubit.championCreateButtonState,
-                              idleText: 'انشاء',
-                              loadingText: 'Loading',
+                              idleText: context.tr.create,
+                              loadingText: context.tr.loading,
                               failText: text!.failed,
                               successText: text.success_sign,
                               onPressed: cubit.selectedFriendsId.isEmpty

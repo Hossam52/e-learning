@@ -3,6 +3,7 @@ import 'package:e_learning/models/teacher/test/test_model.dart';
 import 'package:e_learning/models/teacher/test/test_response_model.dart';
 import 'package:e_learning/modules/test_module/teacher/teacher_add_test/test_teacher_review/teacher_test_review_screen.dart';
 import 'package:e_learning/shared/componants/componants.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/componants/widgets/default_button.dart';
 import 'package:e_learning/shared/componants/widgets/default_drop_down.dart';
 import 'package:e_learning/shared/componants/widgets/default_form_field.dart';
@@ -64,7 +65,9 @@ class _TeacherAddTestDetailsState extends State<TeacherAddTestDetails> {
     return DefaultGestureWidget(
       child: Scaffold(
         appBar: AppBar(
-          title: Text(widget.groupId != null ? 'انشاء واجب' : "انشاء اختبار"),
+          title: Text(widget.groupId != null
+              ? context.tr.create_homework
+              : context.tr.create_test),
           elevation: 1,
           centerTitle: true,
           leading: defaultBackButton(context, widget.deviceInfo.screenHeight),
@@ -94,29 +97,29 @@ class _TeacherAddTestDetailsState extends State<TeacherAddTestDetails> {
                       DefaultFormField(
                         validation: (value) {
                           if (value == null || value.isEmpty)
-                            return 'هذا الحقل مطلوب';
+                            return context.tr.this_field_is_required;
                           return null;
                         },
                         controller: testNameController,
                         labelText: widget.groupId != null
-                            ? 'اسم الواجب'
-                            : 'اسم الامتحان',
+                            ? context.tr.homework_name
+                            : context.tr.exam_name,
                         hintText: widget.groupId != null
-                            ? 'اسم الواجب'
-                            : 'اسم الامتحان',
+                            ? context.tr.homework_name
+                            : context.tr.exam_name,
                         haveBackground: true,
                       ),
                       SizedBox(height: 17.h),
                       DefaultDropDown(
-                        label: 'المرحله',
-                        hint: 'المرحله',
+                        label: context.tr.stage,
+                        hint: context.tr.stage,
                         haveBackground: true,
                         onChanged: (value) {
                           appCubit.onChangeStage(value);
                         },
                         validator: (value) {
                           if (value == null || value.isEmpty)
-                            return 'هذا الحقل مطلوب';
+                            return context.tr.this_field_is_required;
                           return null;
                         },
                         items: appCubit.stageNamesList,
@@ -125,15 +128,15 @@ class _TeacherAddTestDetailsState extends State<TeacherAddTestDetails> {
                       ),
                       SizedBox(height: 17.h),
                       DefaultDropDown(
-                        label: 'السنه',
-                        hint: 'السنه',
+                        label: context.tr.year,
+                        hint: context.tr.year,
                         haveBackground: true,
                         onChanged: (value) {
                           appCubit.onChangeClass(value);
                         },
                         validator: (value) {
                           if (value == null || value.isEmpty)
-                            return 'هذا الحقل مطلوب';
+                            return context.tr.this_field_is_required;
                           return null;
                         },
                         items: appCubit.classNamesList,
@@ -141,15 +144,15 @@ class _TeacherAddTestDetailsState extends State<TeacherAddTestDetails> {
                       ),
                       SizedBox(height: 17.h),
                       DefaultDropDown(
-                        label: 'الترم',
-                        hint: 'الترم',
+                        label: context.tr.semster,
+                        hint: context.tr.semster,
                         haveBackground: true,
                         onChanged: (value) {
                           appCubit.onTermChange(value);
                         },
                         validator: (value) {
                           if (value == null || value.isEmpty)
-                            return 'هذا الحقل مطلوب';
+                            return context.tr.this_field_is_required;
                           return null;
                         },
                         items: appCubit.termNamesList,
@@ -161,12 +164,12 @@ class _TeacherAddTestDetailsState extends State<TeacherAddTestDetails> {
                       DefaultFormField(
                         validation: (value) {
                           if (value == null || value.isEmpty)
-                            return 'هذا الحقل مطلوب';
+                            return context.tr.this_field_is_required;
                           return null;
                         },
                         controller: questionsNumberController,
-                        labelText: 'عدد الاسئلة',
-                        hintText: 'عدد الاسئلة',
+                        labelText: context.tr.questions_num,
+                        hintText: context.tr.questions_num,
                         haveBackground: true,
                         type: TextInputType.number,
                         inputFormatters: [
@@ -175,7 +178,9 @@ class _TeacherAddTestDetailsState extends State<TeacherAddTestDetails> {
                       ),
                       SizedBox(height: 50.h),
                       DefaultAppButton(
-                        text: widget.test != null ? 'تعديل' : 'اضافة',
+                        text: widget.test != null
+                            ? context.tr.edit
+                            : context.tr.add,
                         textStyle: thirdTextStyle(widget.deviceInfo),
                         isLoading: isLoading,
                         onPressed: () async {

@@ -4,6 +4,7 @@ import 'package:e_learning/layout/student/cubit/states.dart';
 import 'package:e_learning/models/enums/enums.dart';
 import 'package:e_learning/modules/test_module/student_test/student_champion/champion_choose_friends_screen.dart';
 import 'package:e_learning/shared/componants/componants.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/componants/widgets/default_button.dart';
 import 'package:e_learning/shared/componants/widgets/default_loader.dart';
 import 'package:e_learning/shared/componants/widgets/no_data_widget.dart';
@@ -28,12 +29,12 @@ class CreateChampionScreen extends StatelessWidget {
         builder: (context, state) {
           TestLayoutCubit cubit = TestLayoutCubit.get(context);
           return responsiveWidget(
-            responsive: (context, deviceInfo) {
+            responsive: (_, deviceInfo) {
               return DefaultTabController(
                 length: 2,
                 child: Scaffold(
                   appBar: AppBar(
-                    title: Text('اختر الامتحان'),
+                    title: Text(context.tr.choose_exam),
                     centerTitle: true,
                     leading:
                         defaultBackButton(context, deviceInfo.screenHeight),
@@ -45,7 +46,7 @@ class CreateChampionScreen extends StatelessWidget {
                     fallbackBuilder: (context) => DefaultLoader(),
                     widgetBuilder: (context) => cubit.noStudentTestsData
                         ? NoDataWidget(
-                            text: 'عذرا لا يوجد بيانات',
+                            text: context.tr.no_data,
                             onPressed: () {
                               cubit.getStudentTests(TestType.Test);
                             },
@@ -107,7 +108,7 @@ class CreateChampionScreen extends StatelessWidget {
                                   Padding(
                                     padding: const EdgeInsets.all(22.0),
                                     child: DefaultAppButton(
-                                      text: 'التالى',
+                                      text: context.tr.next,
                                       textStyle: thirdTextStyle(null),
                                       width: deviceInfo.screenwidth * 0.5,
                                       onPressed: cubit.selectedTestIndex == null
@@ -118,7 +119,10 @@ class CreateChampionScreen extends StatelessWidget {
                                                   ChampionChooseFriendScreen(
                                                     testId:
                                                         cubit.selectedTestId!,
-                                                    test: cubit.studentTestsList[cubit.selectedTestIndex!],
+                                                    test: cubit
+                                                            .studentTestsList[
+                                                        cubit
+                                                            .selectedTestIndex!],
                                                   ));
                                             },
                                     ),

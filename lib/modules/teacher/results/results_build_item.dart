@@ -1,4 +1,5 @@
 import 'package:e_learning/shared/componants/componants.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/styles/colors.dart';
 import 'package:e_learning/shared/styles/styles.dart';
 import 'package:flutter/material.dart';
@@ -50,7 +51,7 @@ class ResultsBuildItem extends StatelessWidget {
               backgroundColor: errorColor,
               foregroundColor: Colors.white,
               icon: Icons.delete,
-              label: 'حذف',
+              label: context.tr.delete,
               onPressed: (context) {
                 showDeleteDialog(
                   context,
@@ -63,7 +64,7 @@ class ResultsBuildItem extends StatelessWidget {
               backgroundColor: Color(0xFF0392CF),
               foregroundColor: Colors.white,
               icon: Icons.edit,
-              label: 'تعديل',
+              label: context.tr.edit,
               onPressed: (context) {
                 if (onEdit != null) onEdit!();
               },

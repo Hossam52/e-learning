@@ -65,7 +65,7 @@ class _GroupHomeTabState extends State<GroupHomeTab>
           showSnackBar(text: text.add_success, context: context);
         }
         if (state is PostImageState) {
-            noImages = GroupCubit.get(context).selectedImages.isEmpty;
+          noImages = GroupCubit.get(context).selectedImages.isEmpty;
         }
       },
       builder: (context, state) {
@@ -107,8 +107,8 @@ class _GroupHomeTabState extends State<GroupHomeTab>
                                 cubit.getAllPostsAndQuestions(
                                     "share", widget.groupId, widget.isStudent);
                               else {
-                                cubit.getAllPostsAndQuestions(
-                                    "question", widget.groupId, widget.isStudent);
+                                cubit.getAllPostsAndQuestions("question",
+                                    widget.groupId, widget.isStudent);
                               }
                             },
                             indicator: BoxDecoration(

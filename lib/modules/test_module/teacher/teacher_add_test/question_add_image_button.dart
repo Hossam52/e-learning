@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:e_learning/modules/test_module/cubit/cubit.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -45,7 +46,7 @@ class QuestionAddImageButton extends StatelessWidget {
                   ),
                   SizedBox(width: 15.w),
                   Text(
-                    'اضف صورة',
+                    context.tr.add_image,
                     style: subTextStyle(null),
                   ),
                 ],

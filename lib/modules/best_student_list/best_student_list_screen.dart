@@ -1,4 +1,5 @@
 import 'package:e_learning/shared/componants/componants.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/componants/widgets/best_avatar_build_item.dart';
 import 'package:e_learning/shared/componants/widgets/other_places_avatar_item.dart';
 import 'package:e_learning/shared/componants/widgets/student_lead_board_build_item.dart';
@@ -17,7 +18,7 @@ class BestStudentListScreen extends StatelessWidget {
     var bestStudents = AppCubit.get(context).bestStudentsModel!.students;
 
     return responsiveWidget(
-      responsive: (context, deviceInfo) {
+      responsive: (_, deviceInfo) {
         return Container(
           decoration: BoxDecoration(
               color: backgroundColor,
@@ -26,14 +27,17 @@ class BestStudentListScreen extends StatelessWidget {
               )),
           child: Scaffold(
             appBar: AppBar(
-              title: Text('الأعلى نقاطاً'),
+              title: Text(
+                context.tr.highest_points,
+                // 'الأعلى نقاطاً'
+              ),
               centerTitle: true,
               leading: defaultBackButton(context, deviceInfo.screenHeight),
             ),
             backgroundColor: Colors.transparent,
             body: bestStudents!.isEmpty
                 ? Center(
-                    child: Text('Empty'),
+                    child: Text(context.tr.empty),
                   )
                 : Column(
                     mainAxisAlignment: MainAxisAlignment.start,

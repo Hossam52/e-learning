@@ -3,6 +3,7 @@ import 'package:e_learning/modules/following_list/teachers_build_item.dart';
 import 'package:e_learning/modules/student/cubit/cubit/cubit.dart';
 import 'package:e_learning/modules/student/cubit/cubit/states.dart';
 import 'package:e_learning/shared/componants/componants.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/componants/widgets/default_loader.dart';
 import 'package:e_learning/shared/componants/widgets/no_data_widget.dart';
 import 'package:e_learning/shared/responsive_ui/responsive_widget.dart';
@@ -47,7 +48,7 @@ class _TeachersTabState extends State<TeachersTab> {
                       Expanded(
                         child: cubit.studentFollowingListModel!.teachers!.data!
                                 .isEmpty
-                            ? noData('لا يوجد معلمين')
+                            ? noData(context.tr.no_teachers)
                             : ListView.builder(
                                 itemCount: widget.isAdd
                                     ? cubit.teachersInClassList.length
@@ -68,11 +69,13 @@ class _TeachersTabState extends State<TeachersTab> {
                                         (index) =>
                                             teacher.subjects![index].name),
                                     onTap: () {
-                                      navigateTo(context, TeacherProfileView(
-                                        teacher: teacher,
-                                        isAdd: widget.isAdd,
-                                        cubit: cubit,
-                                      ));
+                                      navigateTo(
+                                          context,
+                                          TeacherProfileView(
+                                            teacher: teacher,
+                                            isAdd: widget.isAdd,
+                                            cubit: cubit,
+                                          ));
                                     },
                                   );
                                 },

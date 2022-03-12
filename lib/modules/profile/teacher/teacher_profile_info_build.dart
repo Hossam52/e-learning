@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:e_learning/modules/student/cubit/cubit/cubit.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/componants/widgets/default_cached_image.dart';
 import 'package:e_learning/shared/componants/widgets/default_teacher_subjects_wrap.dart';
 import 'package:e_learning/shared/responsive_ui/device_information.dart';
@@ -84,7 +85,7 @@ class TeacherProfileInfoBuild extends StatelessWidget {
                         ),
                         SizedBox(height: 20.h),
                         Text(
-                          'عضوية مجانية',
+                          context.tr.free_membership,
                           style: thirdTextStyle(deviceInfo)
                               .copyWith(color: Colors.white),
                         ),
@@ -111,7 +112,7 @@ class TeacherProfileInfoBuild extends StatelessWidget {
                                       likeCount: followCount,
                                       countBuilder: (count, isLiked, text) {
                                         return Text(
-                                          '$count متابعة',
+                                          '$count ${context.tr.follow}',
                                           style: thirdTextStyle(null).copyWith(
                                               color: primaryColor,
                                               fontWeight: FontWeight.w600),
@@ -145,7 +146,7 @@ class TeacherProfileInfoBuild extends StatelessWidget {
                                         borderRadius: BorderRadius.circular(5)),
                                   ),
                                   child: Text(
-                                    'تقييم',
+                                    context.tr.rate,
                                     style: thirdTextStyle(null).copyWith(
                                         color: Colors.white,
                                         fontWeight: FontWeight.w600),
@@ -181,14 +182,14 @@ class TeacherProfileInfoBuild extends StatelessWidget {
               child: Row(
                 children: [
                   TeacherInfoColumn(
-                    title: 'المتابعين',
+                    title: context.tr.all_followers,
                     detail: Text('$followCount',
                         style: primaryTextStyle(null)
                             .copyWith(color: Colors.white)),
                   ),
                   VerticalDivider(color: Colors.white, thickness: 1),
                   TeacherInfoColumn(
-                    title: 'التقييم',
+                    title: context.tr.rate,
                     detail: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -240,7 +241,7 @@ class _RateDialog extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              'Your rate',
+              context.tr.your_rate,
               style: secondaryTextStyle(null),
             ),
             Padding(
@@ -264,7 +265,7 @@ class _RateDialog extends StatelessWidget {
             ),
             Center(
               child: TextButton(
-                child: Text('Done'),
+                child: Text(context.tr.done),
                 style: ButtonStyle(
                     foregroundColor: MaterialStateProperty.all(Colors.black),
                     padding:
@@ -280,4 +281,3 @@ class _RateDialog extends StatelessWidget {
     );
   }
 }
-     

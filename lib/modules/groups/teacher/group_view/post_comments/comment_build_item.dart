@@ -1,5 +1,6 @@
 import 'package:e_learning/modules/groups/cubit/cubit.dart';
 import 'package:e_learning/shared/componants/constants.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/componants/widgets/default_cached_image.dart';
 import 'package:e_learning/shared/componants/widgets/default_popup_menu.dart';
 import 'package:e_learning/shared/componants/widgets/membership_widgets/student_star.dart';
@@ -79,10 +80,10 @@ class CommentBuildItem extends StatelessWidget {
                   if (isMe || isStudent == false)
                     DefaultPopupMenu(
                       items: isStudent
-                          ? ['تعديل', 'مسح']
+                          ? [context.tr.edit, context.tr.delete]
                           : isStudentComment
-                              ? ['حذر']
-                              : ['تعديل', 'مسح'],
+                              ? [context.tr.block]
+                              : [context.tr.edit, context.tr.delete],
                       icons: isStudent
                           ? [Icons.edit, Icons.delete]
                           : isStudentComment

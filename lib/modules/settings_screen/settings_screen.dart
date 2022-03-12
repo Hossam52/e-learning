@@ -1,4 +1,5 @@
 import 'package:e_learning/shared/componants/constants.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/componants/widgets/default_drop_down.dart';
 import 'package:e_learning/shared/cubit/cubit.dart';
 import 'package:e_learning/shared/cubit/states.dart';
@@ -20,7 +21,7 @@ class SettingsScreen extends StatelessWidget {
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          'الاعدادات',
+          context.tr.settings,
           style: TextStyle(color: Colors.black87),
         ),
         backgroundColor: Color(0xffEFF0FC),
@@ -30,7 +31,7 @@ class SettingsScreen extends StatelessWidget {
         listener: (context, state) {},
         builder: (context, state) {
           return responsiveWidget(
-            responsive: (context, deviceInfo) => SingleChildScrollView(
+            responsive: (_, deviceInfo) => SingleChildScrollView(
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
                 child: Column(
@@ -39,16 +40,18 @@ class SettingsScreen extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 10, vertical: 10),
                       child: buildRowSetting(
-                        title: 'اللغة',
+                        title: context.tr.language,
                         child: Expanded(
                           child: DefaultDropDown(
                             onChanged: (value) {
-                              AppCubit.get(context).changeLocaleApp(value == 'لعربية'
-                                  ? 'ar' : 'en');
+                              AppCubit.get(context).changeLocaleApp(
+                                  value == context.tr.arabic ? 'ar' : 'en');
                             },
                             validator: (value) {},
-                            items: ['لعربية', 'english'],
-                            selectedValue: lang == 'ar' ? 'لعربية' : 'english',
+                            items: [context.tr.arabic, context.tr.english],
+                            selectedValue: lang == 'ar'
+                                ? context.tr.arabic
+                                : context.tr.english,
                           ),
                         ),
                         deviceInfo: deviceInfo,
@@ -65,7 +68,7 @@ class SettingsScreen extends StatelessWidget {
                       child: Column(
                         children: [
                           buildRowSetting(
-                              title: 'اظهار الاي دي على بروفايلي',
+                              title: context.tr.show_id_on_profile,
                               child: Switch(
                                   value: true, onChanged: (toggleIdAppear) {}),
                               deviceInfo: deviceInfo),
@@ -73,7 +76,8 @@ class SettingsScreen extends StatelessWidget {
                             height: deviceInfo.screenHeight * sizeBetweenItems,
                           ),
                           buildRowSetting(
-                              title: 'تمكين المستخدمين من الكتابة على بروفايلي',
+                              title: context.tr
+                                  .enable_users_write_to_my_profile, // 'تمكين المستخدمين من الكتابة على بروفايلي',
                               child: Switch(
                                   value: false, onChanged: (toggleIdAppear) {}),
                               deviceInfo: deviceInfo),
@@ -91,7 +95,7 @@ class SettingsScreen extends StatelessWidget {
                         children: [
                           buildRowSetting(
                               title:
-                                  'تلقي اشعارات التطبيق على الهاتف من الخارج',
+                                  context.tr.recieve_notification_from_outside,
                               child: Switch(
                                   value: false, onChanged: (toggleIdAppear) {}),
                               deviceInfo: deviceInfo),
@@ -99,7 +103,8 @@ class SettingsScreen extends StatelessWidget {
                             height: deviceInfo.screenHeight * sizeBetweenItems,
                           ),
                           buildRowSetting(
-                              title: 'تلقي اشعارات من المعلمين الذي اتابعهم',
+                              title: context.tr
+                                  .recieve_notification_from_followed_teachers,
                               child: Switch(
                                   value: false, onChanged: (toggleIdAppear) {}),
                               deviceInfo: deviceInfo),
@@ -107,7 +112,7 @@ class SettingsScreen extends StatelessWidget {
                             height: deviceInfo.screenHeight * sizeBetweenItems,
                           ),
                           buildRowSetting(
-                              title: 'تلقي اشعارات المنافسين',
+                              title: context.tr.compititors_notifications,
                               child: Switch(
                                   value: false, onChanged: (toggleIdAppear) {}),
                               deviceInfo: deviceInfo),

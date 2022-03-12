@@ -1,5 +1,6 @@
 import 'package:e_learning/modules/groups/cubit/cubit.dart';
 import 'package:e_learning/modules/groups/cubit/states.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/componants/widgets/default_button.dart';
 import 'package:e_learning/shared/componants/widgets/default_loader.dart';
 import 'package:e_learning/shared/componants/widgets/default_text_field.dart';
@@ -60,11 +61,11 @@ class _TeacherAddStudentState extends State<TeacherAddStudent> {
                           flex: 3,
                           child: DefaultTextField(
                             controller: codeController,
-                            hint: 'ID أدخل معرف ',
+                            hint: context.tr.enter_id,
                             bgColor: Color(0xffDDDDDD).withOpacity(0.4),
                             validator: (value) {
                               if (value == null || value.isEmpty)
-                                return 'هذا الحقل مطلوب';
+                                return context.tr.this_field_is_required;
                               return null;
                             },
                           ),
@@ -84,7 +85,7 @@ class _TeacherAddStudentState extends State<TeacherAddStudent> {
                                 );
                               }
                             },
-                            text: 'أضف',
+                            text: context.tr.add,
                             textStyle: thirdTextStyle(deviceInfo),
                             background: primaryColor,
                             isLoading: cubit.groupAddStudentWithCodeLoading,
@@ -102,8 +103,7 @@ class _TeacherAddStudentState extends State<TeacherAddStudent> {
                       fallbackBuilder: (context) => DefaultLoader(),
                       widgetBuilder: (context) => cubit.noGroupMemberData
                           ? NoDataWidget(
-                              text: 'عذرا لا يوجد بيانات',
-                              onPressed: getMembers)
+                              text: context.tr.no_data, onPressed: getMembers)
                           : ListView.builder(
                               itemCount:
                                   cubit.studentInGroupModel!.students!.length,
@@ -124,7 +124,7 @@ class _TeacherAddStudentState extends State<TeacherAddStudent> {
                                         context: context,
                                       );
                                     },
-                                    text: 'حزف',
+                                    text: context.tr.remove,
                                     textStyle: thirdTextStyle(deviceInfo),
                                     background: errorColor,
                                     height: 30.h,

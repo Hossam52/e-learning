@@ -6,6 +6,7 @@ import 'package:e_learning/modules/auth/student/register/choose_country_screen.d
 import 'package:e_learning/modules/auth/teacher/login/teacher_login_screen.dart';
 import 'package:e_learning/modules/auth/teacher/register/build_subjects_item.dart';
 import 'package:e_learning/shared/componants/componants.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/componants/widgets/default_form_field.dart';
 import 'package:e_learning/shared/componants/widgets/default_gesture_widget.dart';
 import 'package:e_learning/shared/componants/widgets/default_progress_button.dart';
@@ -53,7 +54,7 @@ class _TeacherRegisterScreenState extends State<TeacherRegisterScreen> {
         return DefaultGestureWidget(
           child: Scaffold(
             extendBodyBehindAppBar: true,
-            body: responsiveWidget(responsive: (context, deviceInfo) {
+            body: responsiveWidget(responsive: (_, deviceInfo) {
               return SafeArea(
                 child: SingleChildScrollView(
                   child: Padding(
@@ -264,7 +265,7 @@ class _TeacherRegisterScreenState extends State<TeacherRegisterScreen> {
                           DefaultProgressButton(
                             buttonState: cubit.teacherRegisterState,
                             idleText: text.create_account,
-                            loadingText: 'Loading',
+                            loadingText: context.tr.loading, // 'Loading',
                             failText: text.failed,
                             successText: text.success_sign,
                             onPressed: () {

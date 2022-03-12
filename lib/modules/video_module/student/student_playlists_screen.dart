@@ -3,6 +3,7 @@ import 'package:e_learning/modules/video_module/video_screens/video_titles_scree
 import 'package:e_learning/modules/video_module/video_teacher_screens/cubit/cubit.dart';
 import 'package:e_learning/modules/video_module/video_teacher_screens/cubit/states.dart';
 import 'package:e_learning/shared/componants/componants.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/componants/widgets/default_loader.dart';
 import 'package:e_learning/shared/responsive_ui/responsive_widget.dart';
 import 'package:flutter/material.dart';
@@ -38,7 +39,7 @@ class StudentPlaylistsScreen extends StatelessWidget {
               VideosCubit cubit = VideosCubit.get(context);
               return Scaffold(
                 appBar: AppBar(
-                  title: Text('فديوهاتي'),
+                  title: Text(context.tr.my_videos),
                   centerTitle: true,
                   leading: defaultBackButton(context, deviceInfo.screenHeight),
                 ),
@@ -72,7 +73,7 @@ class StudentPlaylistsScreen extends StatelessWidget {
                               videoCount: playlist.videoNum!,
                             );
                           })
-                      : noData('لا يوجد فيديوهات'),
+                      : noData(context.tr.no_videos),
                 ),
               );
             },

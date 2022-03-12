@@ -1,4 +1,5 @@
 import 'package:e_learning/shared/componants/componants.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/componants/widgets/default_dimissible_widget.dart';
 import 'package:e_learning/shared/responsive_ui/device_information.dart';
 import 'package:e_learning/shared/styles/colors.dart';
@@ -55,7 +56,7 @@ class HomeworkBuildItem extends StatelessWidget {
               ),
               SizedBox(height: 23.h),
               if (result != null)
-                Text("النتيجة $result")
+                Text("${context.tr.results} $result")
               else
                 defaultElevatedButton(
                   deviceInfo: deviceInfo,

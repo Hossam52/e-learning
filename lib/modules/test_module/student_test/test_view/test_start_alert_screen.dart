@@ -1,6 +1,7 @@
 import 'package:e_learning/models/teacher/test/test_response_model.dart';
 import 'package:e_learning/shared/componants/componants.dart';
 import 'package:e_learning/shared/componants/constants.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/componants/widgets/default_button.dart';
 import 'package:e_learning/shared/componants/widgets/membership_widgets/expired_widget.dart';
 import 'package:e_learning/shared/responsive_ui/responsive_widget.dart';
@@ -46,7 +47,8 @@ class TestStartAlertScreen extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    'هل تريد بدأ هذا الاختبار الان؟',
+                    context.tr.confirm_start_test_now,
+                    // 'هل تريد بدأ هذا الاختبار الان؟',
                     style: secondaryTextStyle(deviceInfo),
                   ),
                   SizedBox(height: deviceInfo.screenHeight * 0.08),
@@ -75,7 +77,7 @@ class TestStartAlertScreen extends StatelessWidget {
                           onPressed: () {
                             Navigator.pop(context);
                           },
-                          text: 'رجوع',
+                          text: context.tr.back,
                           background: Colors.transparent,
                           border: errorColor,
                           textColor: errorColor,

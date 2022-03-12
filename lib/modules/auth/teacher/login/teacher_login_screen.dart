@@ -2,6 +2,7 @@ import 'package:e_learning/modules/auth/cubit/cubit.dart';
 import 'package:e_learning/modules/auth/cubit/states.dart';
 import 'package:e_learning/modules/auth/forget_password/forget_password_dialog.dart';
 import 'package:e_learning/shared/componants/componants.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/componants/widgets/default_form_field.dart';
 import 'package:e_learning/shared/componants/widgets/default_gesture_widget.dart';
 import 'package:e_learning/shared/componants/widgets/default_progress_button.dart';
@@ -33,7 +34,7 @@ class TeacherLoginScreen extends StatelessWidget {
                 var cubit = AuthCubit.get(context);
                 return Scaffold(
                   extendBodyBehindAppBar: true,
-                  body: responsiveWidget(responsive: (context, deviceInfo) {
+                  body: responsiveWidget(responsive: (_, deviceInfo) {
                     return SafeArea(
                       child: SingleChildScrollView(
                         child: Padding(
@@ -90,7 +91,8 @@ class TeacherLoginScreen extends StatelessWidget {
                                     DefaultProgressButton(
                                       buttonState: cubit.loginButtonState,
                                       idleText: text.sign_in,
-                                      loadingText: 'Loading',
+                                      loadingText:
+                                          context.tr.loading, // 'Loading',
                                       failText: text.failed,
                                       successText: text.success_sign,
                                       onPressed: () {

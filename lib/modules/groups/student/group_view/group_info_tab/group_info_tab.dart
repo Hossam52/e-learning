@@ -2,6 +2,7 @@ import 'package:e_learning/layout/student/student_layout.dart';
 import 'package:e_learning/modules/groups/cubit/cubit.dart';
 import 'package:e_learning/modules/groups/cubit/states.dart';
 import 'package:e_learning/shared/componants/componants.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/componants/widgets/default_button.dart';
 import 'package:e_learning/shared/responsive_ui/responsive_widget.dart';
 import 'package:e_learning/shared/styles/colors.dart';
@@ -120,7 +121,7 @@ class GroupInfoTab extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'وصف المجموعه',
+                            context.tr.group_description,
                             style: secondaryTextStyle(deviceInfo),
                           ),
                           SizedBox(
@@ -141,7 +142,7 @@ class GroupInfoTab extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 25.0),
                       child: DefaultAppButton(
-                        text: 'مغادره الجروب',
+                        text: context.tr.leave_group,
                         textStyle: thirdTextStyle(null),
                         width: MediaQuery.of(context).size.width * 0.6,
                         height: 60,

@@ -4,6 +4,7 @@ import 'package:e_learning/modules/groups/cubit/states.dart';
 import 'package:e_learning/modules/groups/student/group_build_item.dart';
 import 'package:e_learning/modules/groups/teacher/create_group/create_group_screen.dart';
 import 'package:e_learning/shared/componants/componants.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/componants/widgets/default_loader.dart';
 import 'package:e_learning/shared/componants/widgets/no_data_widget.dart';
 import 'package:e_learning/shared/responsive_ui/responsive_widget.dart';
@@ -19,7 +20,7 @@ class TeacherPublicGroupsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('الجروبات الرسمية لموادك'),
+        title: Text(context.tr.official_groups_for_my_subjects),
         centerTitle: true,
       ),
       body: BlocProvider(
@@ -42,7 +43,7 @@ class TeacherPublicGroupsScreen extends StatelessWidget {
                   fallbackBuilder: (context) => DefaultLoader(),
                   widgetBuilder: (context) => cubit.noGroupsData
                       ? NoDataWidget(
-                          text: 'عذرا لا يوجد بيانات',
+                          text: context.tr.no_data,
                           onPressed: () {
                             cubit.getMyGroups(false, GroupType.Teacher);
                           },

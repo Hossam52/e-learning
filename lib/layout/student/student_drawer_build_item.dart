@@ -6,6 +6,7 @@ import 'package:e_learning/modules/settings_screen/settings_screen.dart';
 import 'package:e_learning/modules/student/my_friend_list/my_friend_list_screen.dart';
 import 'package:e_learning/shared/componants/componants.dart';
 import 'package:e_learning/shared/componants/constants.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/componants/home_components.dart';
 import 'package:e_learning/shared/cubit/cubit.dart';
 import 'package:flutter/material.dart';
@@ -107,7 +108,7 @@ class StudentDrawerBuildItem extends StatelessWidget {
                             child: TextButton(
                               style:
                                   TextButton.styleFrom(primary: Colors.black87),
-                              child: Text('الترم التاني'),
+                              child: Text(context.tr.class_nine),
                               onPressed: () {
                                 Navigator.pop(context);
                                 appCubit.changeBottomNav(3);

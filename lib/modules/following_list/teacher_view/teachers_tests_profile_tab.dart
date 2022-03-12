@@ -3,6 +3,7 @@ import 'package:e_learning/modules/following_list/teacher_view/teacher_profile_t
 import 'package:e_learning/modules/groups/cubit/cubit.dart';
 import 'package:e_learning/modules/groups/cubit/states.dart';
 import 'package:e_learning/shared/componants/componants.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/componants/widgets/default_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -37,17 +38,17 @@ class _TeacherTestsProfileTabState extends State<TeacherTestsProfileTab> {
           conditionBuilder: (context) => cubit.isTeacherDataLoading == false,
           fallbackBuilder: (context) => DefaultLoader(),
           widgetBuilder: (context) => cubit.teacherTests.isEmpty
-              ? noData('لا يوجد اختبارات')
+              ? noData(context.tr.no_tests)
               : ListView.builder(
-            itemCount: cubit.teacherTests.length,
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            padding: const EdgeInsets.all(16),
-            itemBuilder: (context, index) {
-              var test = cubit.teacherTests[index];
-              return TeacherProfileTestBuildItem(test: test);
-            },
-          ),
+                  itemCount: cubit.teacherTests.length,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  padding: const EdgeInsets.all(16),
+                  itemBuilder: (context, index) {
+                    var test = cubit.teacherTests[index];
+                    return TeacherProfileTestBuildItem(test: test);
+                  },
+                ),
         );
       },
     );

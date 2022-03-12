@@ -1,4 +1,5 @@
 import 'package:e_learning/shared/componants/componants.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/componants/widgets/student_lead_board_build_item.dart';
 import 'package:e_learning/shared/responsive_ui/responsive_widget.dart';
 import 'package:e_learning/shared/styles/colors.dart';
@@ -11,11 +12,11 @@ class StudentTestLeaderBoard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return responsiveWidget(
-      responsive: (context, deviceInfo) {
+      responsive: (_, deviceInfo) {
         return Scaffold(
           appBar: AppBar(
             elevation: 1,
-            title: Text('ترتيب المشاركين'),
+            title: Text(context.tr.partecipation_order),
             centerTitle: true,
             leading: defaultBackButton(context, deviceInfo.screenHeight),
           ),
@@ -27,7 +28,7 @@ class StudentTestLeaderBoard extends StatelessWidget {
                 padding: const EdgeInsets.all(22.0),
                 child: RichText(
                   text: TextSpan(
-                    text: 'المستخدمين الأعلى نقاطا ',
+                    text: context.tr.users_high_points,
                     style: thirdTextStyle(deviceInfo)
                         .copyWith(color: Colors.black),
                     children: const <TextSpan>[

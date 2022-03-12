@@ -7,6 +7,7 @@ import 'package:e_learning/modules/search/student/no_data_found_screen.dart';
 import 'package:e_learning/modules/student/cubit/cubit/cubit.dart';
 import 'package:e_learning/modules/student/cubit/cubit/states.dart';
 import 'package:e_learning/shared/componants/componants.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/componants/widgets/deafult_app_search_field.dart';
 import 'package:e_learning/shared/componants/widgets/default_gesture_widget.dart';
 import 'package:e_learning/shared/componants/widgets/default_loader.dart';
@@ -52,7 +53,7 @@ class StudentSearchScreen extends StatelessWidget {
                       context: context,
                       conditionBuilder: (context) => cubit.searchModel != null,
                       fallbackBuilder: (context) => Center(
-                          child: Text('ابحث عن اى شيئ',
+                          child: Text(context.tr.search_any_thing,
                               style: subTextStyle(null))),
                       widgetBuilder: (context) => state
                               is SearchStudentNoDataState
@@ -61,7 +62,7 @@ class StudentSearchScreen extends StatelessWidget {
                               child: Column(
                                 children: [
                                   ListTile(
-                                    title: Text('المعلمين'),
+                                    title: Text(context.tr.teachers),
                                   ),
                                   SizedBox(
                                     height: 160.h,
@@ -111,7 +112,7 @@ class StudentSearchScreen extends StatelessWidget {
                                     ),
                                   ),
                                   ListTile(
-                                    title: Text('المجموعات'),
+                                    title: Text(context.tr.groups),
                                   ),
                                   ListView.builder(
                                     itemCount: cubit.searchModel!.groups!

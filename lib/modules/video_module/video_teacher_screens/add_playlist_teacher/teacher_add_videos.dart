@@ -1,6 +1,7 @@
 import 'package:e_learning/modules/video_module/video_teacher_screens/cubit/cubit.dart';
 import 'package:e_learning/modules/video_module/video_teacher_screens/cubit/states.dart';
 import 'package:e_learning/shared/componants/componants.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/componants/widgets/default_progress_button.dart';
 import 'package:e_learning/shared/responsive_ui/device_information.dart';
 import 'package:e_learning/shared/styles/colors.dart';
@@ -13,7 +14,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'add_video_modal_sheet.dart';
 
 class TeacherAddVideos extends StatelessWidget {
-  TeacherAddVideos({Key? key,
+  TeacherAddVideos({
+    Key? key,
     required this.deviceInfo,
     required this.playlistName,
     required this.subjectId,
@@ -40,7 +42,7 @@ class TeacherAddVideos extends StatelessWidget {
           VideosCubit cubit = VideosCubit.get(context);
           return Scaffold(
             appBar: AppBar(
-              title: Text("اضافة"),
+              title: Text(context.tr.add),
               elevation: 1,
               centerTitle: true,
               leading: defaultBackButton(context, deviceInfo.screenHeight),
@@ -85,7 +87,7 @@ class TeacherAddVideos extends StatelessWidget {
                           conditionBuilder: (context) =>
                               cubit.videosList.isNotEmpty,
                           fallbackBuilder: (context) => Center(
-                            child: Text('لا يوجد فيديوهات حتى الان'),
+                            child: Text(context.tr.no_videos_up_till_now),
                           ),
                           widgetBuilder: (context) => ListView.builder(
                             itemCount: cubit.videosList.length,
@@ -106,8 +108,7 @@ class TeacherAddVideos extends StatelessWidget {
                                 color: Colors.white,
                               ),
                               child: ListTile(
-                                title:
-                                    Text(cubit.videosList[index].videoName),
+                                title: Text(cubit.videosList[index].videoName),
                                 contentPadding: EdgeInsets.zero,
                                 trailing: IconButton(
                                   onPressed: () {
@@ -123,8 +124,10 @@ class TeacherAddVideos extends StatelessWidget {
                                       enableDrag: true,
                                       builder: (context) => AddVideoModalSheet(
                                         deviceInfo: deviceInfo,
-                                        videoName: cubit.videosList[index].videoName,
-                                        videoUrl: cubit.videosList[index].videoUrl,
+                                        videoName:
+                                            cubit.videosList[index].videoName,
+                                        videoUrl:
+                                            cubit.videosList[index].videoUrl,
                                         index: index,
                                         cubit: cubit,
                                       ),
@@ -154,10 +157,10 @@ class TeacherAddVideos extends StatelessWidget {
                   SizedBox(height: 20.h),
                   DefaultProgressButton(
                     buttonState: cubit.playlistAddButtonState,
-                    idleText: 'انهاء',
-                    loadingText: 'Loading',
-                    failText: 'حدث خطأ',
-                    successText: 'تم الاضافة بنجاح',
+                    idleText: context.tr.finish,
+                    loadingText: context.tr.loading,
+                    failText: context.tr.error_happened,
+                    successText: context.tr.success_adding,
                     onPressed: cubit.videosList.isEmpty
                         ? null
                         : () {

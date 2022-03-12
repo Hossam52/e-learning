@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:e_learning/modules/test_module/cubit/cubit.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/componants/widgets/default_form_field.dart';
 import 'package:e_learning/shared/styles/colors.dart';
 import 'package:flutter/material.dart';
@@ -43,7 +44,8 @@ class TeacherAnswerBuildItem extends StatelessWidget {
             Expanded(
               child: DefaultFormField(
                 validation: (value) {
-                  if (value == null || value.isEmpty) return 'هذا الحقل مطلوب';
+                  if (value == null || value.isEmpty)
+                    return context.tr.this_field_is_required;
                   return null;
                 },
                 controller: controller,

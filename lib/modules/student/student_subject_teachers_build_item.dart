@@ -1,10 +1,12 @@
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/styles/colors.dart';
 import 'package:e_learning/shared/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class StudentSubjectTeachersBuildItem extends StatelessWidget {
-  const StudentSubjectTeachersBuildItem({Key? key,
+  const StudentSubjectTeachersBuildItem({
+    Key? key,
     required this.image,
     required this.name,
     required this.subject,
@@ -54,7 +56,7 @@ class StudentSubjectTeachersBuildItem extends StatelessWidget {
                       color: primaryColor,
                     ),
                     child: Text(
-                      'عضو مميز',
+                      context.tr.premium_member,
                       style: thirdTextStyle(null).copyWith(color: Colors.white),
                     ),
                   ),

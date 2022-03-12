@@ -1,5 +1,6 @@
 import 'package:e_learning/modules/student/courses_teacher_screen.dart';
 import 'package:e_learning/shared/componants/componants.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/componants/widgets/default_loader.dart';
 import 'package:e_learning/shared/cubit/cubit.dart';
 import 'package:e_learning/shared/cubit/states.dart';
@@ -16,12 +17,10 @@ class SubjectsVideoScreen extends StatefulWidget {
 
   final bool isStudent;
   @override
-  _SubjectsVideoScreenState createState() =>
-      _SubjectsVideoScreenState();
+  _SubjectsVideoScreenState createState() => _SubjectsVideoScreenState();
 }
 
-class _SubjectsVideoScreenState
-    extends State<SubjectsVideoScreen> {
+class _SubjectsVideoScreenState extends State<SubjectsVideoScreen> {
   @override
   void initState() {
     AppCubit.get(context).getTeacherAndStudentSubjects(widget.isStudent);
@@ -31,10 +30,10 @@ class _SubjectsVideoScreenState
   @override
   Widget build(BuildContext context) {
     return responsiveWidget(
-      responsive: (context, deviceInfo) {
+      responsive: (_, deviceInfo) {
         return Scaffold(
           appBar: AppBar(
-            title: Text('المواد'),
+            title: Text(context.tr.subjects),
             centerTitle: true,
             leading: defaultBackButton(context, deviceInfo.screenHeight),
           ),
@@ -57,8 +56,7 @@ class _SubjectsVideoScreenState
                         widgetBuilder: (context) => GridView.builder(
                           padding: EdgeInsets.symmetric(horizontal: 10),
                           shrinkWrap: true,
-                          itemCount:
-                              appCubit.subjectsModel!.subjects!.length,
+                          itemCount: appCubit.subjectsModel!.subjects!.length,
                           physics: NeverScrollableScrollPhysics(),
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
@@ -73,18 +71,22 @@ class _SubjectsVideoScreenState
                               title: appCubit
                                   .subjectsModel!.subjects![index].name!,
                               onPressed: () {
-                                if(widget.isStudent) {
-                                  navigateTo(context, CoursesTeacherScreen(
-                                    subjectId: appCubit
-                                        .subjectsModel!.subjects![index].id!,
-                                    isFiles: false,
-                                    title: 'فديوهاتي',
-                                  ));
+                                if (widget.isStudent) {
+                                  navigateTo(
+                                      context,
+                                      CoursesTeacherScreen(
+                                        subjectId: appCubit.subjectsModel!
+                                            .subjects![index].id!,
+                                        isFiles: false,
+                                        title: context.tr.my_videos,
+                                      ));
                                 } else {
-                                  navigateTo(context, MyVideosTeacherScreen(
-                                    index: appCubit
-                                        .subjectsModel!.subjects![index].id!,
-                                  ));
+                                  navigateTo(
+                                      context,
+                                      MyVideosTeacherScreen(
+                                        index: appCubit.subjectsModel!
+                                            .subjects![index].id!,
+                                      ));
                                 }
                               },
                             );
