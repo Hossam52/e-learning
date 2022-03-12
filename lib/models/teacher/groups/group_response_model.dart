@@ -14,11 +14,17 @@ class GroupResponseModel {
     status = json['status'];
     message = json['message'];
     if (json['group'] != null) {
-      json['group']['data'].forEach((v) {
-        groups!.add(new Group.fromJson(v));
-      });
-      meta = Meta.fromJson(json['group']['meta']);
-      links = Links.fromJson(json['group']['links']);
+      if (json['group'].runtimeType != List) {
+        json['group']['data'].forEach((v) {
+          groups!.add(new Group.fromJson(v));
+        });
+        meta = Meta.fromJson(json['group']['meta']);
+        links = Links.fromJson(json['group']['links']);
+      } else {
+        json['group'].forEach((v) {
+          groups!.add(new Group.fromJson(v));
+        });
+      }
     }
   }
 }

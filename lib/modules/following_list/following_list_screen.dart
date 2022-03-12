@@ -35,10 +35,16 @@ class FollowingListScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              body: TabBarView(
+              body: Column(
                 children: [
-                  TeachersTab(controller: controller, isAdd: false),
-                  TeachersTab(controller: controller, isAdd: true),
+                  Expanded(
+                    child: TabBarView(
+                      children: [
+                        TeachersTab(controller: controller, isAdd: false),
+                        TeachersTab(controller: controller, isAdd: true),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),

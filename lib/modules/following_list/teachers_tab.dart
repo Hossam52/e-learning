@@ -58,25 +58,29 @@ class _TeachersTabState extends State<TeachersTab> {
                                   var teacher = widget.isAdd
                                       ? cubit.teachersInClassList[index]
                                       : cubit.followingList[index];
-                                  return TeachersBuildItem(
-                                    isAdd: widget.isAdd,
-                                    name: teacher.name!,
-                                    image: teacher.image!,
-                                    country: teacher.country!,
-                                    rate: teacher.authStudentRate!.toDouble(),
-                                    subjects: List.generate(
-                                        teacher.subjects!.length,
-                                        (index) =>
-                                            teacher.subjects![index].name),
-                                    onTap: () {
-                                      navigateTo(
-                                          context,
-                                          TeacherProfileView(
-                                            teacher: teacher,
-                                            isAdd: widget.isAdd,
-                                            cubit: cubit,
-                                          ));
-                                    },
+                                  return SizedBox(
+                                    height: MediaQuery.of(context).size.height *
+                                        0.21,
+                                    child: TeachersBuildItem(
+                                      isAdd: widget.isAdd,
+                                      name: teacher.name!,
+                                      image: teacher.image!,
+                                      country: teacher.country!,
+                                      rate: teacher.authStudentRate!.toDouble(),
+                                      subjects: List.generate(
+                                          teacher.subjects!.length,
+                                          (index) =>
+                                              teacher.subjects![index].name),
+                                      onTap: () {
+                                        navigateTo(
+                                            context,
+                                            TeacherProfileView(
+                                              teacher: teacher,
+                                              isAdd: widget.isAdd,
+                                              cubit: cubit,
+                                            ));
+                                      },
+                                    ),
                                   );
                                 },
                               ),

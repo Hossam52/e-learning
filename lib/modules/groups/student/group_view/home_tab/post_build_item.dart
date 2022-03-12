@@ -264,20 +264,22 @@ class PostBuildItem extends StatelessWidget {
                     text: answer != null
                         ? '$likesCount ${textTranslate.me_too}'
                         : '$likesCount ${textTranslate.like}',
-                    onPressed: type == 'question'
-                        ? () {
-                            return;
-                          }
-                        : () {
-                            cubit.toggleLike(
-                              id: postId,
-                              isLiked: isLiked,
-                              isStudent: isStudent,
-                              type: type,
-                              likesCount: likesCount,
-                              likeType: LikeType.post,
-                            );
-                          },
+                    onPressed:
+                        // type == 'question'
+                        //     ? () {
+                        //         return;
+                        //       }
+                        //     :
+                        () {
+                      cubit.toggleLike(
+                        id: postId,
+                        isLiked: isLiked,
+                        isStudent: isStudent,
+                        type: type,
+                        likesCount: likesCount,
+                        likeType: LikeType.post,
+                      );
+                    },
                     isLiked: isLiked,
                   ),
                 ),

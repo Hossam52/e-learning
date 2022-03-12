@@ -1,3 +1,37 @@
+import 'dart:convert';
+
+import 'package:e_learning/models/general_apis/notification_response_model.dart';
+
+class AllPostsModel {
+  bool? status;
+  String? message;
+  List<Post>? posts;
+  Meta? meta;
+  Links? links;
+  AllPostsModel({
+    this.status,
+    this.message,
+    this.posts,
+    this.meta,
+    this.links,
+  });
+  factory AllPostsModel.fromMap(Map<String, dynamic> map) {
+    return AllPostsModel(
+      status: map['status'],
+      message: map['message'],
+      posts: map['posts'] != null
+          ? List<Post>.from(map['posts']['data']?.map((x) => Post.fromJson(x)))
+          : null,
+      meta: map['posts']['meta'] != null
+          ? Meta.fromJson(map['posts']['meta'])
+          : null,
+      links: map['posts']['links'] != null
+          ? Links.fromJson(map['posts']['links'])
+          : null,
+    );
+  }
+}
+
 class PostResponseModel {
   bool? status;
   String? message;
@@ -59,11 +93,11 @@ class Post {
     student = json['student'];
     teacherImage = json['teacher_image'];
     studentImage = json['student_image'];
-    studentId = json['student_id']??'';
-    teacherId = json['teacher_id']??'';
+    studentId = json['student_id'] ?? '';
+    teacherId = json['teacher_id'] ?? '';
     adminPost = json['adminPost'];
-    studentPost = json['studentPost']??false;
-    teacherPost = json['teacherPost']??false;
+    studentPost = json['studentPost'] ?? false;
+    teacherPost = json['teacherPost'] ?? false;
     answer = json['answer'];
     likesNum = json['likes_num'];
     authLikeTeacher = json['authLikeTeacher'];

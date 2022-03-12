@@ -393,7 +393,7 @@ class GroupCubit extends Cubit<GroupStates> {
       );
       log(response.data.toString());
       if (response.data['status']) {
-        posts = response.data['posts'];
+        // posts = response.data['posts'];
         insertPostLists(
             type: type, posts: posts, response: response, isStudent: isStudent);
         if (type == 'post')
@@ -433,11 +433,13 @@ class GroupCubit extends Cubit<GroupStates> {
     required Response response,
     required bool isStudent,
   }) {
+    final allPosts = AllPostsModel.fromMap(response.data);
     if (type == 'post') {
-      postsList = List.generate(
-        posts.length,
-        (index) => Post.fromJson(response.data["posts"][index]),
-      );
+      postsList = allPosts.posts!;
+      // postsList = List.generate(
+      //   posts.length,
+      //   (index) => Post.fromJson(response.data["posts"][index]),
+      // );
       postsList.forEach((element) {
         postsLikeCount.addAll({element.id!: element.likesNum!});
         postsLikeBool.addAll({
@@ -446,10 +448,11 @@ class GroupCubit extends Cubit<GroupStates> {
         });
       });
     } else if (type == 'question') {
-      questionsList = List.generate(
-        posts.length,
-        (index) => Post.fromJson(response.data["posts"][index]),
-      );
+      questionsList = allPosts.posts!;
+      // questionsList = List.generate(
+      //   posts.length,
+      //   (index) => Post.fromJson(response.data["posts"][index]),
+      // );
       questionsList.forEach((element) {
         questionLikeCount.addAll({element.id!: element.likesNum!});
         questionLikeBool.addAll({
@@ -458,10 +461,11 @@ class GroupCubit extends Cubit<GroupStates> {
         });
       });
     } else {
-      shareList = List.generate(
-        posts.length,
-        (index) => Post.fromJson(response.data["posts"][index]),
-      );
+      shareList = allPosts.posts!;
+      // shareList = List.generate(
+      //   posts.length,
+      //   (index) => Post.fromJson(response.data["posts"][index]),
+      // );
       shareList.forEach((element) {
         shareLikeCount.addAll({element.id!: element.likesNum!});
         shareLikeBool.addAll({
@@ -819,6 +823,7 @@ class GroupCubit extends Cubit<GroupStates> {
     required CommentType commentType,
     required int groupId,
   }) async {
+    log('id is ${model.id}');
     isAddCommentLoading = true;
     emit(GroupAddCommentLoadingState());
     try {

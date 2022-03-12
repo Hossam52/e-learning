@@ -115,7 +115,7 @@ class _TeacherAddStudentState extends State<TeacherAddStudent> {
                                   studentImage: member.image,
                                   studentName: member.name!,
                                   tailing: DefaultAppButton(
-                                    width: 70.w,
+                                    width: 90.w,
                                     onPressed: () {
                                       cubit.addStudentToGroupWithCode(
                                         groupId: widget.groupId,
@@ -127,7 +127,7 @@ class _TeacherAddStudentState extends State<TeacherAddStudent> {
                                     text: context.tr.remove,
                                     textStyle: thirdTextStyle(deviceInfo),
                                     background: errorColor,
-                                    height: 30.h,
+                                    height: 40.h,
                                   ),
                                 );
                               },
