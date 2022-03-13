@@ -4,6 +4,8 @@ import 'package:e_learning/modules/home_screen/student/build_best_teacher_item.d
 import 'package:e_learning/modules/home_screen/student/build_top_students.dart';
 import 'package:e_learning/modules/home_screen/student/category_home_build_item.dart';
 import 'package:e_learning/modules/pdfs_module/teacher/teacher_subjects_pdf_screen.dart';
+import 'package:e_learning/modules/profile/student/student_profile_info_build.dart';
+import 'package:e_learning/modules/profile/student_profile_view.dart';
 import 'package:e_learning/modules/student/public_group/public_grouo_home_screen.dart';
 import 'package:e_learning/modules/test_module/teacher/test_subjects_screen.dart';
 import 'package:e_learning/modules/video_module/video_teacher_screens/subjects_video_screen.dart';
@@ -148,7 +150,17 @@ class _TeacherHomeScreenState extends State<TeacherHomeScreen> {
                                 .bestStudentsModel!
                                 .students![itemIndex]
                                 .points!,
-                            onTap: () {},
+                            onTap: () {
+                              navigateTo(
+                                  context,
+                                  StudentProfileView(
+                                    isFriend: false,
+                                    isTeacher: true,
+                                    student: AppCubit.get(context)
+                                        .bestStudentsModel!
+                                        .students![itemIndex],
+                                  ));
+                            },
                           ),
                           options: CarouselOptions(
                             enlargeCenterPage: true,

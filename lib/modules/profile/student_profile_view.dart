@@ -28,11 +28,13 @@ class StudentProfileView extends StatefulWidget {
     Key? key,
     this.student,
     this.id,
+    this.isTeacher=false,
     required this.isFriend,
   }) : super(key: key);
 
   final int? id;
   Student? student;
+  bool? isTeacher;
   final bool isFriend;
 
   @override
@@ -115,7 +117,8 @@ class _StudentProfileViewState extends State<StudentProfileView> {
                                   child: Column(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
-                                      _personalInfo(deviceInfo, cubit, context),
+                                      _personalInfo(deviceInfo, cubit, context,
+                                          widget.isTeacher!),
                                       _followPersons(deviceInfo),
                                     ],
                                   ),
@@ -147,7 +150,7 @@ class _StudentProfileViewState extends State<StudentProfileView> {
   }
 
   StudentProfileInfoBuild _personalInfo(
-      DeviceInformation deviceInfo, StudentCubit cubit, BuildContext context) {
+      DeviceInformation deviceInfo, StudentCubit cubit, BuildContext context,bool isTeacher) {
     return StudentProfileInfoBuild(
       deviceInfo: deviceInfo,
       // image: "${widget.student!.image}",
@@ -156,7 +159,7 @@ class _StudentProfileViewState extends State<StudentProfileView> {
       // code: "${widget.student!.code}",
       student: widget.student,
       authType: authType,
-      trailing: defaultMaterialIconButton(
+      trailing:!isTeacher? defaultMaterialIconButton(
         text: getActionString,
         icon: getIcon,
         backgroundColor: getBackgroundColor,
@@ -172,7 +175,7 @@ class _StudentProfileViewState extends State<StudentProfileView> {
                   isAdd: widget.student!.friendType == FriendType.NotFriend,
                 );
               },
-      ),
+      ):Container(),
     );
   }
 

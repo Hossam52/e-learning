@@ -55,14 +55,14 @@ class StudentProfileInfoBuild extends StatelessWidget {
       decoration: BoxDecoration(
         color: primaryColor,
         borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(30),
-          bottomRight: Radius.circular(30),
+          bottomLeft: Radius.circular(30.r),
+          bottomRight: Radius.circular(30.r),
         ),
       ),
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 22.0, vertical: 40),
+            padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 40.h),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -80,18 +80,17 @@ class StudentProfileInfoBuild extends StatelessWidget {
                           textDirection: lang == 'ar'
                               ? TextDirection.rtl
                               : TextDirection.ltr,
-                          end: 5,
+                          end: 5.w,
                           bottom: 0,
-                          child: StudentStar(width: 30),
+                          child: StudentStar(),
                         ),
                     ],
                   ),
                 ),
                 SizedBox(width: 15.w),
                 Expanded(
-                  flex: 2,
+                  flex: 3,
                   child: Container(
-                    width: deviceInfo.screenwidth * 0.55,
                     // color: Colors.grey,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -118,7 +117,7 @@ class StudentProfileInfoBuild extends StatelessWidget {
                                   horizontal: 10, vertical: 5),
                               decoration: BoxDecoration(
                                 color: primaryColor,
-                                borderRadius: BorderRadius.circular(15),
+                                borderRadius: BorderRadius.circular(15.r),
                               ),
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
@@ -126,7 +125,7 @@ class StudentProfileInfoBuild extends StatelessWidget {
                                 children: [
                                   Text(points,
                                       style: TextStyle(color: Colors.white)),
-                                  SizedBox(width: 5),
+                                  SizedBox(width: 5.w),
                                   Image.asset('assets/images/points.png'),
                                 ],
                               ),
@@ -136,11 +135,12 @@ class StudentProfileInfoBuild extends StatelessWidget {
                         SizedBox(height: 18.h),
                         Container(
                           width: double.infinity,
-                          padding: EdgeInsets.all(8),
+                          padding: EdgeInsets.symmetric(
+                              vertical: 8.h, horizontal: 4.w),
                           clipBehavior: Clip.antiAliasWithSaveLayer,
                           decoration: BoxDecoration(
                             color: thirdColor,
-                            borderRadius: BorderRadius.circular(5),
+                            borderRadius: BorderRadius.circular(5.r),
                           ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -154,16 +154,19 @@ class StudentProfileInfoBuild extends StatelessWidget {
                                   Text(
                                     // 'ID',
                                     context.tr.id,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
                                   ),
                                 ],
                               ),
                               Container(
-                                padding: EdgeInsets.all(5),
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 5.h, horizontal: 2.w),
                                 decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5),
+                                  borderRadius: BorderRadius.circular(5.r),
                                   border: Border.all(
                                     color: Color(0xFF8BCAFF).withOpacity(0.65),
-                                    width: 2,
+                                    width: 2.w,
                                   ),
                                 ),
                                 child: Text(
@@ -179,7 +182,7 @@ class StudentProfileInfoBuild extends StatelessWidget {
                                 },
                                 child: Container(
                                   padding: EdgeInsets.symmetric(
-                                      horizontal: 12, vertical: 5),
+                                      horizontal: 3.w, vertical: 5.h),
                                   child: Text(
                                     context.tr.copy,
                                     style: thirdTextStyle(deviceInfo)
