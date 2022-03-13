@@ -5,6 +5,7 @@ import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:e_learning/layout/teacher/teacher_layout.dart';
 import 'package:e_learning/models/enums/enums.dart';
+import 'package:e_learning/models/pagination.dart';
 import 'package:e_learning/models/student/group/group_student_response_model.dart';
 import 'package:e_learning/models/student/teacher_profile_view/teacher_profile_questions.dart';
 import 'package:e_learning/models/teacher/groups/group_model.dart';
@@ -221,6 +222,7 @@ class GroupCubit extends Cubit<GroupStates> {
     try {
       final response = await StudentServices.filterInGroup(
           selectedSubjectIDToGetDiscoverGroups);
+      log(response.status.toString());
       if (response.status!) {
         groupsStudentResponse = response;
 
@@ -261,6 +263,49 @@ class GroupCubit extends Cubit<GroupStates> {
     } catch (e) {
       noGroupsData = true;
       emit(GroupsTeacherGetErrorState());
+      throw e;
+    }
+  }
+
+  void getMoreMyGroups(bool isStudent, GroupType type) async {
+    late Meta meta;
+    if (type == GroupType.Discover) {
+      meta = groupsStudentResponse!.groups!.meta!;
+    } else {
+      meta = groupResponseModel!.meta!;
+    }
+    if (meta.currentPage == meta.lastPage) return;
+    noGroupsData = false;
+    emit(MoreGroupsGetLoadingState());
+    try {
+      Response response = await DioHelper.getData(
+          url: generateGroupUrl(type),
+          token: isStudent ? studentToken : teacherToken,
+          query: {'page': 2});
+      if (response.data['status']) {
+        if (type == GroupType.Discover) {
+          // groupsStudentResponse = GroupsStudentResponse.fromJson(response.data);
+          var groupsResponse = GroupsStudentResponse.fromJson(response.data);
+          groupsStudentResponse!.groups!.groupsData!
+              .addAll(groupsResponse.groups!.groupsData!);
+          groupsStudentResponse!.groups!.meta = groupsResponse.groups!.meta!;
+        } else {
+          // groupResponseModel = GroupResponseModel.fromJson(response.data);
+          var groupsResponse = GroupResponseModel.fromJson(response.data);
+          groupResponseModel!.groups!.addAll(groupsResponse.groups!);
+          groupResponseModel!.meta = groupsResponse.meta!;
+        }
+        noGroupsData = false;
+        generateGroupList(type);
+        emit(MoreGroupsGetSuccessState());
+      } else {
+        print(response.data['message']);
+        noGroupsData = true;
+        emit(MoreGroupsGetErrorState());
+      }
+    } catch (e) {
+      noGroupsData = true;
+      emit(MoreGroupsGetErrorState());
       throw e;
     }
   }
@@ -352,13 +397,16 @@ class GroupCubit extends Cubit<GroupStates> {
           GroupPostModel model, bool isEdit, bool isTeacherProfile) =>
       FormData.fromMap({
         'text': model.text,
-        'images[]': model.images!.isNotEmpty
-            ? List.generate(
-                model.images!.length,
-                (index) => MultipartFile.fromFileSync(model.images![index].path,
-                    filename: model.images![index].path.split('/').last),
-              )
-            : [],
+        'images[]': model.images == null
+            ? null
+            : model.images!.isNotEmpty
+                ? List.generate(
+                    model.images!.length,
+                    (index) => MultipartFile.fromFileSync(
+                        model.images![index].path,
+                        filename: model.images![index].path.split('/').last),
+                  )
+                : [],
         'group_id': model.groupId,
         'type': model.type,
         if (isEdit) "post_id": model.postId,
@@ -369,6 +417,11 @@ class GroupCubit extends Cubit<GroupStates> {
   List<Post> postsList = [];
   List<Post> questionsList = [];
   List<Post> shareList = [];
+
+  Meta? postMeta;
+  Meta? questionMeta;
+  Meta? shareMeta;
+
   bool noPostData = false;
   bool noQuestionData = false;
 
@@ -419,6 +472,73 @@ class GroupCubit extends Cubit<GroupStates> {
     }
   }
 
+  Future<void> getMoreAllPostsAndQuestions(
+      String type, int groupId, bool isStudent,
+      {bool isProfile = false}) async {
+    List posts = [];
+    Meta? meta = getMetaAccordingToType(type);
+    log('${meta!.currentPage} ${meta.lastPage}');
+    if (meta == null || meta.currentPage == meta.lastPage) {
+      showToast(msg: 'You reached to end', state: ToastStates.ERROR);
+      return;
+    }
+    emit(MoreGroupGetPostLoadingState());
+    try {
+      Response response = await DioHelper.postFormData(
+          url: isStudent
+              ? isProfile
+                  ? STUDENT_GET_ALL_POSTS
+                  : STUDENT_GET_POSTS
+              : TEACHER_GET_POSTS,
+          token: isStudent ? studentToken : teacherToken,
+          formData: FormData.fromMap({
+            'group_id': groupId,
+            'type': type,
+          }),
+          query: {'page': meta.currentPage! + 1});
+      log(response.data.toString());
+      if (response.data['status']) {
+        // posts = response.data['posts'];
+        insertPostLists(
+          type: type,
+          posts: posts,
+          response: response,
+          isStudent: isStudent,
+          loadMore: true,
+        );
+        if (type == 'post')
+          noPostData = false;
+        else
+          noQuestionData = false;
+        emit(MoreGroupGetPostSuccessState());
+      } else {
+        print(response.data['message']);
+        if (type == 'post')
+          noPostData = true;
+        else
+          noQuestionData = true;
+        emit(MoreGroupGetPostErrorState());
+      }
+    } catch (e) {
+      if (type == 'post')
+        noPostData = true;
+      else
+        noQuestionData = true;
+      emit(MoreGroupGetPostErrorState());
+      throw e;
+    }
+  }
+
+  Meta? getMetaAccordingToType(String type) {
+    if (type == 'post') {
+      return postMeta;
+    } else if (type == 'question') {
+      return questionMeta;
+    } else {
+      return shareMeta;
+    }
+  }
+
   Map<int, int> postsLikeCount = {};
   Map<int, int> questionLikeCount = {};
   Map<int, int> shareLikeCount = {};
@@ -432,14 +552,17 @@ class GroupCubit extends Cubit<GroupStates> {
     required List posts,
     required Response response,
     required bool isStudent,
+    bool loadMore = false,
   }) {
     final allPosts = AllPostsModel.fromMap(response.data);
     if (type == 'post') {
+      postMeta = allPosts.meta;
+      if (loadMore) {
+        appendPostTypeList(allPosts.posts!, isStudent);
+        return;
+      }
+
       postsList = allPosts.posts!;
-      // postsList = List.generate(
-      //   posts.length,
-      //   (index) => Post.fromJson(response.data["posts"][index]),
-      // );
       postsList.forEach((element) {
         postsLikeCount.addAll({element.id!: element.likesNum!});
         postsLikeBool.addAll({
@@ -448,11 +571,13 @@ class GroupCubit extends Cubit<GroupStates> {
         });
       });
     } else if (type == 'question') {
+      questionMeta = allPosts.meta;
+      if (loadMore) {
+        appendQuestionTypeList(allPosts.posts!, isStudent);
+        return;
+      }
+
       questionsList = allPosts.posts!;
-      // questionsList = List.generate(
-      //   posts.length,
-      //   (index) => Post.fromJson(response.data["posts"][index]),
-      // );
       questionsList.forEach((element) {
         questionLikeCount.addAll({element.id!: element.likesNum!});
         questionLikeBool.addAll({
@@ -461,11 +586,13 @@ class GroupCubit extends Cubit<GroupStates> {
         });
       });
     } else {
+      shareMeta = allPosts.meta;
+      if (loadMore) {
+        appendShareType(allPosts.posts!, isStudent);
+        return;
+      }
+
       shareList = allPosts.posts!;
-      // shareList = List.generate(
-      //   posts.length,
-      //   (index) => Post.fromJson(response.data["posts"][index]),
-      // );
       shareList.forEach((element) {
         shareLikeCount.addAll({element.id!: element.likesNum!});
         shareLikeBool.addAll({
@@ -476,12 +603,46 @@ class GroupCubit extends Cubit<GroupStates> {
     }
   }
 
+  //These for append more posts
+  void appendPostTypeList(List<Post> list, bool isStudent) {
+    postsList.addAll(list);
+    list.forEach((element) {
+      postsLikeCount.addAll({element.id!: element.likesNum!});
+      postsLikeBool.addAll({
+        element.id!:
+            isStudent ? element.authLikeStudent! : element.authLikeTeacher!
+      });
+    });
+  }
+
+  void appendQuestionTypeList(List<Post> list, bool isStudent) {
+    questionsList.addAll(list);
+    list.forEach((element) {
+      questionLikeCount.addAll({element.id!: element.likesNum!});
+      questionLikeBool.addAll({
+        element.id!:
+            isStudent ? element.authLikeStudent! : element.authLikeTeacher!
+      });
+    });
+  }
+
+  void appendShareType(List<Post> list, bool isStudent) {
+    postsList.addAll(list);
+    list.forEach((element) {
+      shareLikeCount.addAll({element.id!: element.likesNum!});
+      shareLikeBool.addAll({
+        element.id!:
+            isStudent ? element.authLikeStudent! : element.authLikeTeacher!
+      });
+    });
+  }
+
   ///
   GroupVideosResponseModel? groupVideosResponseModel;
   StudentInGroupModel? studentInGroupModel;
   bool noGroupVideoData = false;
   bool noGroupMemberData = false;
-
+  Meta? videosMeta;
   void getGroupVideosAndStudent(int groupId,
       {required bool isMembers, required bool isStudent}) async {
     noGroupVideoData = false;
@@ -507,6 +668,7 @@ class GroupCubit extends Cubit<GroupStates> {
           noGroupVideoData = false;
           groupVideosResponseModel =
               GroupVideosResponseModel.fromJson(response.data);
+          videosMeta = groupVideosResponseModel!.videos!.meta;
         }
         emit(GroupGetVideoAndMembersSuccessState());
       } else {
@@ -525,6 +687,55 @@ class GroupCubit extends Cubit<GroupStates> {
         noGroupVideoData = true;
       print(noGroupMemberData);
       emit(GroupGetVideoAndMembersErrorState());
+      throw e;
+    }
+  }
+
+  void getMoreGroupVideosAndStudent(int groupId,
+      {required bool isMembers, required bool isStudent}) async {
+    if (videosMeta == null || videosMeta!.currentPage == videosMeta!.lastPage)
+      return;
+
+    emit(GroupGetMoreVideoAndMembersLoadingState());
+    try {
+      Response response = await DioHelper.postFormData(
+          url: isStudent
+              ? STUDENT_GET_GROUP_VIDEO
+              : isMembers
+                  ? GET_ALL_STUDENTS_IN_GROUP
+                  : TEACHER_GET_GROUP_VIDEO,
+          token: isStudent ? studentToken : teacherToken,
+          formData: FormData.fromMap({
+            'group_id': groupId,
+          }),
+          query: {'page': videosMeta!.currentPage! + 1});
+      if (response.data['status']) {
+        if (isMembers) {
+          studentInGroupModel = StudentInGroupModel.fromJson(response.data);
+          noGroupMemberData = false;
+        } else {
+          noGroupVideoData = false;
+          var temp = GroupVideosResponseModel.fromJson(response.data);
+          groupVideosResponseModel!.videos!.data!.addAll(temp.videos!.data!);
+          groupVideosResponseModel!.videos!.meta = temp.videos!.meta;
+        }
+        emit(GroupGetMoreVideoAndMembersSuccessState());
+      } else {
+        if (isMembers)
+          noGroupMemberData = true;
+        else
+          noGroupVideoData = true;
+        print(response.data['message']);
+        emit(GroupGetMoreVideoAndMembersErrorState());
+        print(noGroupMemberData);
+      }
+    } catch (e) {
+      if (isMembers)
+        noGroupMemberData = true;
+      else
+        noGroupVideoData = true;
+      print(noGroupMemberData);
+      emit(GroupGetMoreVideoAndMembersErrorState());
       throw e;
     }
   }

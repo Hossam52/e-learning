@@ -1,4 +1,5 @@
 import 'package:e_learning/models/general_apis/notification_response_model.dart';
+import 'package:e_learning/models/pagination.dart';
 import 'package:e_learning/models/teacher/auth/teacher_data_model.dart';
 
 class GroupResponseModel {

@@ -2,6 +2,7 @@ import 'package:e_learning/models/enums/enums.dart';
 import 'package:e_learning/modules/groups/cubit/cubit.dart';
 import 'package:e_learning/modules/groups/cubit/states.dart';
 import 'package:e_learning/shared/componants/widgets/default_loader.dart';
+import 'package:e_learning/shared/componants/widgets/load_more_data.dart';
 import 'package:e_learning/shared/componants/widgets/no_data_widget.dart';
 import 'package:e_learning/shared/responsive_ui/responsive_widget.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +34,8 @@ class _MyGroupsTabState extends State<MyGroupsTab> {
         return responsiveWidget(
           responsive: (context, deviceInfo) => Conditional.single(
             context: context,
-            conditionBuilder: (context) => state is! GroupsTeacherGetLoadingState,
+            conditionBuilder: (context) =>
+                state is! GroupsTeacherGetLoadingState,
             fallbackBuilder: (context) => DefaultLoader(),
             widgetBuilder: (context) => cubit.myGroups.isEmpty
                 ? NoDataWidget(
@@ -67,6 +69,13 @@ class _MyGroupsTabState extends State<MyGroupsTab> {
                                 onEdit: () {},
                               );
                             }),
+                        LoadMoreData(
+                          isLoading: state is MoreGroupsGetLoadingState,
+                          onLoadingMore: () {
+                            GroupCubit.get(context)
+                                .getMoreMyGroups(true, GroupType.Student);
+                          },
+                        )
                       ],
                     ),
                   ),

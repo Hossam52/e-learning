@@ -23,6 +23,13 @@ class GroupsTeacherGetSuccessState extends GroupStates {}
 
 class GroupsTeacherGetErrorState extends GroupStates {}
 
+//For more groups pagination
+class MoreGroupsGetLoadingState extends GroupStates {}
+
+class MoreGroupsGetSuccessState extends GroupStates {}
+
+class MoreGroupsGetErrorState extends GroupStates {}
+
 class GroupsBySubjectIDGetLoadingState extends GroupStates {}
 
 class GroupsBySubjectIDGetSuccessState extends GroupStates {}
@@ -53,12 +60,25 @@ class GroupGetPostSuccessState extends GroupStates {}
 
 class GroupGetPostErrorState extends GroupStates {}
 
+//Load more groups
+class MoreGroupGetPostLoadingState extends GroupStates {}
+
+class MoreGroupGetPostSuccessState extends GroupStates {}
+
+class MoreGroupGetPostErrorState extends GroupStates {}
+
 // Get teacher video states
 class GroupGetVideoAndMembersLoadingState extends GroupStates {}
 
 class GroupGetVideoAndMembersSuccessState extends GroupStates {}
 
 class GroupGetVideoAndMembersErrorState extends GroupStates {}
+
+class GroupGetMoreVideoAndMembersLoadingState extends GroupStates {}
+
+class GroupGetMoreVideoAndMembersSuccessState extends GroupStates {}
+
+class GroupGetMoreVideoAndMembersErrorState extends GroupStates {}
 
 // Add Student to group with code states
 class GroupAddStudentWithCodeLoadingState extends GroupStates {}

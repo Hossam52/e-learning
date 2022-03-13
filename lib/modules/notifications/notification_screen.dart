@@ -25,6 +25,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
   bool first = true;
   @override
   void didChangeDependencies() {
+    // NotificationCubit.get(widget.cubitContext).getAllNotifications(widget.type);
     if (first) {
       NotificationCubit.get(widget.cubitContext)
           .readAllNotifications(widget.type);
@@ -62,7 +63,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
                   fallbackBuilder: (context) => DefaultLoader(),
                   widgetBuilder: (context) => cubit.noNotifications
                       ? noData(context.tr.no_notifications_up_till_now)
-                      : state is NotificationGetError
+                      : cubit.notificationResponseModel == null ||
+                              state is NotificationGetError
                           ? NoDataWidget(
                               onPressed: () =>
                                   cubit.getAllNotifications(widget.type))

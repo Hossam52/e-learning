@@ -6,6 +6,7 @@ import 'package:e_learning/shared/componants/componants.dart';
 import 'package:e_learning/shared/componants/widgets/default_add_post_widget.dart';
 import 'package:e_learning/shared/componants/widgets/default_gesture_widget.dart';
 import 'package:e_learning/shared/componants/widgets/default_loader.dart';
+import 'package:e_learning/shared/componants/widgets/load_more_data.dart';
 import 'package:e_learning/shared/componants/widgets/no_data_widget.dart';
 import 'package:e_learning/shared/cubit/cubit.dart';
 import 'package:e_learning/shared/cubit/states.dart';
@@ -113,65 +114,82 @@ class _PostTabState extends State<PostTab> {
                                               'post',
                                               widget.groupId,
                                               widget.isStudent)),
-                                  widgetBuilder: (context) => ListView.builder(
-                                      itemCount: cubit.postsList.length,
-                                      shrinkWrap: true,
-                                      reverse: true,
-                                      physics: NeverScrollableScrollPhysics(),
-                                      padding: EdgeInsets.all(16),
-                                      itemBuilder: (listViewContext, index) {
-                                        var post = cubit.postsList[index];
-                                        return PostBuildItem(
-                                          type: 'post',
-                                          ownerPostId: widget.isStudent
-                                              ? post.studentId!
-                                              : post.teacherId!,
-                                          isMe: widget.isStudent
-                                              ? post.studentPost!
-                                              : post.teacherPost!,
-                                          deviceInfo: deviceInfo,
-                                          isStudent: widget.isStudent,
-                                          name: post.teacher ?? 'admin',
-                                          image: post.teacherImage ??
-                                              post.studentImage,
-                                          date: post.date!,
-                                          cubit: cubit,
-                                          postId: post.id!,
-                                          answer: null,
-                                          text: post.text,
-                                          likesCount:
-                                              cubit.postsLikeCount[post.id]!,
-                                          isLiked:
-                                              cubit.postsLikeBool[post.id]!,
-                                          commentCount: post.comments!.length,
-                                          comments: post.comments,
-                                          groupId: widget.groupId,
-                                          images: post.images!.isNotEmpty
-                                              ? post.images
-                                              : null,
-                                          onEdit: () async {
-                                            navigateTo(
-                                              context,
-                                              EditPostScreen(
-                                                post,
-                                                context,
-                                                3,
-                                                groupId: widget.groupId,
-                                              ),
+                                  widgetBuilder: (context) => Column(
+                                    children: [
+                                      ListView.builder(
+                                          itemCount: cubit.postsList.length,
+                                          shrinkWrap: true,
+                                          reverse: true,
+                                          physics:
+                                              NeverScrollableScrollPhysics(),
+                                          padding: EdgeInsets.all(16),
+                                          itemBuilder:
+                                              (listViewContext, index) {
+                                            var post = cubit.postsList[index];
+                                            return PostBuildItem(
+                                              type: 'post',
+                                              ownerPostId: widget.isStudent
+                                                  ? post.studentId!
+                                                  : post.teacherId!,
+                                              isMe: widget.isStudent
+                                                  ? post.studentPost!
+                                                  : post.teacherPost!,
+                                              deviceInfo: deviceInfo,
+                                              isStudent: widget.isStudent,
+                                              name: post.teacher ?? 'admin',
+                                              image: post.teacherImage ??
+                                                  post.studentImage,
+                                              date: post.date!,
+                                              cubit: cubit,
+                                              postId: post.id!,
+                                              answer: null,
+                                              text: post.text,
+                                              likesCount: cubit
+                                                  .postsLikeCount[post.id]!,
+                                              isLiked:
+                                                  cubit.postsLikeBool[post.id]!,
+                                              commentCount:
+                                                  post.comments!.length,
+                                              comments: post.comments,
+                                              groupId: widget.groupId,
+                                              images: post.images!.isNotEmpty
+                                                  ? post.images
+                                                  : null,
+                                              onEdit: () async {
+                                                navigateTo(
+                                                  context,
+                                                  EditPostScreen(
+                                                    post,
+                                                    context,
+                                                    3,
+                                                    groupId: widget.groupId,
+                                                  ),
+                                                );
+                                                // cubit.changeEditPost(true, post.id);
+                                                // postController.text = post.text!;
+                                                // if (post.images!.isNotEmpty) {
+                                                //   await AppCubit.get(context)
+                                                //       .addImageFromUrl('',
+                                                //           imageUrls: post.images);
+                                                //   cubit.selectedImages =
+                                                //       AppCubit.get(context)
+                                                //           .imageFiles;
+                                                // }
+                                              },
                                             );
-                                            // cubit.changeEditPost(true, post.id);
-                                            // postController.text = post.text!;
-                                            // if (post.images!.isNotEmpty) {
-                                            //   await AppCubit.get(context)
-                                            //       .addImageFromUrl('',
-                                            //           imageUrls: post.images);
-                                            //   cubit.selectedImages =
-                                            //       AppCubit.get(context)
-                                            //           .imageFiles;
-                                            // }
-                                          },
-                                        );
-                                      }),
+                                          }),
+                                      LoadMoreData(
+                                          isLoading: state
+                                              is MoreGroupsGetLoadingState,
+                                          onLoadingMore: () {
+                                            GroupCubit.get(context)
+                                                .getMoreAllPostsAndQuestions(
+                                                    'post',
+                                                    widget.groupId,
+                                                    widget.isStudent);
+                                          })
+                                    ],
+                                  ),
                                 ),
                               ],
                             ),

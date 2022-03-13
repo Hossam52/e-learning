@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:e_learning/models/general_apis/notification_response_model.dart';
+import 'package:e_learning/models/pagination.dart';
 
 class AllPostsModel {
   bool? status;

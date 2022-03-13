@@ -9,6 +9,7 @@ import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/componants/widgets/default_dimissible_widget.dart';
 import 'package:e_learning/shared/componants/widgets/default_loader.dart';
 import 'package:e_learning/shared/componants/widgets/default_refresh_widget.dart';
+import 'package:e_learning/shared/componants/widgets/load_more_data.dart';
 import 'package:e_learning/shared/componants/widgets/no_data_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -86,50 +87,63 @@ class _GroupVideoTabState extends State<GroupVideoTab> {
                             isStudent: widget.isStudent, isMembers: false);
                       },
                     )
-                  : ListView.separated(
-                      itemCount:
-                          cubit.groupVideosResponseModel!.videos!.data!.length,
-                      padding: EdgeInsets.all(16),
-                      physics: BouncingScrollPhysics(),
-                      separatorBuilder: (context, index) => SizedBox(
-                            height: 15,
-                          ),
-                      itemBuilder: (context, index) {
-                        var video = cubit
-                            .groupVideosResponseModel!.videos!.data![index];
-                        return DefaultDismissibleWidget(
-                          widgetContext: context,
-                          name: "${video.videoName}",
-                          hasEdit: false,
-                          onEdit: () {},
-                          onDelete: () {
-                            cubit.deleteMethod(
-                                video.id!, GroupDeleteType.VIDEO);
+                  : Column(
+                      children: [
+                        ListView.separated(
+                            shrinkWrap: true,
+                            itemCount: cubit
+                                .groupVideosResponseModel!.videos!.data!.length,
+                            padding: EdgeInsets.all(16),
+                            physics: BouncingScrollPhysics(),
+                            separatorBuilder: (context, index) => SizedBox(
+                                  height: 15,
+                                ),
+                            itemBuilder: (context, index) {
+                              var video = cubit.groupVideosResponseModel!
+                                  .videos!.data![index];
+                              return DefaultDismissibleWidget(
+                                widgetContext: context,
+                                name: "${video.videoName}",
+                                hasEdit: false,
+                                onEdit: () {},
+                                onDelete: () {
+                                  cubit.deleteMethod(
+                                      video.id!, GroupDeleteType.VIDEO);
+                                },
+                                child: VideoTitleBuildItem(
+                                    videoTitle: "${video.videoName}",
+                                    videoId: video.videoId!,
+                                    onPressed: () {
+                                      navigateTo(
+                                          context,
+                                          VideoPlayerScreen(
+                                            title: "${video.videoName}",
+                                            videoId: video.videoId!,
+                                            comments: video.comments!,
+                                            commentType: CommentType.groupVideo,
+                                            id: video.id!,
+                                            subjectId: 0,
+                                            teacherId: 0,
+                                            isStudent: widget.isStudent,
+                                            likeType: LikeType.groupVideo,
+                                            likesCount: video.likesCount!,
+                                            isLiked: widget.isStudent
+                                                ? video.authLikeStudent!
+                                                : video.authLikeTeacher!,
+                                          ));
+                                    }),
+                              );
+                            }),
+                        LoadMoreData(
+                          isLoading:
+                              state is GroupGetMoreVideoAndMembersLoadingState,
+                          onLoadingMore: () {
+                            cubit.getMoreGroupVideosAndStudent(widget.groupId,
+                                isStudent: widget.isStudent, isMembers: false);
                           },
-                          child: VideoTitleBuildItem(
-                              videoTitle: "${video.videoName}",
-                              videoId: video.videoId!,
-                              onPressed: () {
-                                navigateTo(
-                                    context,
-                                    VideoPlayerScreen(
-                                      title: "${video.videoName}",
-                                      videoId: video.videoId!,
-                                      comments: video.comments!,
-                                      commentType: CommentType.groupVideo,
-                                      id: video.id!,
-                                      subjectId: 0,
-                                      teacherId: 0,
-                                      isStudent: widget.isStudent,
-                                      likeType: LikeType.groupVideo,
-                                      likesCount: video.likesCount!,
-                                      isLiked: widget.isStudent
-                                          ? video.authLikeStudent!
-                                          : video.authLikeTeacher!,
-                                    ));
-                              }),
-                        );
-                      }),
+                        )
+                      ],
+                    ),
             ),
           ),
         );
