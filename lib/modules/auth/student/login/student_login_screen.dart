@@ -84,6 +84,9 @@ class StudentLoginScreen extends StatelessWidget {
                                 SizedBox(
                                   height: deviceInfo.screenHeight * 0.06,
                                 ),
+                                Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text('V.2.0')),
                                 Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,

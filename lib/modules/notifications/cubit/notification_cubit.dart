@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:e_learning/models/general_apis/notification_response_model.dart';
+import 'package:e_learning/models/pagination.dart';
 import 'package:e_learning/shared/componants/constants.dart';
 import 'package:e_learning/shared/network/end_points.dart';
 import 'package:e_learning/shared/network/remote/dio_helper.dart';
@@ -38,24 +41,51 @@ class NotificationCubit extends Cubit<NotificationState> {
   }
 
   void getAllNotifications(NotificationType type) async {
+    emit(NotificationGetLoading());
+    Response response = await DioHelper.getData(
+      url: type == NotificationType.Student
+          ? STUDENT_GET_ALL_NOTIFICATIONS
+          : TEACHER_GET_ALL_NOTIFICATIONS,
+      token: type == NotificationType.Student ? studentToken : teacherToken,
+    );
+    print(response.data);
+    if (response.data['status']) {
+      notificationResponseModel =
+          NotificationResponseModel.fromJson(response.data);
+      countUnreaded = notificationResponseModel!.notifications!.data!.length;
+    } else
+      noNotifications = true;
+    emit(NotificationGetSuccess());
+    try {} catch (e) {
+      emit(NotificationGetError());
+      throw e;
+    }
+  }
+
+  void getMoreAllNotifications(NotificationType type) async {
+    Meta? meta = notificationResponseModel?.notifications?.meta;
+    if (meta == null || meta.currentPage == meta.lastPage) return;
+    log('Previous ${meta.currentPage} Next ${meta.currentPage! + 1}');
     try {
-      emit(NotificationGetLoading());
+      emit(NotificationGetMoreLoading());
       Response response = await DioHelper.getData(
-        url: type == NotificationType.Student
-            ? STUDENT_GET_ALL_NOTIFICATIONS
-            : TEACHER_GET_ALL_NOTIFICATIONS,
-        token: type == NotificationType.Student ? studentToken : teacherToken,
-      );
+          url: type == NotificationType.Student
+              ? STUDENT_GET_ALL_NOTIFICATIONS
+              : TEACHER_GET_ALL_NOTIFICATIONS,
+          token: type == NotificationType.Student ? studentToken : teacherToken,
+          query: {'page': meta.currentPage! + 1});
       print(response.data);
       if (response.data['status']) {
-        notificationResponseModel =
-            NotificationResponseModel.fromJson(response.data);
-        countUnreaded = notificationResponseModel!.notifications!.data!.length;
+        var model = NotificationResponseModel.fromJson(response.data);
+        notificationResponseModel!.notifications!.data!
+            .addAll(model.notifications!.data!);
+        notificationResponseModel!.notifications!.meta =
+            model.notifications!.meta;
       } else
         noNotifications = true;
-      emit(NotificationGetSuccess());
+      emit(NotificationGetMoreSuccess());
     } catch (e) {
-      emit(NotificationGetError());
+      emit(NotificationGetMoreError());
       throw e;
     }
   }

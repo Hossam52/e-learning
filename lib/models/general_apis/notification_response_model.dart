@@ -1,4 +1,8 @@
 import 'package:e_learning/models/pagination.dart';
+import 'package:e_learning/models/student/champions/champion_response_model.dart';
+import 'package:e_learning/models/teacher/groups/in_group/post_response_model.dart';
+import 'package:e_learning/models/teacher/videos/subject_playlists_data_model.dart';
+import 'package:e_learning/models/teacher/videos/video_model.dart';
 import 'package:intl/intl.dart';
 
 class NotificationResponseModel {
@@ -37,19 +41,27 @@ class NotificationData {
   int? id;
   String? title;
   String? body;
-  StudentSender? studentSender;
-  dynamic teacherSender;
+  Sender? studentSender;
+  Sender? teacherSender;
   bool? read;
   String? date;
+  Post? post;
+  // Comments? comment;
+  VideosData? video;
+  Champion? champion;
 
-  NotificationData(
-      {this.id,
-      this.title,
-      this.body,
-      this.studentSender,
-      this.teacherSender,
-      this.date,
-      this.read});
+  NotificationData({
+    this.id,
+    this.title,
+    this.body,
+    this.studentSender,
+    this.teacherSender,
+    this.date,
+    this.read,
+    this.post,
+    this.champion,
+    this.video,
+  });
 
   NotificationData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -57,14 +69,18 @@ class NotificationData {
     body = json['body'];
     date = DateFormat('yyyy-MM-dd').format(DateTime.parse(json['date']));
     studentSender = json['studentSender'] != null
-        ? new StudentSender.fromJson(json['studentSender'])
+        ? new Sender.fromJson(json['studentSender'])
         : null;
-    teacherSender = json['TecherSender'];
+    teacherSender = json['TecherSender'] == null ? null : json['TecherSender'];
     read = json['read'];
+    post = json['post'] == null ? null : Post.fromJson(json['post']);
+    champion =
+        json['champion'] == null ? null : Champion.fromJson(json['champion']);
+    video = json['video'] == null ? null : VideosData.fromJson(json['video']);
   }
 }
 
-class StudentSender {
+class Sender {
   int? id;
   String? name;
   String? code;
@@ -73,7 +89,7 @@ class StudentSender {
   String? classroom;
   String? image;
 
-  StudentSender(
+  Sender(
       {this.id,
       this.name,
       this.code,
@@ -82,7 +98,7 @@ class StudentSender {
       this.classroom,
       this.image});
 
-  StudentSender.fromJson(Map<String, dynamic> json) {
+  Sender.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     code = json['code'];

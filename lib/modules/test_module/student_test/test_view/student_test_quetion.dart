@@ -48,209 +48,213 @@ class _StudentTestQuestionState extends State<StudentTestQuestion> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => TestCubit()
-        ..startTimer(
-          time: int.parse(widget.test.minuteNum!),
-          test: widget.test,
-          context: context,
-          isChampion: widget.isChampion,
-        )
-        ..initStudentTestAnswerList(widget.test.questions!.length)
-        ..changeTestCounter(widget.isChampion),
-      child: BlocConsumer<TestCubit, TestStates>(
-        listener: (context, state) {},
-        builder: (context, state) {
-          TestCubit cubit = TestCubit.get(context);
-          return ProgressHUD(
-            indicatorWidget: cubit.hasStudentEndTestError
-                ? showErrorWidget(cubit, context)
-                : null,
-            child: responsiveWidget(
-              responsive: (_, deviceInfo) {
-                return Scaffold(
-                    appBar: AppBar(
-                      elevation: 1,
-                      title: Text(widget.test.name!),
-                      centerTitle: true,
-                      leading: Container(),
-                    ),
-                    body: WillPopScope(
-                      onWillPop: () async {
-                        defaultAlertDialog(
-                          context: context,
-                          title: context.tr.exit_from_exam,
-                          subTitle: context
-                              .tr.confirm_exit_all_answered_will_be_deleted,
-                          // 'هل تريد ان تخرج من الاختبار كل ما اجبته سوف يحذف؟',
-                          buttonConfirm: context.tr.exit,
-                          buttonReject: context.tr.cancel,
-                          onConfirm: () {
-                            navigateToAndFinish(context, StudentLayout());
-                          },
-                          onReject: () {},
-                        );
-                        return false;
-                      },
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.timer,
-                                  color: cubit.testTimerColor == thirdColor
-                                      ? Colors.black
-                                      : cubit.testTimerColor,
-                                ),
-                                SizedBox(width: 10),
-                                Expanded(
-                                  child: Container(
-                                    clipBehavior: Clip.antiAliasWithSaveLayer,
-                                    decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(12)),
-                                    child: LinearProgressIndicator(
-                                      value: 1 -
-                                          cubit.testTime.inSeconds /
-                                              (testMaxTime * 60),
-                                      valueColor: AlwaysStoppedAnimation<Color>(
-                                          cubit.testTimerColor),
-                                      backgroundColor: Colors.grey[300],
-                                      minHeight: 8,
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(width: 10),
-                                Text(
-                                  '${cubit.testMinutes}:${cubit.testSeconds}',
-                                  style: TextStyle(
+    return ProgressHUD(
+      child: BlocProvider(
+        create: (context) => TestCubit()
+          ..startTimer(
+            time: int.parse(widget.test.minuteNum!),
+            test: widget.test,
+            context: context,
+            isChampion: widget.isChampion,
+          )
+          ..initStudentTestAnswerList(widget.test.questions!.length)
+          ..changeTestCounter(widget.isChampion),
+        child: BlocConsumer<TestCubit, TestStates>(
+          listener: (context, state) {},
+          builder: (context, state) {
+            TestCubit cubit = TestCubit.get(context);
+            return ProgressHUD(
+              indicatorWidget: cubit.hasStudentEndTestError
+                  ? showErrorWidget(cubit, context)
+                  : null,
+              child: responsiveWidget(
+                responsive: (_, deviceInfo) {
+                  return Scaffold(
+                      appBar: AppBar(
+                        elevation: 1,
+                        title: Text(widget.test.name!),
+                        centerTitle: true,
+                        leading: Container(),
+                      ),
+                      body: WillPopScope(
+                        onWillPop: () async {
+                          defaultAlertDialog(
+                            context: context,
+                            title: context.tr.exit_from_exam,
+                            subTitle: context
+                                .tr.confirm_exit_all_answered_will_be_deleted,
+                            // 'هل تريد ان تخرج من الاختبار كل ما اجبته سوف يحذف؟',
+                            buttonConfirm: context.tr.exit,
+                            buttonReject: context.tr.cancel,
+                            onConfirm: () {
+                              navigateToAndFinish(context, StudentLayout());
+                            },
+                            onReject: () {},
+                          );
+                          return false;
+                        },
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.timer,
                                     color: cubit.testTimerColor == thirdColor
                                         ? Colors.black
                                         : cubit.testTimerColor,
                                   ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          GridView.builder(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 16.0),
-                            itemCount: widget.test.questions!.length,
-                            shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 10,
-                              childAspectRatio: 4,
-                              mainAxisSpacing: 5,
-                              crossAxisSpacing: 3,
-                            ),
-                            itemBuilder: (context, index) {
-                              return Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(7),
-                                  color: cubit.studentCurrentIndex == index
-                                      ? successColor
-                                      : cubit.studentCurrentIndex > index
-                                          ? primaryColor
-                                          : thirdColor,
-                                ),
-                              );
-                            },
-                          ),
-                          SizedBox(height: deviceInfo.screenHeight * 0.015),
-                          Expanded(
-                            child: PageView.builder(
-                                itemCount: widget.test.questions!.length,
-                                physics: NeverScrollableScrollPhysics(),
-                                controller: cubit.studentQuestionController,
-                                onPageChanged: (value) {
-                                  if (cubit.studentCurrentIndex ==
-                                      widget.test.questions!.length - 1) {
-                                    isLast = true;
-                                  } else {
-                                    isLast = false;
-                                  }
-                                  cubit.changeTestDuration();
-                                },
-                                itemBuilder: (context, index) {
-                                  var question = widget.test.questions![index];
-                                  return StudentTestQuestionBuildItem(
-                                    deviceInfo: deviceInfo,
-                                    questionNumber:
-                                        '${context.tr.question} ${cubit.studentCurrentIndex + 1}/${widget.test.questions!.length}',
-                                    cubit: cubit,
-                                    question: question,
-                                    questionIndex: index,
-                                  );
-                                }),
-                          ),
-                          SizedBox(height: deviceInfo.screenHeight * 0.02),
-                          Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Expanded(
-                                  child: DefaultAppButton(
-                                    text: context.tr.previous,
-                                    isLoading: false,
-                                    textStyle: thirdTextStyle(deviceInfo),
-                                    isDisabled: false,
-                                    onPressed: () {
-                                      if (cubit.studentCurrentIndex > 0) {
-                                        cubit.navigateStudentToNextQuestion(
-                                            isNext: false);
-                                      }
-                                    },
-                                    background: Colors.transparent,
-                                    border: primaryColor,
-                                    textColor: primaryColor,
+                                  SizedBox(width: 10),
+                                  Expanded(
+                                    child: Container(
+                                      clipBehavior: Clip.antiAliasWithSaveLayer,
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(12)),
+                                      child: LinearProgressIndicator(
+                                        value: 1 -
+                                            cubit.testTime.inSeconds /
+                                                (testMaxTime * 60),
+                                        valueColor:
+                                            AlwaysStoppedAnimation<Color>(
+                                                cubit.testTimerColor),
+                                        backgroundColor: Colors.grey[300],
+                                        minHeight: 8,
+                                      ),
+                                    ),
                                   ),
-                                ),
-                                SizedBox(width: 25),
-                                Expanded(
-                                  child: DefaultAppButton(
-                                    text: isLast
-                                        ? context.tr.finish
-                                        : context.tr.next,
-                                    isLoading: false,
-                                    background: isLast ? successColor : null,
-                                    textStyle: thirdTextStyle(deviceInfo),
-                                    isDisabled: false,
-                                    onPressed: () {
-                                      if (cubit.studentChooseAnswerList[
-                                              cubit.studentCurrentIndex] !=
-                                          null) {
-                                        if (isLast) {
-                                          cubit.endStudentTest(
-                                            context: context,
-                                            test: widget.test,
-                                            isChampion: widget.isChampion,
-                                          );
-                                        } else {
+                                  SizedBox(width: 10),
+                                  Text(
+                                    '${cubit.testMinutes}:${cubit.testSeconds}',
+                                    style: TextStyle(
+                                      color: cubit.testTimerColor == thirdColor
+                                          ? Colors.black
+                                          : cubit.testTimerColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            GridView.builder(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 16.0),
+                              itemCount: widget.test.questions!.length,
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 10,
+                                childAspectRatio: 4,
+                                mainAxisSpacing: 5,
+                                crossAxisSpacing: 3,
+                              ),
+                              itemBuilder: (context, index) {
+                                return Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(7),
+                                    color: cubit.studentCurrentIndex == index
+                                        ? successColor
+                                        : cubit.studentCurrentIndex > index
+                                            ? primaryColor
+                                            : thirdColor,
+                                  ),
+                                );
+                              },
+                            ),
+                            SizedBox(height: deviceInfo.screenHeight * 0.015),
+                            Expanded(
+                              child: PageView.builder(
+                                  itemCount: widget.test.questions!.length,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  controller: cubit.studentQuestionController,
+                                  onPageChanged: (value) {
+                                    if (cubit.studentCurrentIndex ==
+                                        widget.test.questions!.length - 1) {
+                                      isLast = true;
+                                    } else {
+                                      isLast = false;
+                                    }
+                                    cubit.changeTestDuration();
+                                  },
+                                  itemBuilder: (context, index) {
+                                    var question =
+                                        widget.test.questions![index];
+                                    return StudentTestQuestionBuildItem(
+                                      deviceInfo: deviceInfo,
+                                      questionNumber:
+                                          '${context.tr.question} ${cubit.studentCurrentIndex + 1}/${widget.test.questions!.length}',
+                                      cubit: cubit,
+                                      question: question,
+                                      questionIndex: index,
+                                    );
+                                  }),
+                            ),
+                            SizedBox(height: deviceInfo.screenHeight * 0.02),
+                            Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Expanded(
+                                    child: DefaultAppButton(
+                                      text: context.tr.previous,
+                                      isLoading: false,
+                                      textStyle: thirdTextStyle(deviceInfo),
+                                      isDisabled: false,
+                                      onPressed: () {
+                                        if (cubit.studentCurrentIndex > 0) {
                                           cubit.navigateStudentToNextQuestion(
-                                              isNext: true);
+                                              isNext: false);
                                         }
-                                      } else {
-                                        showAnswerToast();
-                                      }
-                                    },
+                                      },
+                                      background: Colors.transparent,
+                                      border: primaryColor,
+                                      textColor: primaryColor,
+                                    ),
                                   ),
-                                ),
-                              ],
+                                  SizedBox(width: 25),
+                                  Expanded(
+                                    child: DefaultAppButton(
+                                      text: isLast
+                                          ? context.tr.finish
+                                          : context.tr.next,
+                                      isLoading: false,
+                                      background: isLast ? successColor : null,
+                                      textStyle: thirdTextStyle(deviceInfo),
+                                      isDisabled: false,
+                                      onPressed: () {
+                                        if (cubit.studentChooseAnswerList[
+                                                cubit.studentCurrentIndex] !=
+                                            null) {
+                                          if (isLast) {
+                                            cubit.endStudentTest(
+                                              context: context,
+                                              test: widget.test,
+                                              isChampion: widget.isChampion,
+                                            );
+                                          } else {
+                                            cubit.navigateStudentToNextQuestion(
+                                                isNext: true);
+                                          }
+                                        } else {
+                                          showAnswerToast();
+                                        }
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                          SizedBox(height: deviceInfo.screenHeight * 0.02),
-                        ],
-                      ),
-                    ));
-              },
-            ),
-          );
-        },
+                            SizedBox(height: deviceInfo.screenHeight * 0.02),
+                          ],
+                        ),
+                      ));
+                },
+              ),
+            );
+          },
+        ),
       ),
     );
   }

@@ -15,6 +15,7 @@ import 'package:e_learning/modules/auth/student/login/student_login_screen.dart'
 import 'package:e_learning/modules/auth/teacher/login/teacher_login_screen.dart';
 import 'package:e_learning/shared/componants/componants.dart';
 import 'package:e_learning/shared/componants/constants.dart';
+import 'package:e_learning/shared/componants/shared_methods.dart';
 import 'package:e_learning/shared/network/end_points.dart';
 import 'package:e_learning/shared/network/local/cache_helper.dart';
 import 'package:e_learning/shared/network/remote/dio_helper.dart';
@@ -470,17 +471,16 @@ class AuthCubit extends Cubit<AuthStates> {
     required BuildContext context,
     required String email,
     required String password,
-  }) async 
-  {
+  }) async {
     isLoginLoading = true;
     loginButtonState = ButtonState.loading;
     emit(LoginLoadingState());
     await DioHelper.postFormData(
       url: isStudent ? STUDENT_LOGIN : TEACHER_LOGIN,
-      formData: FormData.fromMap(
-      {
+      formData: FormData.fromMap({
         'email': email,
         'password': password,
+        'device_token': await SharedMethods.getToken()
       }),
     ).then((value) {
       print(value.data);

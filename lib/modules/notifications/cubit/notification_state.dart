@@ -16,3 +16,9 @@ class NotificationDeletedSuccess extends NotificationState {
 }
 
 class NotificationGetError extends NotificationState {}
+
+class NotificationGetMoreLoading extends NotificationState {}
+
+class NotificationGetMoreSuccess extends NotificationState {}
+
+class NotificationGetMoreError extends NotificationState {}

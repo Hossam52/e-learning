@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:e_learning/layout/student/cubit/cubit.dart';
 import 'package:e_learning/layout/student/student_layout.dart';
 import 'package:e_learning/layout/teacher/teacher_layout.dart';
@@ -8,6 +10,10 @@ import 'package:e_learning/modules/splash/splash_screen.dart';
 import 'package:e_learning/modules/student/cubit/cubit/cubit.dart';
 import 'package:e_learning/modules/test_module/cubit/cubit.dart';
 import 'package:e_learning/shared/bloc_observer.dart';
+import 'package:e_learning/shared/componants/shared_methods.dart';
+import 'package:e_learning/shared/network/notification_services/notifications.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
@@ -24,11 +30,17 @@ import 'shared/styles/themes.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+final GlobalKey<NavigatorState> navigatorKey =
+    GlobalKey(debugLabel: "Main Navigator");
 void main() async {
   Bloc.observer = MyBlocObserver();
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  FirebaseMessaging.onBackgroundMessage(
+      FCM.notificationOnAppBackgroundOrTerminated);
   DioHelper.init(); // Dio Initialize
   await CacheHelper.init(); // Cache Initialize
+  log(await SharedMethods.getToken());
 
   Widget widget;
 
@@ -64,12 +76,27 @@ void main() async {
   runApp(MyApp(startWidget: widget));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   final Widget startWidget;
 
   MyApp({
     required this.startWidget,
   });
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+    initialize();
+  }
+
+  Future<void> initialize() async {
+    FCM().setNotifications();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -88,6 +115,7 @@ class MyApp extends StatelessWidget {
           return ScreenUtilInit(
             designSize: Size(375, 812),
             builder: () => MaterialApp(
+              navigatorKey: navigatorKey,
               title: 'Tag Al Qemma',
               debugShowCheckedModeBanner: false,
               theme: lightTheme,
@@ -109,13 +137,13 @@ class MyApp extends StatelessWidget {
               home: SplashScreen(
                 image: 'assets/images/icons/drawable.png',
                 initializers: () async {
-                  if (startWidget is StudentLayout) {
+                  if (widget.startWidget is StudentLayout) {
                     await AuthCubit.get(context).getProfile(true);
-                  } else if (startWidget is TeacherLayout) {
+                  } else if (widget.startWidget is TeacherLayout) {
                     await AuthCubit.get(context).getProfile(false);
                   }
                 },
-                startWidget: startWidget,
+                startWidget: widget.startWidget,
               ),
               supportedLocales: L10n.all,
               locale: lang != null

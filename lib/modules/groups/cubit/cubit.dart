@@ -431,38 +431,38 @@ class GroupCubit extends Cubit<GroupStates> {
     noPostData = false;
     noQuestionData = false;
     emit(GroupGetPostLoadingState());
-    try {
-      Response response = await DioHelper.postFormData(
-        url: isStudent
-            ? isProfile
-                ? STUDENT_GET_ALL_POSTS
-                : STUDENT_GET_POSTS
-            : TEACHER_GET_POSTS,
-        token: isStudent ? studentToken : teacherToken,
-        formData: FormData.fromMap({
-          'group_id': groupId,
-          'type': type,
-        }),
-      );
-      log(response.data.toString());
-      if (response.data['status']) {
-        // posts = response.data['posts'];
-        insertPostLists(
-            type: type, posts: posts, response: response, isStudent: isStudent);
-        if (type == 'post')
-          noPostData = false;
-        else
-          noQuestionData = false;
-        emit(GroupGetPostSuccessState());
-      } else {
-        print(response.data['message']);
-        if (type == 'post')
-          noPostData = true;
-        else
-          noQuestionData = true;
-        emit(GroupGetPostErrorState());
-      }
-    } catch (e) {
+
+    Response response = await DioHelper.postFormData(
+      url: isStudent
+          ? isProfile
+              ? STUDENT_GET_ALL_POSTS
+              : STUDENT_GET_POSTS
+          : TEACHER_GET_POSTS,
+      token: isStudent ? studentToken : teacherToken,
+      formData: FormData.fromMap({
+        'group_id': groupId,
+        'type': type,
+      }),
+    );
+    log(response.data.toString());
+    if (response.data['status']) {
+      // posts = response.data['posts'];
+      insertPostLists(
+          type: type, posts: posts, response: response, isStudent: isStudent);
+      if (type == 'post')
+        noPostData = false;
+      else
+        noQuestionData = false;
+      emit(GroupGetPostSuccessState());
+    } else {
+      print(response.data['message']);
+      if (type == 'post')
+        noPostData = true;
+      else
+        noQuestionData = true;
+      emit(GroupGetPostErrorState());
+    }
+    try {} catch (e) {
       if (type == 'post')
         noPostData = true;
       else

@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
 class SharedMethods {
@@ -14,8 +15,8 @@ class SharedMethods {
       return "برجاء إدخال عنوان البريد الإلكتروني الخاص بك";
     } else {
       return RegExp(
-          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-          .hasMatch(value)
+                  r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+              .hasMatch(value)
           ? null
           : 'برجاء تحقق من بريدك الالكتروني';
     }
@@ -28,11 +29,16 @@ class SharedMethods {
       return null;
     }
   }
+
   static void unFocusTextField(BuildContext context) {
     FocusScopeNode currentFocus = FocusScope.of(context);
 
     if (!currentFocus.hasPrimaryFocus) {
       currentFocus.unfocus();
     }
+  }
+
+  static Future<String> getToken() async {
+    return (await FirebaseMessaging.instance.getToken())!;
   }
 }

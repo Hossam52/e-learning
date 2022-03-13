@@ -3,6 +3,7 @@ import 'package:e_learning/modules/notifications/notification_build_item.dart';
 import 'package:e_learning/shared/componants/componants.dart';
 import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/componants/widgets/default_loader.dart';
+import 'package:e_learning/shared/componants/widgets/load_more_data.dart';
 import 'package:e_learning/shared/componants/widgets/no_data_widget.dart';
 import 'package:e_learning/shared/responsive_ui/responsive_widget.dart';
 import 'package:flutter/material.dart';
@@ -56,74 +57,97 @@ class _NotificationScreenState extends State<NotificationScreen> {
                   centerTitle: true,
                   leading: defaultBackButton(context, deviceInfo.screenHeight),
                 ),
-                body: Conditional.single(
-                  context: context,
-                  conditionBuilder: (context) =>
-                      state is! NotificationGetLoading,
-                  fallbackBuilder: (context) => DefaultLoader(),
-                  widgetBuilder: (context) => cubit.noNotifications
-                      ? noData(context.tr.no_notifications_up_till_now)
-                      : cubit.notificationResponseModel == null ||
-                              state is NotificationGetError
-                          ? NoDataWidget(
-                              onPressed: () =>
-                                  cubit.getAllNotifications(widget.type))
-                          : ListView.separated(
-                              itemCount: cubit.notificationResponseModel!
-                                  .notifications!.data!.length,
-                              padding: EdgeInsets.symmetric(vertical: 16),
-                              separatorBuilder: (context, index) =>
-                                  Divider(height: 0),
-                              itemBuilder: (context, index) {
-                                var notification = cubit
-                                    .notificationResponseModel!
-                                    .notifications!
-                                    .data![index];
-                                var sender = notification.studentSender != null
-                                    ? notification.studentSender
-                                    : notification.teacherSender;
-                                return Dismissible(
-                                  key: UniqueKey(),
-                                  onDismissed: (direction) {
-                                    cubit.deleteNotification(widget.type,
-                                        notificationId: notification.id!);
-                                    cubit.notificationResponseModel!
-                                        .notifications!.data!
-                                        .remove(notification);
-                                  },
-                                  confirmDismiss: (direction) async {
-                                    return showDialog(
-                                        context: context,
-                                        builder: (context) => AlertDialog(
-                                              title: Text(context
-                                                  .tr.sure_delete_notification),
-                                              actions: [
-                                                defaultTextButton(
-                                                    text: context.tr.confirm,
-                                                    textColor: Colors.green,
-                                                    onPressed: () =>
-                                                        Navigator.pop(
-                                                            context, true)),
-                                                defaultTextButton(
-                                                    text: context.tr.cancel,
-                                                    textColor: Colors.red,
-                                                    onPressed: () =>
-                                                        Navigator.pop(
-                                                            context, false)),
-                                              ],
-                                              content: Text(context.tr.data),
-                                            ));
-                                  },
-                                  child: NotificationBuildItem(
-                                    image: sender.image!,
-                                    title: notification.title!,
-                                    body: notification.body!,
-                                    date: notification.date!,
-                                    onTap: () {},
+                body: SingleChildScrollView(
+                  child: Conditional.single(
+                    context: context,
+                    conditionBuilder: (context) =>
+                        state is! NotificationGetLoading,
+                    fallbackBuilder: (context) => DefaultLoader(),
+                    widgetBuilder: (context) => cubit.noNotifications
+                        ? noData(context.tr.no_notifications_up_till_now)
+                        : cubit.notificationResponseModel == null ||
+                                state is NotificationGetError
+                            ? NoDataWidget(
+                                onPressed: () =>
+                                    cubit.getAllNotifications(widget.type))
+                            : Column(
+                                children: [
+                                  ListView.separated(
+                                    primary: false,
+                                    shrinkWrap: true,
+                                    itemCount: cubit.notificationResponseModel!
+                                        .notifications!.data!.length,
+                                    padding: EdgeInsets.symmetric(vertical: 16),
+                                    separatorBuilder: (context, index) =>
+                                        Divider(height: 0),
+                                    itemBuilder: (context, index) {
+                                      var notification = cubit
+                                          .notificationResponseModel!
+                                          .notifications!
+                                          .data![index];
+                                      var sender =
+                                          notification.studentSender != null
+                                              ? notification.studentSender
+                                              : notification.teacherSender;
+                                      return Dismissible(
+                                        key: UniqueKey(),
+                                        onDismissed: (direction) {
+                                          cubit.deleteNotification(widget.type,
+                                              notificationId: notification.id!);
+                                          cubit.notificationResponseModel!
+                                              .notifications!.data!
+                                              .remove(notification);
+                                        },
+                                        confirmDismiss: (direction) async {
+                                          return showDialog(
+                                              context: context,
+                                              builder: (context) => AlertDialog(
+                                                    title: Text(context.tr
+                                                        .sure_delete_notification),
+                                                    actions: [
+                                                      defaultTextButton(
+                                                          text: context
+                                                              .tr.confirm,
+                                                          textColor:
+                                                              Colors.green,
+                                                          onPressed: () =>
+                                                              Navigator.pop(
+                                                                  context,
+                                                                  true)),
+                                                      defaultTextButton(
+                                                          text:
+                                                              context.tr.cancel,
+                                                          textColor: Colors.red,
+                                                          onPressed: () =>
+                                                              Navigator.pop(
+                                                                  context,
+                                                                  false)),
+                                                    ],
+                                                    content:
+                                                        Text(context.tr.data),
+                                                  ));
+                                        },
+                                        child: NotificationBuildItem(
+                                          image: sender!.image!,
+                                          title: notification.title!,
+                                          body: notification.body!,
+                                          date: notification.date!,
+                                          onTap: () {},
+                                        ),
+                                      );
+                                    },
                                   ),
-                                );
-                              },
-                            ),
+                                  LoadMoreData(
+                                    isLoading:
+                                        state is NotificationGetMoreLoading,
+                                    onLoadingMore: () {
+                                      cubit
+                                          .getMoreAllNotifications(widget.type);
+                                    },
+                                  )
+                                ],
+                              ),
+                  ),
                 ),
               );
             },
