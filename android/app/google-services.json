@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "318254530068-htgibqrpmib7jc8rl8slks5kom21aftt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tagelqema.elearning",
+            "certificate_hash": "6b43fc2197f61dab9c6a545afe91af937cc34f14"
+          }
+        },
+        {
           "client_id": "318254530068-hn06cohqv4re6j6ul6hrh4pg3aupb2fa.apps.googleusercontent.com",
           "client_type": 3
         }

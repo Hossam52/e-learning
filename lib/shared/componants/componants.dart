@@ -12,7 +12,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 
 // Navigate to Screen function
-Future<void> navigateTo(context, widget) => Navigator.push(
+Future<dynamic> navigateTo(context, widget) async => await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => widget,

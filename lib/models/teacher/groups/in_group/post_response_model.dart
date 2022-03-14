@@ -82,33 +82,48 @@ class Post {
     this.likesNum,
     this.authLikeTeacher,
     this.authLikeStudent,
+    this.studentId,
+    this.teacherId,
     this.date,
     this.comments,
   });
 
-  Post.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    text = json['text'];
-    if (json['images'] != null) images = json['images'].cast<String>();
-    teacher = json['teacher'];
-    student = json['student'];
-    teacherImage = json['teacher_image'];
-    studentImage = json['student_image'];
-    studentId = json['student_id'] ?? '';
-    teacherId = json['teacher_id'] ?? '';
-    adminPost = json['adminPost'];
-    studentPost = json['studentPost'] ?? false;
-    teacherPost = json['teacherPost'] ?? false;
-    answer = json['answer'];
-    likesNum = json['likes_num'];
-    authLikeTeacher = json['authLikeTeacher'];
-    authLikeStudent = json['authLikeStudent'];
-    date = json['date'];
-    if (json['comments'] != null) {
-      json['comments'].forEach((v) {
-        comments!.add(new Comments.fromJson(v));
-      });
-    }
+  factory Post.fromJson(Map<String, dynamic> json) {
+    return Post(
+      id: json['id'],
+      text: json['text'],
+      images: json['images'] != null ? json['images'].cast<String>() : [],
+      teacher: json['teacher'],
+      student: json['student'],
+      teacherImage: json['teacher_image'],
+      studentImage: json['student_image'],
+      studentId: json['student_id'] ?? '',
+      teacherId: json['teacher_id'] ?? '',
+      adminPost: json['adminPost'],
+      studentPost: json['studentPost'] ?? false,
+      teacherPost: json['teacherPost'] ?? false,
+      answer: json['answer'],
+      likesNum: json['likes_num'],
+      authLikeTeacher: json['authLikeTeacher'],
+      authLikeStudent: json['authLikeStudent'],
+      date: json['date'],
+      comments: json['comments'] == null
+          ? []
+          : List<Comments>.from(
+              json['comments']?.map((x) => Comments.fromJson(x))),
+
+      //  json['comments']
+      //     .forEach((v) => comments!.add(new Comments.fromJson(v))),
+    );
+  }
+
+  Post.fromJsonString(String source) {
+    Post.fromJson(json.decode(source));
+  }
+
+  @override
+  String toString() {
+    return 'Post(id: $id, text: $text, teacher: $teacher, student: $student, teacherImage: $teacherImage, studentImage: $studentImage, adminPost: $adminPost, studentPost: $studentPost, teacherPost: $teacherPost, answer: $answer, likesNum: $likesNum, authLikeTeacher: $authLikeTeacher, authLikeStudent: $authLikeStudent, date: $date, studentId: $studentId, teacherId: $teacherId, comments: $comments, images: $images)';
   }
 }
 

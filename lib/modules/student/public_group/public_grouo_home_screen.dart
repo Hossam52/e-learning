@@ -12,6 +12,7 @@ import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/componants/widgets/default_gesture_widget.dart';
 import 'package:e_learning/shared/componants/widgets/default_loader.dart';
 import 'package:e_learning/shared/componants/widgets/default_text_field.dart';
+import 'package:e_learning/shared/componants/widgets/load_more_data.dart';
 import 'package:e_learning/shared/componants/widgets/no_data_widget.dart';
 import 'package:e_learning/shared/cubit/cubit.dart';
 import 'package:e_learning/shared/responsive_ui/responsive_widget.dart';
@@ -370,6 +371,18 @@ class _PublicGroupHomeScreenState extends State<PublicGroupHomeScreen> {
                                                       },
                                                     );
                                                   }),
+                                              LoadMoreData(
+                                                  isLoading: state
+                                                      is MoreGroupGetPostLoadingState,
+                                                  onLoadingMore: () {
+                                                    GroupCubit.get(context)
+                                                        .getMoreAllPublicGroupPosts(
+                                                            GroupCubit.get(
+                                                                    context)
+                                                                .publicGroupModel!
+                                                                .id!,
+                                                            isStudent: true);
+                                                  })
                                             ],
                                           ),
                                         ),

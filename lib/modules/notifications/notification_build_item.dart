@@ -26,7 +26,7 @@ class NotificationBuildItem extends StatelessWidget {
       elevation: 0,
       margin: EdgeInsets.symmetric(vertical: 0),
       child: GestureDetector(
-        onTap: () {},
+        onTap: onTap,
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 22, horizontal: 16),
           child: Row(

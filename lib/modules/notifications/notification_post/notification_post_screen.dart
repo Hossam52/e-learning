@@ -1,7 +1,17 @@
+import 'package:e_learning/models/enums/enums.dart';
+import 'package:e_learning/models/teacher/groups/in_group/comment_model.dart';
 import 'package:e_learning/models/teacher/groups/in_group/post_response_model.dart';
 import 'package:e_learning/modules/groups/cubit/cubit.dart';
 import 'package:e_learning/modules/groups/cubit/states.dart';
+import 'package:e_learning/modules/groups/student/group_view/home_tab/comment_text_field_build_item.dart';
 import 'package:e_learning/modules/groups/student/group_view/home_tab/post_build_item.dart';
+import 'package:e_learning/modules/groups/teacher/group_view/post_comments/comment_build_item.dart';
+import 'package:e_learning/modules/groups/teacher/group_view/post_comments/comment_modal_sheet.dart';
+import 'package:e_learning/modules/notifications/cubit/notification_cubit.dart';
+import 'package:e_learning/shared/componants/componants.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
+import 'package:e_learning/shared/cubit/cubit.dart';
+import 'package:e_learning/shared/cubit/states.dart';
 import 'package:e_learning/shared/responsive_ui/responsive_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,56 +26,176 @@ class NotificationPostScreen extends StatefulWidget {
 }
 
 class _NotificationPostScreenState extends State<NotificationPostScreen> {
+  final formKey = GlobalKey<FormState>();
+  final TextEditingController commentController = TextEditingController();
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    GroupCubit.get(context).postsLikeBool.addEntries([
-      MapEntry(
-          widget.post.id!,
-          widget.post.studentId != null
-              ? widget.post.authLikeStudent ??
-                  widget.post.authLikeStudent ??
-                  widget.post.authLikeTeacher ??
-                  false
-              : false)
-    ]);
-    GroupCubit.get(context).postsLikeCount.addEntries(
-      [MapEntry(widget.post.id!, widget.post.likesNum!)],
-    );
+    if (!GroupCubit.get(context).postsLikeBool.containsKey(widget.post.id!)) {
+      GroupCubit.get(context).postsLikeBool.addEntries([
+        MapEntry(
+            widget.post.id!,
+            widget.post.studentId != null
+                ? widget.post.authLikeStudent ??
+                    widget.post.authLikeStudent ??
+                    widget.post.authLikeTeacher ??
+                    false
+                : false)
+      ]);
+    }
+    if (!GroupCubit.get(context).postsLikeCount.containsKey(widget.post.id!)) {
+      GroupCubit.get(context).postsLikeCount.addEntries(
+        [MapEntry(widget.post.id!, widget.post.likesNum ?? 0)],
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: responsiveWidget(
-        responsive: (context, deviceInfo) =>
-            BlocBuilder<GroupCubit, GroupStates>(
-          builder: (context, state) {
-            final cubit = GroupCubit.get(context);
-            return Column(children: [
-              PostBuildItem(
-                date: widget.post.date!,
-                ownerPostId: widget.post.studentId!,
-                deviceInfo: deviceInfo,
-                type: 'question',
-                isStudent: true,
-                isMe: widget.post.studentPost ?? false,
-                postId: widget.post.id!,
-                answer: widget.post.answer, //post.answer!,
-                cubit: GroupCubit.get(context),
-                likesCount: widget.post.likesNum!,
-                isLiked: widget.post.authLikeStudent ??
-                    widget.post.authLikeTeacher ??
-                    false,
-                commentCount: widget.post.comments!.length,
-                groupId: 0,
-                onEdit: () {},
-              )
-            ]);
-          },
+      appBar: AppBar(
+        title: Text(context.tr.post),
+        centerTitle: true,
+      ),
+      body: SafeArea(
+        child: responsiveWidget(
+          responsive: (context, deviceInfo) =>
+              BlocBuilder<GroupCubit, GroupStates>(
+            builder: (context, state) {
+              final appCubit = AppCubit.get(context);
+              var comments = widget.post.comments!;
+              final cubit = GroupCubit.get(context);
+              return Column(
+                children: [
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Column(children: [
+                        PostBuildItem(
+                          date: widget.post.date!,
+                          ownerPostId: widget.post.studentId!,
+                          deviceInfo: deviceInfo,
+                          type: 'post',
+                          isStudent: true,
+                          isMe: false,
+                          postId: widget.post.id!,
+                          name: widget.post.student ??
+                              widget.post.teacher ??
+                              context.tr.unknown,
+                          comments: widget.post.comments,
+                          image: widget.post.studentImage ??
+                              widget.post.teacherImage,
+                          text: widget.post.text,
+                          answer: widget.post.answer, //post.answer!,
+                          cubit: GroupCubit.get(context),
+                          likesCount: cubit.postsLikeCount[widget.post.id!]!,
+                          isLiked: cubit.postsLikeBool[widget.post.id!]!,
+                          commentCount: widget.post.comments!.length,
+                          groupId: 0,
+                          onEdit: () {},
+                          onDelete: () {},
+                        ),
+                        // Container(
+                        //   color: Colors.white,
+                        //   child: ListView.separated(
+                        //     shrinkWrap: true,
+                        //     primary: false,
+                        //     itemCount: comments.length,
+                        //     padding: EdgeInsets.symmetric(
+                        //         horizontal: 22, vertical: 8),
+                        //     separatorBuilder: (context, index) =>
+                        //         SizedBox(height: 21),
+                        //     itemBuilder: (context, index) {
+                        //       var comment = comments[index];
+                        //       return CommentBuildItem(
+                        //         name: comment.teacher != null
+                        //             ? comment.teacher!
+                        //             : comment.student!,
+                        //         image: comment.images,
+                        //         profileImage: comment.teacherImage != null
+                        //             ? comment.teacherImage
+                        //             : comment.studentImage,
+                        //         text: comment.text!,
+                        //         date: comment.date!,
+                        //         isStudent: true,
+                        //         isMe: comment.studentComment ??
+                        //             comment.teacherComment!,
+                        //         isStudentComment:
+                        //             comment.student != null ? true : false,
+                        //         onSelected: (value) {
+                        //           if (value.toString() == 'delete') {
+                        //             defaultAlertDialog(
+                        //               context: context,
+                        //               title: context.tr.remove_post,
+                        //               subTitle: context.tr
+                        //                   .do_you_really_want_to_delete_this_post,
+                        //               buttonConfirm: context.tr.delete,
+                        //               buttonReject: context.tr.back,
+                        //               onConfirm: () async {
+                        //                 await cubit.deleteMethod(comment.id!,
+                        //                     GroupDeleteType.COMMENT);
+                        //                 comments.removeAt(index);
+                        //                 Navigator.pop(context);
+                        //               },
+                        //               onReject: () {},
+                        //             );
+                        //           } else if (value.toString() == 'block') {
+                        //             cubit.addStudentToGroupWithCode(
+                        //               groupId: 0,
+                        //               code: comment.code!,
+                        //               isAdd: false,
+                        //               context: context,
+                        //             );
+                        //           } else {
+                        //             editComment(
+                        //               CommentModel(
+                        //                 // id: postId,
+                        //                 id: comment.id!,
+                        //                 text: comment.text!,
+                        //                 image: comment.images,
+                        //               ),
+                        //               appCubit,
+                        //               index: index,
+                        //             );
+                        //           }
+                        //         },
+                        //       );
+                        //     },
+                        //   ),
+                        // ),
+                      ]),
+                    ),
+                  ),
+                  // Form(
+                  //   key: formKey,
+                  //   child: CommentTextFieldBuildItem(
+                  //     appCubit: appCubit,
+                  //     cubit: cubit,
+                  //     commentController: commentController,
+                  //     formKey: formKey,
+                  //     isStudent: true,
+                  //     isEdit: appCubit.isEdit,
+                  //     id: widget.post.id!,
+                  //     type: 'post',
+                  //     groupId: 0,
+                  //     commentType:
+                  //         appCubit.isEdit ? CommentType.Edit : CommentType.Add,
+                  //   ),
+                  // ),
+                ],
+              );
+            },
+          ),
         ),
       ),
     );
+  }
+
+  void editComment(CommentModel model, AppCubit cubit, {required int index}) {
+    cubit.commentId = model.id;
+    cubit.index = index;
+    cubit.isEdit = true;
+    commentController.text = model.text;
+    cubit.emit(AppChangeState());
+    if (model.image != null) cubit.addImageFromUrl(model.image!);
   }
 }

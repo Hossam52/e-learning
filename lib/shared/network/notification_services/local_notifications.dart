@@ -3,7 +3,10 @@ import 'dart:developer';
 import 'dart:math' as math;
 
 import 'package:e_learning/main.dart';
+import 'package:e_learning/modules/notifications/notification_post/notification_post_screen.dart';
+import 'package:e_learning/shared/componants/componants.dart';
 import 'package:e_learning/shared/network/notification_services/local_notification_statuses.dart';
+import 'package:e_learning/shared/network/notification_services/recieved_notification_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
@@ -13,19 +16,43 @@ void navigateAccordingToPayloadNotification(
 ) async {
   final navigator = navigatorKey;
   if (payload == null) return;
-  log('payload Before is $payload');
-  final jsonDecode = json.decode(payload) as Map<String, dynamic>;
-  log('payload Before is $jsonDecode');
+  RecievedNotificationModel model = RecievedNotificationModel.fromJson(payload);
+  log(model.toString());
 
-  log('From local notification');
-  if (jsonDecode.containsKey('order_id')) {
-    // AppCubit.instance(navigator.currentContext!)
-    //     .currentShowingOrderNotificationScreen();
-    await navigator.currentState!.push(
-      MaterialPageRoute(builder: (context) => Container()),
-    );
-    // AppCubit.instance(navigator.currentContext!).closeOrderNotificationScreen();
+  switch (model.type) {
+    case 1:
+      //Friend requests
+      break;
+    case 2:
+      //Champions
+      break;
+    case 3:
+      //Comment
+      navigateTo(
+          navigator.currentContext, NotificationPostScreen(post: model.post!));
+      break;
+    case 4:
+      //Videos
+      break;
+    case 5:
+      break;
+    default:
   }
+
+  // log('payload Before is $payload');
+  // final jsonDecode = json.decode(payload) as Map<String, dynamic>;
+  // log('payload After is $jsonDecode');
+
+  // log('From local notification');
+  // if (jsonDecode.containsKey('type')) {
+  //   log(jsonDecode['type']);
+  //   // AppCubit.instance(navigator.currentContext!)
+  //   //     .currentShowingOrderNotificationScreen();
+  //   // await navigator.currentState!.push(
+  //   //   MaterialPageRoute(builder: (context) => Container()),
+  //   // );
+  //   // AppCubit.instance(navigator.currentContext!).closeOrderNotificationScreen();
+  // }
 }
 
 class LocalNotifications {

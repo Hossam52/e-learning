@@ -52,7 +52,11 @@ class StudentTestResultScreen extends StatelessWidget {
                       Expanded(
                         child: defaultMaterialIconButton(
                           onPressed: () {
-                            navigateTo(context, StudentTestLeaderBoard());
+                            navigateTo(
+                                context,
+                                StudentTestLeaderBoard(
+                                  testId: test.id!,
+                                ));
                           },
                           icon: Icons.leaderboard_outlined,
                           text: context.tr.rank,

@@ -1,5 +1,14 @@
+import 'dart:developer';
+
+import 'package:e_learning/models/general_apis/notification_response_model.dart';
+import 'package:e_learning/models/student/auth/student_data_model.dart';
+import 'package:e_learning/models/teacher/auth/teacher_data_model.dart';
+import 'package:e_learning/modules/following_list/teacher_view/teacher_profile_view.dart';
 import 'package:e_learning/modules/notifications/cubit/notification_cubit.dart';
 import 'package:e_learning/modules/notifications/notification_build_item.dart';
+import 'package:e_learning/modules/notifications/notification_post/notification_post_screen.dart';
+import 'package:e_learning/modules/profile/student_profile_view.dart';
+import 'package:e_learning/modules/student/cubit/cubit/cubit.dart';
 import 'package:e_learning/shared/componants/componants.dart';
 import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/componants/widgets/default_loader.dart';
@@ -24,6 +33,13 @@ class NotificationScreen extends StatefulWidget {
 
 class _NotificationScreenState extends State<NotificationScreen> {
   bool first = true;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    NotificationCubit.get(widget.cubitContext).getAllNotifications(widget.type);
+  }
+
   @override
   void didChangeDependencies() {
     // NotificationCubit.get(widget.cubitContext).getAllNotifications(widget.type);
@@ -85,10 +101,11 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                           .notificationResponseModel!
                                           .notifications!
                                           .data![index];
-                                      var sender =
-                                          notification.studentSender != null
-                                              ? notification.studentSender
-                                              : notification.teacherSender;
+                                      Student? student =
+                                          notification.studentSender;
+                                      Teacher? teacher =
+                                          notification.teacherSender;
+                                      String image = getImage(student, teacher);
                                       return Dismissible(
                                         key: UniqueKey(),
                                         onDismissed: (direction) {
@@ -128,11 +145,28 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                                   ));
                                         },
                                         child: NotificationBuildItem(
-                                          image: sender!.image!,
+                                          image: image,
                                           title: notification.title!,
                                           body: notification.body!,
                                           date: notification.date!,
-                                          onTap: () {},
+                                          onTap: () async {
+                                            if (notification.post != null) {
+                                              log('post');
+                                              navigateToPost(notification);
+                                            } else if (notification.video !=
+                                                null) {
+                                              log('champion');
+                                              navigateToChampion(notification);
+                                            } else if (notification.champion !=
+                                                null) {
+                                              log('video');
+                                              navigateToVideo(notification);
+                                            } else {
+                                              log('personal profile');
+                                              navigateToPersonalProfile(
+                                                  notification);
+                                            }
+                                          },
                                         ),
                                       );
                                     },
@@ -155,5 +189,43 @@ class _NotificationScreenState extends State<NotificationScreen> {
         },
       ),
     );
+  }
+
+  String getImage(Student? student, Teacher? teacher) {
+    if (student != null)
+      return student.image!;
+    else if (teacher != null)
+      return teacher.image!;
+    else
+      return '';
+  }
+
+  void navigateToPost(NotificationData notification) async {
+    log(notification.post!.id.toString());
+    await navigateTo(context, NotificationPostScreen(post: notification.post!));
+  }
+
+  void navigateToVideo(NotificationData notification) {
+    log(notification.video!.id.toString());
+  }
+
+  void navigateToChampion(NotificationData notification) {
+    log(notification.video!.id.toString());
+  }
+
+  void navigateToPersonalProfile(NotificationData notification) {
+    late Widget child;
+    if (notification.studentSender != null)
+      child = StudentProfileView(
+        isFriend: false,
+        student: notification.studentSender!,
+      );
+    else {
+      child = TeacherProfileView(
+          teacher: notification.teacherSender!,
+          isAdd: false,
+          cubit: StudentCubit.get(context));
+    }
+    navigateTo(context, child);
   }
 }

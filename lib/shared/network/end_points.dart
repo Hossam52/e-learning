@@ -86,6 +86,7 @@ const STUDENT_GET_SUBJECT_PLAYLISTS = 'student/getPlayListBySubTec';
 
 /// Test Module
 const STUDENT_GET_TESTS = 'student/getAllTests';
+const STUDENT_GET_PARTICIPATION_RESULTS = 'student/getResultByTestId';
 
 const STUDENT_SEND_TEST_RESULT = 'student/saveResult';
 

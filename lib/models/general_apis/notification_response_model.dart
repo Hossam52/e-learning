@@ -1,8 +1,9 @@
 import 'package:e_learning/models/pagination.dart';
+import 'package:e_learning/models/student/auth/student_data_model.dart';
 import 'package:e_learning/models/student/champions/champion_response_model.dart';
+import 'package:e_learning/models/teacher/auth/teacher_data_model.dart';
 import 'package:e_learning/models/teacher/groups/in_group/post_response_model.dart';
 import 'package:e_learning/models/teacher/videos/subject_playlists_data_model.dart';
-import 'package:e_learning/models/teacher/videos/video_model.dart';
 import 'package:intl/intl.dart';
 
 class NotificationResponseModel {
@@ -41,8 +42,8 @@ class NotificationData {
   int? id;
   String? title;
   String? body;
-  Sender? studentSender;
-  Sender? teacherSender;
+  Student? studentSender;
+  Teacher? teacherSender;
   bool? read;
   String? date;
   Post? post;
@@ -69,9 +70,11 @@ class NotificationData {
     body = json['body'];
     date = DateFormat('yyyy-MM-dd').format(DateTime.parse(json['date']));
     studentSender = json['studentSender'] != null
-        ? new Sender.fromJson(json['studentSender'])
+        ? new Student.fromJson(json['studentSender'])
         : null;
-    teacherSender = json['TecherSender'] == null ? null : json['TecherSender'];
+    teacherSender = json['TecherSender'] == null
+        ? null
+        : Teacher.fromJson(json['TecherSender']);
     read = json['read'];
     post = json['post'] == null ? null : Post.fromJson(json['post']);
     champion =

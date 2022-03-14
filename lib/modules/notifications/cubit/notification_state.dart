@@ -5,6 +5,8 @@ abstract class NotificationState {}
 
 class NotificationInitial extends NotificationState {}
 
+class RemoveNotificationByIdState extends NotificationState {}
+
 ///
 class NotificationGetLoading extends NotificationState {}
 

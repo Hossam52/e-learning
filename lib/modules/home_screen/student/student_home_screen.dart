@@ -25,6 +25,7 @@ import 'package:e_learning/shared/componants/widgets/default_loader.dart';
 import 'package:e_learning/shared/componants/widgets/no_data_widget.dart';
 import 'package:e_learning/shared/cubit/cubit.dart';
 import 'package:e_learning/shared/cubit/states.dart';
+import 'package:e_learning/shared/network/local/cache_helper.dart';
 import 'package:e_learning/shared/responsive_ui/responsive_widget.dart';
 import 'package:e_learning/shared/styles/colors.dart';
 import 'package:e_learning/shared/styles/styles.dart';
@@ -293,6 +294,10 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                                                   title: test.name!,
                                                   subject: test.subject!,
                                                   onPressed: () {
+                                                    final startTestBefore =
+                                                        CacheHelper.getData(
+                                                            key:
+                                                                'test${test.id!}');
                                                     if (test.result == null) {
                                                       navigateTo(
                                                           context,

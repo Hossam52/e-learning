@@ -2,8 +2,10 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 import 'package:e_learning/main.dart';
+import 'package:e_learning/models/teacher/groups/in_group/post_response_model.dart';
 import 'package:e_learning/shared/network/notification_services/local_notification_statuses.dart';
 import 'package:e_learning/shared/network/notification_services/local_notifications.dart';
+import 'package:e_learning/shared/network/notification_services/recieved_notification_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -28,15 +30,16 @@ class FCM {
 
   static void _checkRedirection(RemoteMessage message,
       [bool showLocalNotification = true]) {
-    log('notification title ${message.notification!.title} body ${message.notification!.title}');
     final data = message.data;
+    // RecievedNotificationModel model = RecievedNotificationModel.fromMap((data));
+    // log(model.toString());
     if (!showLocalNotification) {
       navigateAccordingToPayloadNotification(json.encode(data));
     } else {
       LocalNotifications.showLocalNotification(
         properties: CustomNotificationChannel(),
-        title: message.notification!.title, // message.notification!.title,
-        body: message.notification!.body, //message.notification!.body,
+        title: data['title'], // message.notification!.title,
+        body: data['body'], //message.notification!.body,
         payload: json.encode(data),
       );
     }

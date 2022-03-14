@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:e_learning/layout/teacher/teacher_layout.dart';
+import 'package:e_learning/models/student/tests/all_partecipation_records.dart';
 import 'package:e_learning/models/teacher/test/test_model.dart';
 import 'package:e_learning/models/teacher/test/test_response_model.dart';
 import 'package:e_learning/modules/test_module/student_test/student_champion/champion_end_screen.dart';
@@ -470,6 +471,35 @@ class TestCubit extends Cubit<TestStates> {
     });
     correctAnswersCount = correctAnswersList.length;
     wrongAnswersCount = wrongAnswersList.length;
+  }
+
+  /// Get the top participants
+  AllPartecipationRecordsResponse? allPartecipationRecordsResponse;
+  void getTopStudentAtTest(int testId) async {
+    emit(LeaderboardTestLoadingState());
+    try {
+      Response response = await DioHelper.postFormData(
+        url: STUDENT_GET_PARTICIPATION_RESULTS,
+        token: studentToken,
+        formData: FormData.fromMap({
+          'test_id': testId,
+        }),
+      );
+      allPartecipationRecordsResponse =
+          AllPartecipationRecordsResponse.fromMap(response.data);
+      print(response.data);
+      if (allPartecipationRecordsResponse!.status) {
+        emit(LeaderboardTestSuccessState());
+      } else {
+        hasStudentEndTestError = true;
+        print(response.data['message']);
+        emit(LeaderboardTestErrorState());
+      }
+    } catch (e) {
+      hasStudentEndTestError = true;
+      emit(LeaderboardTestErrorState());
+      throw e;
+    }
   }
 
   /// Send results method

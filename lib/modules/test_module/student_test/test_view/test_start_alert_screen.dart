@@ -65,7 +65,7 @@ class TestStartAlertScreen extends StatelessWidget {
                                   isChampion: false,
                                 ));
                           },
-                          text: 'بدأ',
+                          text: context.tr.start,
                           isLoading: false,
                           textStyle: thirdTextStyle(deviceInfo),
                           isDisabled: false,

@@ -1140,7 +1140,7 @@ class GroupCubit extends Cubit<GroupStates> {
   Map<int, int> publicGroupPostsLikeCount = {};
 
   Map<int, bool> publicGroupPostsLikeBool = {};
-
+  AllPostsModel? allPublicGroupPostsResponse;
   void getAllPublicGroupPosts(int groupId, {bool isStudent = true}) async {
     List posts = [];
     noPublicGroupPostData = false;
@@ -1153,12 +1153,11 @@ class GroupCubit extends Cubit<GroupStates> {
           'group_id': groupId,
         }),
       );
-      if (response.data['status']) {
-        posts = response.data['posts'];
-        publicGroupPosts = List.generate(
-          posts.length,
-          (index) => Post.fromJson(response.data["posts"][index]),
-        );
+      allPublicGroupPostsResponse = AllPostsModel.fromMap(response.data);
+      if (allPublicGroupPostsResponse!.status!) {
+        posts = response.data['posts']['data'];
+        publicGroupPosts = allPublicGroupPostsResponse!.posts!;
+
         publicGroupPosts.forEach((element) {
           publicGroupPostsLikeCount.addAll({element.id!: element.likesNum!});
           publicGroupPostsLikeBool.addAll({
@@ -1176,6 +1175,46 @@ class GroupCubit extends Cubit<GroupStates> {
     } catch (e) {
       noPublicGroupPostData = true;
       emit(GroupGetPostErrorState());
+      throw e;
+    }
+  }
+
+  void getMoreAllPublicGroupPosts(int groupId, {bool isStudent = true}) async {
+    Meta? meta = allPublicGroupPostsResponse!.meta;
+    if (meta == null || meta.currentPage == meta.lastPage) return;
+    emit(MoreGroupGetPostLoadingState());
+
+    Response response = await DioHelper.postFormData(
+        url: isStudent ? PUBLIC_GET_POSTS : PUBLIC_GET_POSTS_TEACHER,
+        token: isStudent ? studentToken : teacherToken,
+        formData: FormData.fromMap({
+          'group_id': groupId,
+        }),
+        query: {'page': meta.currentPage! + 1});
+    log(response.data.toString());
+    final allData = AllPostsModel.fromMap(response.data);
+    if (allData.status!) {
+      publicGroupPosts.addAll(allData.posts!);
+      final posts = allData.posts!;
+
+      posts.forEach((element) {
+        publicGroupPostsLikeCount.addAll({element.id!: element.likesNum!});
+        publicGroupPostsLikeBool.addAll({
+          element.id!:
+              isStudent ? element.authLikeStudent! : element.authLikeTeacher!
+        });
+      });
+      allPublicGroupPostsResponse!.meta = allData.meta;
+      noPublicGroupPostData = false;
+      emit(MoreGroupGetPostSuccessState());
+    } else {
+      print(response.data['message']);
+      noPublicGroupPostData = true;
+      emit(MoreGroupGetPostErrorState());
+    }
+    try {} catch (e) {
+      noPublicGroupPostData = true;
+      emit(MoreGroupGetPostErrorState());
       throw e;
     }
   }

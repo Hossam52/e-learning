@@ -7,6 +7,7 @@ import 'package:e_learning/modules/test_module/cubit/states.dart';
 import 'package:e_learning/shared/componants/componants.dart';
 import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/componants/widgets/default_button.dart';
+import 'package:e_learning/shared/network/local/cache_helper.dart';
 import 'package:e_learning/shared/responsive_ui/responsive_widget.dart';
 import 'package:e_learning/shared/styles/colors.dart';
 import 'package:e_learning/shared/styles/styles.dart';
@@ -39,6 +40,7 @@ class _StudentTestQuestionState extends State<StudentTestQuestion> {
 
   @override
   void initState() {
+    CacheHelper.saveData(key: 'test${widget.test.id!}', value: true);
     testMaxTime = int.parse(widget.test.minuteNum!);
     if (widget.test.questions!.length <= 1) {
       isLast = true;

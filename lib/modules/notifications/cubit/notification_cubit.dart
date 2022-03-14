@@ -21,6 +21,12 @@ class NotificationCubit extends Cubit<NotificationState> {
 
   NotificationResponseModel? notificationResponseModel;
   bool noNotifications = false;
+  void removeNotificationByID(int id) {
+    notificationResponseModel?.notifications?.data!
+        .removeWhere((element) => element.id == id);
+    emit(RemoveNotificationByIdState());
+  }
+
   void deleteNotification(NotificationType type,
       {required int notificationId}) async {
     try {

@@ -7,6 +7,7 @@ import 'package:e_learning/modules/auth/student/register/choose_country_screen.d
 import 'package:e_learning/modules/profile/add_avatar_build_item.dart';
 import 'package:e_learning/shared/componants/componants.dart';
 import 'package:e_learning/shared/componants/extentions.dart';
+import 'package:e_learning/shared/componants/widgets/classroom_dropdown.dart';
 import 'package:e_learning/shared/componants/widgets/default_drop_down.dart';
 import 'package:e_learning/shared/componants/widgets/default_form_field.dart';
 import 'package:e_learning/shared/componants/widgets/default_progress_button.dart';
@@ -141,38 +142,16 @@ class _EditProfileTabState extends State<EditProfileTab> {
                         Row(
                           children: [
                             Expanded(
-                              child: DefaultDropDown(
-                                // label: 'الصف الدراسي',
-                                label: context.tr.classroom,
-                                selectedValue: cubit.selectedStageName,
-                                validator: (value) => value == null
-                                    ? context.tr.field_required
-                                    : null,
-                                onChanged: (value) {
-                                  cubit.onChangeStage(value);
-                                },
-                                items: List.generate(
-                                    cubit.stagesNamesList.length,
-                                    (index) => cubit.stagesNamesList[index]
-                                        .toString()),
-                              ),
-                            ),
+                                child: ClassRoomDropDown(
+                              authCubit: cubit,
+                            )),
                             SizedBox(
                               width: 10,
                             ),
                             Expanded(
-                              child: DefaultDropDown(
-                                // label: 'الترم الدراسي',
-                                label: context.tr.academic_semster,
-                                selectedValue: cubit.selectedClassName,
-                                validator: (value) =>
-                                    value == null ? 'field required' : null,
-                                onChanged: (value) {
-                                  cubit.onChangeClass(value);
-                                },
-                                items: cubit.classesNameList,
-                              ),
-                            ),
+                                child: SemsterDropDown(
+                              authCubit: cubit,
+                            )),
                           ],
                         ),
                         SizedBox(
