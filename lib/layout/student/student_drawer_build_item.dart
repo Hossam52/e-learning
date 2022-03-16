@@ -1,6 +1,8 @@
 import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:e_learning/models/enums/enums.dart';
+import 'package:e_learning/models/student/auth/student_model.dart';
 import 'package:e_learning/modules/auth/cubit/cubit.dart';
 import 'package:e_learning/modules/auth/cubit/states.dart';
 import 'package:e_learning/modules/best_student_list/best_student_list_screen.dart';
@@ -35,7 +37,17 @@ class _StudentDrawerBuildItemState extends State<StudentDrawerBuildItem> {
   @override
   void initState() {
     super.initState();
-    AuthCubit.get(context).getAllCountriesAndStages();
+    init();
+  }
+
+  Future<void> init() async {
+    final authCubit = AuthCubit.get(context);
+    if (authCubit.countryNamesList.isEmpty)
+      await authCubit.getAllCountriesAndStages();
+    log(authCubit.studentProfileModel!.student!.country!);
+    log(authCubit.countryNamesList.toString());
+
+    authCubit.onChangeCountry(authCubit.studentProfileModel!.student!.country!);
   }
 
   @override
@@ -290,7 +302,40 @@ class _StudentDrawerBuildItemState extends State<StudentDrawerBuildItem> {
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
-                  children: [child],
+                  children: [
+                    child,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        defaultTextButton(
+                            text: 'Done',
+                            onPressed: () {
+                              final user = AuthCubit.get(context)
+                                  .studentProfileModel!
+                                  .student!;
+                              AuthCubit.get(context).studentRegisterAndEdit(
+                                  context: context,
+                                  type: AuthType.Edit,
+                                  model: StudentModel(
+                                    name: user.name!,
+                                    email: user.email,
+                                    countryId: AuthCubit.get(context)
+                                        .selectedCountryId!,
+                                    classroomId:
+                                        AuthCubit.get(context).selectedClassId,
+                                  ));
+                              Navigator.pop(context);
+                            },
+                            textColor: Colors.green),
+                        defaultTextButton(
+                            text: 'Cancel',
+                            textColor: Colors.red,
+                            onPressed: () {
+                              Navigator.pop(context);
+                            }),
+                      ],
+                    )
+                  ],
                 ),
               ),
             ));

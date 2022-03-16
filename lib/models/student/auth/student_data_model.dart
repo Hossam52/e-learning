@@ -30,6 +30,7 @@ class Student {
   String? image;
   String? points;
   bool? authType;
+  String? socialId;
   int? friend;
   late FriendType friendType;
 
@@ -43,6 +44,7 @@ class Student {
     this.image,
     this.points,
     this.authType,
+    this.socialId,
     this.friend,
   }) {
     switch (friend) {
@@ -71,6 +73,7 @@ class Student {
         image: json['image'],
         points: json['points'].toString(),
         authType: json['authType'],
+        socialId: json['social_id'],
         friend: json['friend']);
   }
 
@@ -84,6 +87,7 @@ class Student {
     data['classroom'] = this.classroom;
     data['image'] = this.image;
     data['authType'] = this.authType;
+    data['social_id'] = this.socialId;
     data['friend'] = this.friend;
     return data;
   }

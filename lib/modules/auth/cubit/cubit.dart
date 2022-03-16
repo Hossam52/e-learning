@@ -1,9 +1,12 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:e_learning/layout/student/student_layout.dart';
 import 'package:e_learning/layout/teacher/teacher_layout.dart';
 import 'package:e_learning/models/enums/enums.dart';
 import 'package:e_learning/models/general_apis/get_all_countries_and_stages_model.dart';
 import 'package:e_learning/models/general_apis/subjects_data_model.dart';
+import 'package:e_learning/models/social_register_response.dart';
 import 'package:e_learning/models/student/auth/student_data_model.dart';
 import 'package:e_learning/models/student/auth/student_model.dart';
 import 'package:e_learning/models/teacher/auth/teacher_data_model.dart';
@@ -19,6 +22,7 @@ import 'package:e_learning/shared/componants/shared_methods.dart';
 import 'package:e_learning/shared/network/end_points.dart';
 import 'package:e_learning/shared/network/local/cache_helper.dart';
 import 'package:e_learning/shared/network/remote/dio_helper.dart';
+import 'package:e_learning/shared/network/services/firebase_services/firebase_auth.dart';
 import 'package:e_learning/shared/responsive_ui/device_information.dart';
 import 'package:e_learning/shared/styles/colors.dart';
 import 'package:flutter/material.dart';
@@ -247,7 +251,7 @@ class AuthCubit extends Cubit<AuthStates> {
           navigateToAndFinish(
               context,
               EmailVerifyScreen(
-                email: model.email,
+                email: model.email!,
                 isStudent: true,
               ));
         emit(StudentRegisterSuccessState());
@@ -490,28 +494,11 @@ class AuthCubit extends Cubit<AuthStates> {
         if (isStudent) {
           studentLoginDataModel = StudentDataModel.fromJson(value.data);
           studentProfileModel = StudentDataModel.fromJson(value.data);
-          studentToken = studentLoginDataModel!.token;
-          CacheHelper.saveData(key: 'studentToken', value: studentToken);
-          print(' token :$studentToken');
-          Future.delayed(
-            Duration(seconds: 1),
-            () {
-              navigateToAndFinish(context, StudentLayout());
-              loginButtonState = ButtonState.idle;
-            },
-          );
+          saveStudentTokenAnNavigate(context, studentLoginDataModel!.token!);
         } else {
           teacherProfileModel =
               teacherLoginDataModel = TeacherDataModel.fromJson(value.data);
-          teacherToken = teacherLoginDataModel!.token;
-          CacheHelper.saveData(key: 'teacherToken', value: teacherToken);
-          print(' token :$teacherToken');
-          Future.delayed(
-            Duration(seconds: 1),
-            () {
-              navigateToAndFinish(context, TeacherLayout());
-            },
-          );
+          saveTeacherTokenAnNavigate(context, teacherLoginDataModel!.token!);
         }
         emit(LoginSuccessState());
       } else {
@@ -528,6 +515,31 @@ class AuthCubit extends Cubit<AuthStates> {
       print(error.toString());
       emit(LoginErrorState());
     });
+  }
+
+  void saveStudentTokenAnNavigate(BuildContext context, String token) {
+    studentToken = token;
+    CacheHelper.saveData(key: 'studentToken', value: token);
+    print(' token :$token');
+    Future.delayed(
+      Duration(seconds: 1),
+      () {
+        navigateToAndFinish(context, StudentLayout());
+        loginButtonState = ButtonState.idle;
+      },
+    );
+  }
+
+  void saveTeacherTokenAnNavigate(BuildContext context, String token) {
+    teacherToken = token;
+    CacheHelper.saveData(key: 'teacherToken', value: token);
+    print(' token :$token');
+    Future.delayed(
+      Duration(seconds: 1),
+      () {
+        navigateToAndFinish(context, TeacherLayout());
+      },
+    );
   }
 
   void resetLoginButtonToIdleState() {
@@ -764,5 +776,146 @@ class AuthCubit extends Cubit<AuthStates> {
       isUpdateClassLoading = false;
       emit(AuthChangeState());
     }
+  }
+
+  Future<void> googleSignIn(BuildContext context, bool isStudent) async {
+    try {
+      emit(SocialAuthLoadingState());
+      final socialUser = await FireAuth.instance.googleLogin();
+      log(socialUser.toString());
+      String url = '';
+      if (isStudent)
+        url = STUDENT_Auth_REGISTER;
+      else
+        url = TEACHER_REGISTER_AUTH;
+      final response = await DioHelper.postData(
+          url: url, data: {'social_id': socialUser.id});
+      log(response.data.toString());
+      final registerResponse = SocialRegisterResponse.fromMap(response.data);
+      if (registerResponse.registerType == SocialRegisterType.Register) {
+        emit(RegisterState(user: socialUser));
+      } else if (registerResponse.registerType == SocialRegisterType.Login) {
+        if (isStudent) {
+          saveStudentTokenAnNavigate(context, registerResponse.token!);
+        } else {
+          saveTeacherTokenAnNavigate(context, registerResponse.token!);
+        }
+        emit(LoginState());
+      } else {
+        emit(SocialAuthErrorState());
+      }
+      log(response.data.toString());
+    } catch (e) {
+      emit(SocialAuthErrorState());
+      showToast(msg: e.toString(), state: ToastStates.ERROR);
+      log('Exception ${e.toString()}');
+    }
+  }
+
+  Future<void> facebookSignIn(bool isStudent) async {
+    try {
+      final res = await FireAuth.instance.facebookLogin();
+      log(res.toString());
+    } catch (e) {
+      log('Exception ${e.toString()}');
+    }
+  }
+
+  Future<void> studentSocialRegister(
+      {required BuildContext context,
+      required StudentModel model,
+      required String socialId}) async {
+    isStudentRegisterLoading = true;
+    studentRegisterState = ButtonState.loading;
+    emit(StudentRegisterLoadingState());
+    await DioHelper.postFormData(
+        url: STUDENT_Auth_REGISTER,
+        formData: FormData.fromMap({
+          'name': model.name,
+          'email': model.email,
+          'country_id': model.countryId,
+          'classroom_id': model.classroomId,
+          'social_id': socialId,
+          'device_serial': 'test134',
+        })).then((value) {
+      print(value.data);
+      isStudentRegisterLoading = false;
+      final socialResponse = SocialRegisterResponse.fromMap(value.data);
+      if (socialResponse.status) {
+        studentRegisterState = ButtonState.success;
+        // if (socialResponse.student != null)
+        {
+          studentLoginDataModel = StudentDataModel(
+              authType: false,
+              student: socialResponse.student,
+              token: socialResponse.token);
+          studentProfileModel = StudentDataModel(
+              authType: false,
+              student: socialResponse.student,
+              token: socialResponse.token);
+          saveStudentTokenAnNavigate(context, socialResponse.token!);
+        }
+        emit(StudentRegisterSuccessState());
+      } else {
+        studentRegisterState = ButtonState.fail;
+        // showSnackBar(
+        //     context: context,
+        //     text: value.data['errors'],
+        //     backgroundColor: errorColor);
+        emit(StudentRegisterErrorState());
+      }
+    }).catchError((error) {
+      studentRegisterState = ButtonState.fail;
+      isStudentRegisterLoading = false;
+      print(error.toString());
+      emit(StudentRegisterErrorState());
+    });
+  }
+
+  Future<void> teacherSocialRegister(
+      {required BuildContext context,
+      required TeacherModel model,
+      required String socialId}) async {
+    isTeacherRegisterLoading = true;
+    teacherRegisterState = ButtonState.loading;
+    emit(StudentRegisterLoadingState());
+    await DioHelper.postFormData(
+        url: TEACHER_REGISTER_AUTH,
+        formData: FormData.fromMap({
+          'name': model.name,
+          'email': model.email,
+          'password': model.password,
+          'password_confirmation': model.passwordConfirmation,
+          'country_id': model.countryId,
+          'subjects[]': model.subjects,
+          'social_id': socialId,
+          'device_serial': 'test134',
+        })).then((value) {
+      print(value.data);
+      isTeacherRegisterLoading = false;
+      final socialResponse = SocialRegisterResponse.fromMap(value.data);
+      if (socialResponse.status) {
+        teacherRegisterState = ButtonState.success;
+        if (socialResponse.teacher != null) {
+          teacherProfileModel = teacherLoginDataModel = TeacherDataModel(
+              teacher: socialResponse.teacher, token: socialResponse.token);
+          log(socialResponse.teacher.toString());
+          saveTeacherTokenAnNavigate(context, socialResponse.token!);
+        }
+        emit(StudentRegisterSuccessState());
+      } else {
+        teacherRegisterState = ButtonState.fail;
+        // showSnackBar(
+        //     context: context,
+        //     text: value.data['errors'],
+        //     backgroundColor: errorColor);
+        emit(StudentRegisterErrorState());
+      }
+    }).catchError((error) {
+      teacherRegisterState = ButtonState.fail;
+      isTeacherRegisterLoading = false;
+      print(error.toString());
+      emit(StudentRegisterErrorState());
+    });
   }
 }

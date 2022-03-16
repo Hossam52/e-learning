@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:e_learning/models/enums/enums.dart';
 import 'package:e_learning/models/teacher/auth/teacher_model.dart';
 import 'package:e_learning/modules/auth/cubit/cubit.dart';
@@ -10,6 +12,7 @@ import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/componants/widgets/default_form_field.dart';
 import 'package:e_learning/shared/componants/widgets/default_gesture_widget.dart';
 import 'package:e_learning/shared/componants/widgets/default_progress_button.dart';
+import 'package:e_learning/shared/network/services/firebase_services/firebase_auth.dart';
 import 'package:e_learning/shared/responsive_ui/responsive_widget.dart';
 import 'package:e_learning/shared/styles/colors.dart';
 import 'package:e_learning/shared/styles/styles.dart';
@@ -19,11 +22,17 @@ import 'package:flutter_conditional_rendering/conditional.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TeacherRegisterScreen extends StatefulWidget {
+  // ignore: empty_constructor_bodies
+  TeacherRegisterScreen({Key? key, this.socialUser}) : super(key: key) {}
+  SocialUser? socialUser;
+
   @override
   _TeacherRegisterScreenState createState() => _TeacherRegisterScreenState();
 }
 
 class _TeacherRegisterScreenState extends State<TeacherRegisterScreen> {
+  bool get isOrninaryUser => widget.socialUser == null;
+
   final TextEditingController name = TextEditingController();
 
   final TextEditingController email = TextEditingController();
@@ -41,6 +50,10 @@ class _TeacherRegisterScreenState extends State<TeacherRegisterScreen> {
   void initState() {
     super.initState();
     AuthCubit.get(context).getAllSubjectsData();
+    if (!isOrninaryUser) {
+      name.text = widget.socialUser!.name;
+      email.text = widget.socialUser!.email;
+    }
   }
 
   @override
@@ -108,6 +121,7 @@ class _TeacherRegisterScreenState extends State<TeacherRegisterScreen> {
                             height: 10,
                           ),
                           DefaultFormField(
+                              isClickable: isOrninaryUser,
                               controller: email,
                               type: TextInputType.emailAddress,
                               labelText: text.email,
@@ -125,45 +139,47 @@ class _TeacherRegisterScreenState extends State<TeacherRegisterScreen> {
                           SizedBox(
                             height: 10,
                           ),
-                          DefaultFormField(
-                              suffix: cubit.suffix,
-                              suffixPressed: () {
-                                cubit.changePasswordVisibility();
-                              },
-                              controller: password,
-                              type: TextInputType.visiblePassword,
-                              labelText: text.password,
-                              secure: cubit.isSecure,
-                              validation: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return text.password_validate;
-                                } else {
-                                  return value.length < 6
-                                      ? text.password_validate2
-                                      : null;
-                                }
-                              }),
+                          if (isOrninaryUser)
+                            DefaultFormField(
+                                suffix: cubit.suffix,
+                                suffixPressed: () {
+                                  cubit.changePasswordVisibility();
+                                },
+                                controller: password,
+                                type: TextInputType.visiblePassword,
+                                labelText: text.password,
+                                secure: cubit.isSecure,
+                                validation: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return text.password_validate;
+                                  } else {
+                                    return value.length < 6
+                                        ? text.password_validate2
+                                        : null;
+                                  }
+                                }),
                           SizedBox(
                             height: 10,
                           ),
-                          DefaultFormField(
-                              suffix: cubit.suffix,
-                              suffixPressed: () {
-                                cubit.changePasswordVisibility();
-                              },
-                              controller: confirmPassword,
-                              type: TextInputType.visiblePassword,
-                              labelText: text.password_confirmation,
-                              secure: cubit.isSecure,
-                              validation: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return text.password_confirmation_validate;
-                                } else {
-                                  return confirmPassword.text != password.text
-                                      ? text.password_confirmation_validate2
-                                      : null;
-                                }
-                              }),
+                          if (isOrninaryUser)
+                            DefaultFormField(
+                                suffix: cubit.suffix,
+                                suffixPressed: () {
+                                  cubit.changePasswordVisibility();
+                                },
+                                controller: confirmPassword,
+                                type: TextInputType.visiblePassword,
+                                labelText: text.password_confirmation,
+                                secure: cubit.isSecure,
+                                validation: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return text.password_confirmation_validate;
+                                  } else {
+                                    return confirmPassword.text != password.text
+                                        ? text.password_confirmation_validate2
+                                        : null;
+                                  }
+                                }),
                           SizedBox(
                             height: 15,
                           ),
@@ -273,18 +289,24 @@ class _TeacherRegisterScreenState extends State<TeacherRegisterScreen> {
                               if (formKey.currentState!.validate() &&
                                   cubit.selectedCountryName != null &&
                                   cubit.selectedSubjectsId.isNotEmpty) {
-                                cubit.teacherRegisterAndUpdate(
-                                  context: context,
-                                  type: AuthType.Register,
-                                  model: TeacherModel(
-                                    name: name.text,
-                                    email: email.text,
-                                    password: password.text,
-                                    passwordConfirmation: confirmPassword.text,
-                                    countryId: cubit.selectedCountryId!,
-                                    subjects: cubit.selectedSubjectsId,
-                                  ),
+                                final model = TeacherModel(
+                                  name: name.text,
+                                  email: email.text,
+                                  password: password.text,
+                                  passwordConfirmation: confirmPassword.text,
+                                  countryId: cubit.selectedCountryId!,
+                                  subjects: cubit.selectedSubjectsId,
                                 );
+                                if (!isOrninaryUser) {
+                                  cubit.teacherSocialRegister(
+                                      context: context,
+                                      model: model,
+                                      socialId: widget.socialUser!.id);
+                                } else
+                                  cubit.teacherRegisterAndUpdate(
+                                      context: context,
+                                      type: AuthType.Register,
+                                      model: model);
                               } else {
                                 showToast(
                                     msg: text.complete_your_data,

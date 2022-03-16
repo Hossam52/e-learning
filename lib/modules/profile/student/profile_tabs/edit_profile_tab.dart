@@ -41,7 +41,7 @@ class _EditProfileTabState extends State<EditProfileTab> {
   void initState() {
     AuthCubit.get(context).getAllCountriesAndStages();
     name.text = widget.student.name!;
-    email.text = widget.student.email!;
+    email.text = widget.student.email ?? '';
     national.text = widget.student.country!;
     super.initState();
   }
@@ -91,16 +91,14 @@ class _EditProfileTabState extends State<EditProfileTab> {
                         SizedBox(
                           height: 10,
                         ),
-                        DefaultFormField(
-                            controller: email,
-                            type: TextInputType.emailAddress,
-                            labelText: context.tr.email,
-                            readOnly: true,
-                            validation: (value) {
-                              if (value == null || value.isEmpty)
-                                return context.tr.enter_email;
-                              return null;
-                            }),
+                        if (cubit.studentProfileModel!.student!.socialId ==
+                            null)
+                          DefaultFormField(
+                              controller: email,
+                              type: TextInputType.emailAddress,
+                              labelText: context.tr.email,
+                              readOnly: true,
+                              validation: (value) {}),
                         SizedBox(
                           height: 10,
                         ),
@@ -177,7 +175,7 @@ class _EditProfileTabState extends State<EditProfileTab> {
                                   type: AuthType.Edit,
                                   model: StudentModel(
                                     name: name.text,
-                                    email: widget.student.email!,
+                                    email: widget.student.email,
                                     countryId: cubit.selectedCountryId!,
                                     classroomId: cubit.selectedClassId!,
                                     avatar: appCubit.imageFile,

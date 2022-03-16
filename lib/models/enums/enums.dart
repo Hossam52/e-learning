@@ -12,3 +12,4 @@ enum LikeType { post, playlistVideo, groupVideo }
 
 enum AuthType { Register, Edit }
 enum FriendType { Friend, Pending, NotFriend, Unknown }
+enum SocialRegisterType { Login, Register }

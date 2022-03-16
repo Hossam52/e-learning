@@ -8,6 +8,7 @@ import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/componants/widgets/default_form_field.dart';
 import 'package:e_learning/shared/componants/widgets/default_gesture_widget.dart';
 import 'package:e_learning/shared/componants/widgets/default_progress_button.dart';
+import 'package:e_learning/shared/network/services/firebase_services/firebase_auth.dart';
 import 'package:e_learning/shared/responsive_ui/responsive_widget.dart';
 import 'package:e_learning/shared/styles/colors.dart';
 import 'package:e_learning/shared/styles/styles.dart';
@@ -18,6 +19,16 @@ import 'choose_country_screen.dart';
 
 // ignore: must_be_immutable
 class StudentRegisterScreen extends StatelessWidget {
+  StudentRegisterScreen({Key? key, this.socialUser}) : super(key: key) {
+    if (!isOrninaryUser) {
+      name.text = socialUser!.name;
+      email.text = socialUser!.email;
+    }
+  }
+  SocialUser? socialUser;
+
+  bool get isOrninaryUser => socialUser == null;
+
   var name = TextEditingController();
   var email = TextEditingController();
   var password = TextEditingController();
@@ -94,6 +105,7 @@ class StudentRegisterScreen extends StatelessWidget {
                             height: 10,
                           ),
                           DefaultFormField(
+                              isClickable: isOrninaryUser,
                               controller: email,
                               type: TextInputType.emailAddress,
                               labelText: text.email,
@@ -111,45 +123,49 @@ class StudentRegisterScreen extends StatelessWidget {
                           SizedBox(
                             height: 10,
                           ),
-                          DefaultFormField(
-                              suffix: cubit.suffix,
-                              suffixPressed: () {
-                                cubit.changePasswordVisibility();
-                              },
-                              controller: password,
-                              type: TextInputType.visiblePassword,
-                              labelText: text.password,
-                              secure: cubit.isSecure,
-                              validation: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return text.password_validate;
-                                } else {
-                                  return value.length < 6
-                                      ? text.password_validate2
-                                      : null;
-                                }
-                              }),
+                          if (isOrninaryUser)
+                            DefaultFormField(
+                                isClickable: isOrninaryUser,
+                                suffix: cubit.suffix,
+                                suffixPressed: () {
+                                  cubit.changePasswordVisibility();
+                                },
+                                controller: password,
+                                type: TextInputType.visiblePassword,
+                                labelText: text.password,
+                                secure: cubit.isSecure,
+                                validation: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return text.password_validate;
+                                  } else {
+                                    return value.length < 6
+                                        ? text.password_validate2
+                                        : null;
+                                  }
+                                }),
                           SizedBox(
                             height: 10,
                           ),
-                          DefaultFormField(
-                              suffix: cubit.suffix,
-                              suffixPressed: () {
-                                cubit.changePasswordVisibility();
-                              },
-                              controller: confirmPassword,
-                              type: TextInputType.visiblePassword,
-                              labelText: text.password_confirmation,
-                              secure: cubit.isSecure,
-                              validation: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return text.password_confirmation_validate;
-                                } else {
-                                  return confirmPassword.text != password.text
-                                      ? text.password_confirmation_validate2
-                                      : null;
-                                }
-                              }),
+                          if (isOrninaryUser)
+                            DefaultFormField(
+                                isClickable: isOrninaryUser,
+                                suffix: cubit.suffix,
+                                suffixPressed: () {
+                                  cubit.changePasswordVisibility();
+                                },
+                                controller: confirmPassword,
+                                type: TextInputType.visiblePassword,
+                                labelText: text.password_confirmation,
+                                secure: cubit.isSecure,
+                                validation: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return text.password_confirmation_validate;
+                                  } else {
+                                    return confirmPassword.text != password.text
+                                        ? text.password_confirmation_validate2
+                                        : null;
+                                  }
+                                }),
                           SizedBox(
                             height: 15,
                           ),
@@ -248,18 +264,24 @@ class StudentRegisterScreen extends StatelessWidget {
                               formKey.currentState!.save();
                               if (formKey.currentState!.validate() &&
                                   cubit.selectedCountryName != null) {
-                                cubit.studentRegisterAndEdit(
-                                  context: context,
-                                  type: AuthType.Register,
-                                  model: StudentModel(
-                                    name: name.text,
-                                    email: email.text,
-                                    password: password.text,
-                                    passwordConfirmation: confirmPassword.text,
-                                    countryId: cubit.selectedCountryId!,
-                                    classroomId: cubit.selectedClassId!,
-                                  ),
+                                final model = StudentModel(
+                                  name: name.text,
+                                  email: email.text,
+                                  password: password.text,
+                                  passwordConfirmation: confirmPassword.text,
+                                  countryId: cubit.selectedCountryId!,
+                                  classroomId: cubit.selectedClassId!,
                                 );
+                                if (!isOrninaryUser)
+                                  cubit.studentSocialRegister(
+                                      context: context,
+                                      model: model,
+                                      socialId: socialUser!.id);
+                                else
+                                  cubit.studentRegisterAndEdit(
+                                      context: context,
+                                      type: AuthType.Register,
+                                      model: model);
                               } else {
                                 showToast(
                                     msg: text.complete_your_data,

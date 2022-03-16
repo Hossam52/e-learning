@@ -2,7 +2,7 @@ import 'dart:io';
 
 class StudentModel {
   late String name;
-  late String email;
+  late String? email;
   String? password;
   String? passwordConfirmation;
   late int? countryId;

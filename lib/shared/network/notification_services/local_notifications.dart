@@ -32,9 +32,10 @@ void navigateAccordingToPayloadNotification(
           navigator.currentContext, NotificationPostScreen(post: model.post!));
       break;
     case 4:
-      //Videos
+      //followers
       break;
     case 5:
+    //Rate
       break;
     default:
   }

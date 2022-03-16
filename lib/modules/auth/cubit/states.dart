@@ -1,3 +1,5 @@
+import 'package:e_learning/shared/network/services/firebase_services/firebase_auth.dart';
+
 abstract class AuthStates {}
 
 class AuthInitialState extends AuthStates {}
@@ -63,6 +65,23 @@ class LoginLoadingState extends AuthStates {}
 class LoginSuccessState extends AuthStates {}
 
 class LoginErrorState extends AuthStates {}
+
+///SocialRegister/Login
+
+class SocialAuthLoadingState extends AuthStates {}
+
+class SocialAuthSuccessState extends AuthStates {}
+
+class SocialAuthErrorState extends AuthStates {}
+
+class LoginState extends AuthStates {}
+
+class RegisterState extends AuthStates {
+  SocialUser user;
+  RegisterState({
+    required this.user,
+  });
+}
 
 /// Forget Password
 class ForgetPasswordLoadingState extends AuthStates {}

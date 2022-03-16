@@ -45,7 +45,7 @@ class _TeacherEditProfileTabState extends State<TeacherEditProfileTab> {
     AuthCubit.get(context).getAllSubjectsData();
     AuthCubit.get(context).getAllCountriesAndStages();
     name.text = widget.teacher.name!;
-    email.text = widget.teacher.email!;
+    email.text = widget.teacher.email ?? '';
     national.text = widget.teacher.country!;
     AuthCubit.get(context).selectedSubjectsList = List.generate(
         widget.teacher.subjects!.length,
@@ -102,22 +102,23 @@ class _TeacherEditProfileTabState extends State<TeacherEditProfileTab> {
                           SizedBox(
                             height: 10,
                           ),
-                          DefaultFormField(
-                              controller: email,
-                              type: TextInputType.emailAddress,
-                              labelText: text.email,
-                              readOnly: true,
-                              validation: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return text.email_validate;
-                                } else {
-                                  return RegExp(
-                                              r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                                          .hasMatch(value)
-                                      ? null
-                                      : text.email_validate2;
-                                }
-                              }),
+                          if (widget.teacher.socialId == null)
+                            DefaultFormField(
+                                controller: email,
+                                type: TextInputType.emailAddress,
+                                labelText: text.email,
+                                readOnly: true,
+                                validation: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return text.email_validate;
+                                  } else {
+                                    return RegExp(
+                                                r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                            .hasMatch(value)
+                                        ? null
+                                        : text.email_validate2;
+                                  }
+                                }),
                           SizedBox(
                             height: 10,
                           ),

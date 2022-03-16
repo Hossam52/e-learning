@@ -72,7 +72,7 @@ class NotificationBuildItem extends StatelessWidget {
               ),
               SizedBox(width: 12.w),
               RawMaterialButton(
-                onPressed: () {},
+                onPressed: onTap,
                 child: Icon(Icons.arrow_forward_ios, size: 12),
                 materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 constraints: BoxConstraints(minWidth: 0),

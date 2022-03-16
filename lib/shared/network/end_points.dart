@@ -7,9 +7,14 @@ const GET_ALL_COUNTRIES = 'Guest/getAllCountries';
 // Subjects
 const GET_ALL_SUBJECTS = 'Guest/getAllSubjects';
 
+//Post
+const GET_POST_BY_ID = 'Guest/getPostById';
+
 ///-----------------------------------------------------------------
 /// Student
 const STUDENT_REGISTER = 'student/register';
+
+const STUDENT_Auth_REGISTER = 'student/authSocial';
 
 const STUDENT_VERIFY = 'student/VerifyAccount';
 
@@ -86,6 +91,7 @@ const STUDENT_GET_SUBJECT_PLAYLISTS = 'student/getPlayListBySubTec';
 
 /// Test Module
 const STUDENT_GET_TESTS = 'student/getAllTests';
+
 const STUDENT_GET_PARTICIPATION_RESULTS = 'student/getResultByTestId';
 
 const STUDENT_SEND_TEST_RESULT = 'student/saveResult';
@@ -151,6 +157,8 @@ const STUDENT_GET_GROUP_HOMEWORK = 'student/homework/getHomeworkByGroupId';
 /// --------------------------------------------------------------
 /// Teacher
 const TEACHER_REGISTER = 'teacher/register';
+
+const TEACHER_REGISTER_AUTH = 'teacher/authSocial';
 
 const TEACHER_VERIFY = 'teacher/VerifyAccount';
 
