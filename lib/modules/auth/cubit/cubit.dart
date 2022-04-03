@@ -677,6 +677,41 @@ class AuthCubit extends Cubit<AuthStates> {
   }
 
   /// Get Profile by id
+
+  StudentDataModel? studentByIdModel;
+  TeacherDataModel? teacherByIdModel;
+  void getProfileGuestById(int id, bool isStudent) async {
+    try {
+      emit(GetProfileLoadingState());
+      Response response = await DioHelper.postFormData(
+        url: isStudent
+            ? STUDENT_GENERAL_GET_PROFILE
+            : TEACHER_GENERAL_GET_PROFILE,
+        formData: FormData.fromMap(
+            {if (isStudent) 'student_id': id else 'teacher_id': id}),
+      );
+      addProfileInfoForGuest(response: response, isStudent: isStudent);
+    } catch (e) {
+      emit(GetProfileErrorState());
+      print(e.toString());
+    }
+  }
+
+  void getStudentPosts(int id) async {
+    try {
+      emit(GetProfileFollowersLoadingState());
+      Response response = await DioHelper.postFormData(
+        url: STUDENT_GET_ALL_POSTS_BY_ID,
+        formData: FormData.fromMap({'student_id': id}),
+      );
+      log(response.data.toString());
+      emit(GetProfileFollowersSuccessState());
+    } catch (e) {
+      emit(GetProfileFollowersErrorState());
+      print(e.toString());
+    }
+  }
+
   void getProfileById(int id, bool isStudent) async {
     try {
       emit(GetProfileLoadingState());
@@ -708,6 +743,24 @@ class AuthCubit extends Cubit<AuthStates> {
         teacherProfileModel = TeacherDataModel.fromJson(response.data);
         if (isGeneral == false)
           changeAuthType(teacherProfileModel!.teacher!.authType ?? false);
+      }
+      noProfileData = false;
+      emit(GetProfileSuccessState());
+    } else {
+      noProfileData = true;
+      emit(GetProfileErrorState());
+    }
+  }
+
+  void addProfileInfoForGuest({
+    required Response response,
+    required bool isStudent,
+  }) {
+    if (response.data['status']) {
+      if (isStudent) {
+        studentByIdModel = StudentDataModel.fromJson(response.data);
+      } else {
+        teacherByIdModel = TeacherDataModel.fromJson(response.data);
       }
       noProfileData = false;
       emit(GetProfileSuccessState());

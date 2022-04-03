@@ -20,6 +20,7 @@ import 'package:e_learning/modules/video_module/video_teacher_screens/subjects_v
 import 'package:e_learning/shared/componants/componants.dart';
 import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/componants/home_components.dart';
+import 'package:e_learning/shared/componants/shared_methods.dart';
 import 'package:e_learning/shared/componants/widgets/confirm_exit.dart';
 import 'package:e_learning/shared/componants/widgets/default_loader.dart';
 import 'package:e_learning/shared/componants/widgets/no_data_widget.dart';
@@ -207,6 +208,13 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                                                 pointsCount:
                                                     student.points.toString(),
                                                 onTap: () {
+                                                  SharedMethods
+                                                      .navigateToProfile(
+                                                          true,
+                                                          true,
+                                                          context,
+                                                          student.id!);
+                                                  return;
                                                   if (student.id ==
                                                       AuthCubit.get(context)
                                                           .studentProfileModel!
@@ -219,7 +227,8 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                                                         context,
                                                         StudentProfileView(
                                                           isFriend: true,
-                                                          student: student,
+                                                          // student: student,
+                                                          id: student.id!,
                                                         ));
                                                 },
                                               );
@@ -339,7 +348,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                                     children: [
                                       CategoryHomeBuildItem(
                                         deviceInfo: deviceInfo,
-                                        title: text.tests,
+                                        title: text.exams,
                                         image: 'assets/images/exam-2.png',
                                         onPressed: () {
                                           navigateTo(context, TestLayout());
@@ -397,7 +406,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                                       ),
                                       CategoryHomeBuildItem(
                                         deviceInfo: deviceInfo,
-                                        title: text.exams,
+                                        title: text.tests,
                                         image: 'assets/images/exam.png',
                                         onPressed: () {
                                           navigateTo(

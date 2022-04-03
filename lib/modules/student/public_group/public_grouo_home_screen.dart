@@ -50,7 +50,6 @@ class _PublicGroupHomeScreenState extends State<PublicGroupHomeScreen> {
   @override
   Widget build(BuildContext context) {
     var text = AppLocalizations.of(context)!;
-    GroupCubit.get(context).getPublicGroupInfo();
     return ProgressHUD(
       child: BlocProvider(
         create: (context) => GroupCubit()..getPublicGroupInfo(),
@@ -276,7 +275,6 @@ class _PublicGroupHomeScreenState extends State<PublicGroupHomeScreen> {
                                                   itemCount: cubit
                                                       .publicGroupPosts.length,
                                                   shrinkWrap: true,
-                                                  reverse: true,
                                                   physics:
                                                       const NeverScrollableScrollPhysics(),
                                                   padding:
@@ -286,10 +284,13 @@ class _PublicGroupHomeScreenState extends State<PublicGroupHomeScreen> {
                                                     var post =
                                                         cubit.publicGroupPosts[
                                                             index];
+                                                    // log(post.studentId)
                                                     return PostBuildItem(
+                                                      isStudentPost:
+                                                          post.student != null,
                                                       type: 'admin',
                                                       ownerPostId:
-                                                          widget.isStudent
+                                                          post.student != null
                                                               ? post.studentId!
                                                               : post.teacherId!,
                                                       name: post.student ??

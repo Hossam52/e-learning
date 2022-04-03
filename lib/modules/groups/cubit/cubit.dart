@@ -1142,7 +1142,6 @@ class GroupCubit extends Cubit<GroupStates> {
   Map<int, bool> publicGroupPostsLikeBool = {};
   AllPostsModel? allPublicGroupPostsResponse;
   void getAllPublicGroupPosts(int groupId, {bool isStudent = true}) async {
-    List posts = [];
     noPublicGroupPostData = false;
     emit(GroupGetPostLoadingState());
     try {
@@ -1155,7 +1154,6 @@ class GroupCubit extends Cubit<GroupStates> {
       );
       allPublicGroupPostsResponse = AllPostsModel.fromMap(response.data);
       if (allPublicGroupPostsResponse!.status!) {
-        posts = response.data['posts']['data'];
         publicGroupPosts = allPublicGroupPostsResponse!.posts!;
 
         publicGroupPosts.forEach((element) {
@@ -1222,9 +1220,10 @@ class GroupCubit extends Cubit<GroupStates> {
   /// Get Posts And Questions for teacher Profile
   void getAllProfilePostsAndQuestion(String type,
       {bool isQuestion = false}) async {
-    List posts = [];
-    emit(GroupGetPostLoadingState());
     try {
+      List<Post> posts = [];
+      emit(GroupGetPostLoadingState());
+
       Response response = await DioHelper.getData(
         url: isQuestion
             ? TEACHER_PROFILE_GET_ALL_QUESTION
@@ -1232,7 +1231,9 @@ class GroupCubit extends Cubit<GroupStates> {
         token: teacherToken,
       );
       if (response.data['status']) {
-        posts = response.data['posts'];
+        log(response.data.toString());
+        final paginationPosts = Posts.fromJson(response.data);
+        posts = paginationPosts.postsData!;
         insertPostLists(
           type: type,
           posts: posts,
@@ -1257,6 +1258,56 @@ class GroupCubit extends Cubit<GroupStates> {
       else
         noQuestionData = true;
       emit(GroupGetPostErrorState());
+      throw e;
+    }
+  }
+
+  void getMoreAllProfilePostsAndQuestion(String type,
+      {bool isQuestion = false}) async {
+    List posts = [];
+    Meta? meta = getMetaAccordingToType(type);
+    log('${meta!.currentPage} ${meta.lastPage}');
+    if (meta == null || meta.currentPage == meta.lastPage) {
+      showToast(msg: 'You reached to end', state: ToastStates.ERROR);
+      return;
+    }
+    emit(MoreGroupGetPostLoadingState());
+
+    Response response = await DioHelper.getData(
+        url: isQuestion
+            ? TEACHER_PROFILE_GET_ALL_QUESTION
+            : TEACHER_PROFILE_GET_ALL_POST,
+        token: teacherToken,
+        query: {'page': meta.currentPage! + 1});
+    log(response.data.toString());
+    if (response.data['status']) {
+      log(response.data.toString());
+      final paginationPosts = Posts.fromJson(response.data);
+      posts = paginationPosts.postsData!;
+      insertPostLists(
+          type: type,
+          posts: posts,
+          response: response,
+          isStudent: false,
+          loadMore: true);
+      if (type == 'post')
+        noPostData = false;
+      else
+        noQuestionData = false;
+      emit(MoreGroupGetPostSuccessState());
+    } else {
+      if (type == 'post')
+        noPostData = true;
+      else
+        noQuestionData = true;
+      emit(MoreGroupGetPostErrorState());
+    }
+    try {} catch (e) {
+      if (type == 'post')
+        noPostData = true;
+      else
+        noQuestionData = true;
+      emit(MoreGroupGetPostErrorState());
       throw e;
     }
   }

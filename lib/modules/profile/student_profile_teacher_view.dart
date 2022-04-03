@@ -24,8 +24,7 @@ import 'package:flutter_conditional_rendering/conditional.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class StudentProfileTeacherView extends StatefulWidget {
-  StudentProfileTeacherView(
-  {
+  StudentProfileTeacherView({
     Key? key,
     this.student,
     this.id,
@@ -37,14 +36,14 @@ class StudentProfileTeacherView extends StatefulWidget {
   final bool isFriend;
 
   @override
-  State<StudentProfileTeacherView> createState() => _StudentProfileTeacherViewState();
+  State<StudentProfileTeacherView> createState() =>
+      _StudentProfileTeacherViewState();
 }
 
 class _StudentProfileTeacherViewState extends State<StudentProfileTeacherView> {
   @override
   void initState() {
-    if (widget.student == null) 
-    {
+    if (widget.student == null) {
       AuthCubit.get(context).getProfileById(widget.id!, true);
     }
     super.initState();

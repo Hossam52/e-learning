@@ -127,10 +127,14 @@ class _PostTabState extends State<PostTab> {
                                               (listViewContext, index) {
                                             var post = cubit.postsList[index];
                                             return PostBuildItem(
+                                              isStudentPost:
+                                                  post.student != null,
                                               type: 'post',
-                                              ownerPostId: widget.isStudent
-                                                  ? post.studentId!
-                                                  : post.teacherId!,
+                                              ownerPostId: post.studentId ??
+                                                  post.teacherId,
+                                              // widget.isStudent
+                                              // ? post.studentId!
+                                              // : post.teacherId!,
                                               isMe: widget.isStudent
                                                   ? post.studentPost!
                                                   : post.teacherPost!,

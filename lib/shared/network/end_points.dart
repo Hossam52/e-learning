@@ -154,6 +154,9 @@ const STUDENT_GET_GROUP_VIDEO = 'student/video/getViseos';
 // homework
 const STUDENT_GET_GROUP_HOMEWORK = 'student/homework/getHomeworkByGroupId';
 
+const STUDENT_GET_FOLLOWERS_BY_STD_ID = 'student/StudentFollowersByStudentId';
+const STUDENT_GET_ALL_POSTS_BY_ID = 'student/social/getAllPostsByStudentID';
+
 /// --------------------------------------------------------------
 /// Teacher
 const TEACHER_REGISTER = 'teacher/register';

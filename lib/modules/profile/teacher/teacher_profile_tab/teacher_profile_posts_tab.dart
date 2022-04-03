@@ -5,6 +5,7 @@ import 'package:e_learning/modules/groups/student/group_view/home_tab/post_build
 import 'package:e_learning/modules/profile/teacher/teacher_profile_tab/edit_post_screen.dart';
 import 'package:e_learning/shared/componants/componants.dart';
 import 'package:e_learning/shared/componants/widgets/default_loader.dart';
+import 'package:e_learning/shared/componants/widgets/load_more_data.dart';
 import 'package:e_learning/shared/componants/widgets/no_data_widget.dart';
 import 'package:e_learning/shared/cubit/cubit.dart';
 import 'package:e_learning/shared/responsive_ui/responsive_widget.dart';
@@ -49,54 +50,67 @@ class _TeacherProfilePostsTabState extends State<TeacherProfilePostsTab> {
                   ? NoDataWidget(
                       onPressed: () =>
                           cubit.getAllProfilePostsAndQuestion('post'))
-                  : ListView.builder(
-                      itemCount: cubit.postsList.length,
-                      shrinkWrap: true,
-                      padding: const EdgeInsets.all(22.0),
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemBuilder: (context, index) {
-                        //posts for Teacher or what?
-                        var post = cubit.postsList[index];
-                        return PostBuildItem(
-                          ownerPostId: post.teacherId!,
-                          type: 'post',
-                          deviceInfo: deviceInfo,
-                          isMe: post.teacherPost ?? false,
-                          name: "${post.teacher}",
-                          image: post.teacherImage,
-                          isStudent: false,
-                          cubit: cubit,
-                          postId: post.id!,
-                          answer: null,
-                          text: post.text,
-                          likesCount: cubit.postsLikeCount[post.id]!,
-                          isLiked: cubit.postsLikeBool[post.id]!,
-                          date: post.date!,
-                          commentCount: post.comments!.length,
-                          comments: post.comments,
-                          groupId: 0,
-                          images: post.images!.isNotEmpty ? post.images : null,
-                          onEdit: () async {
-                            navigateTo(
-                                context,
-                                EditPostScreen(
-                                    post, context, widget.teacherId));
-                            //controller.text = post.text!;
-                            // if (post.images!.isNotEmpty) {
-                            //   await AppCubit.get(context)
-                            //       .addImageFromUrl('', imageUrls: post.images);
-                            //   cubit.selectedImages =
-                            //       AppCubit.get(context).imageFiles;
-                            // }
-                            // cubit.changeStudentEditPost(true, post.id);
-                          },
-                          onDelete: () {
-                            //   cubit.deleteMethod(post.id!, GroupDeleteType.POST);
-                            GroupCubit.get(context)
-                                .getAllProfilePostsAndQuestion('post');
-                          },
-                        );
-                      }),
+                  : Column(
+                      children: [
+                        ListView.builder(
+                            itemCount: cubit.postsList.length,
+                            shrinkWrap: true,
+                            padding: const EdgeInsets.all(22.0),
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemBuilder: (context, index) {
+                              //posts for Teacher or what?
+                              var post = cubit.postsList[index];
+                              return PostBuildItem(
+                                isStudentPost: post.student == null,
+                                ownerPostId: post.teacherId!,
+                                showProfileWhenTap: false,
+                                type: 'post',
+                                deviceInfo: deviceInfo,
+                                isMe: post.teacherPost ?? false,
+                                name: "${post.teacher}",
+                                image: post.teacherImage,
+                                isStudent: false,
+                                cubit: cubit,
+                                postId: post.id!,
+                                answer: null,
+                                text: post.text,
+                                likesCount: cubit.postsLikeCount[post.id]!,
+                                isLiked: cubit.postsLikeBool[post.id]!,
+                                date: post.date!,
+                                commentCount: post.comments!.length,
+                                comments: post.comments,
+                                groupId: 0,
+                                images: post.images!.isNotEmpty
+                                    ? post.images
+                                    : null,
+                                onEdit: () async {
+                                  navigateTo(
+                                      context,
+                                      EditPostScreen(
+                                          post, context, widget.teacherId));
+                                  //controller.text = post.text!;
+                                  // if (post.images!.isNotEmpty) {
+                                  //   await AppCubit.get(context)
+                                  //       .addImageFromUrl('', imageUrls: post.images);
+                                  //   cubit.selectedImages =
+                                  //       AppCubit.get(context).imageFiles;
+                                  // }
+                                  // cubit.changeStudentEditPost(true, post.id);
+                                },
+                                onDelete: () {
+                                  //   cubit.deleteMethod(post.id!, GroupDeleteType.POST);
+                                  GroupCubit.get(context)
+                                      .getAllProfilePostsAndQuestion('post');
+                                },
+                              );
+                            }),
+                        LoadMoreData(
+                            isLoading: state is MoreGroupGetPostLoadingState,
+                            onLoadingMore: () {
+                              cubit.getMoreAllProfilePostsAndQuestion('post');
+                            })
+                      ],
+                    ),
             );
           },
         );

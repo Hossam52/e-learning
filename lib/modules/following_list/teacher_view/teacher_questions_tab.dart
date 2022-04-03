@@ -105,6 +105,7 @@ class _TeacherQuestionsTabState extends State<TeacherQuestionsTab> {
               var post = cubit.questionsList[index];
               return PostBuildItem(
                 ownerPostId: post.studentId!,
+                isStudentPost: post.student == null,
                 deviceInfo: deviceInfo,
                 type: 'question',
                 isStudent: true,

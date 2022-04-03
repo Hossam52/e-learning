@@ -1,7 +1,40 @@
+import 'dart:developer';
+
+import 'package:e_learning/modules/auth/cubit/cubit.dart';
+import 'package:e_learning/modules/profile/student/profile_screen.dart';
+import 'package:e_learning/modules/profile/student_profile_view.dart';
+import 'package:e_learning/modules/profile/teacher/teacher_profile_screen.dart';
+import 'package:e_learning/shared/componants/componants.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
 class SharedMethods {
+  static Future<void> navigateToProfile(bool isStudent, bool displayProfile,
+      BuildContext context, int profileId) async {
+    final myProfileId = getMyProfileId(context: context, isStudent: isStudent);
+    if (profileId == myProfileId)
+      navigateTo(context, isStudent ? ProfileScreen() : TeacherProfileScreen());
+    else {
+      if (!displayProfile) return;
+
+      navigateTo(
+          context,
+          StudentProfileView(
+            isFriend: true,
+            // student: student,
+            id: profileId,
+          ));
+    }
+  }
+
+  static int? getMyProfileId(
+      {required bool isStudent, required BuildContext context}) {
+    if (isStudent) {
+      return AuthCubit.get(context).studentProfileModel!.student!.id;
+    } else
+      return AuthCubit.get(context).teacherProfileModel!.teacher!.id;
+  }
+
   static String? defaultValidation(String? value, {String? message}) {
     if (value == null || value.isEmpty) {
       return message ?? 'this field is required';

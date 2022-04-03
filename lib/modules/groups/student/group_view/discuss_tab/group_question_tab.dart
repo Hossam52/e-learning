@@ -43,7 +43,12 @@ class GroupStudentTab extends StatelessWidget {
         itemBuilder: (context, index) {
           var post = posts[index];
           return PostBuildItem(
-            ownerPostId: isStudent ? post.studentId! : post.teacherId!,
+            isStudentPost: post.student == null,
+
+            ownerPostId: post.student != null
+                ? post.studentId
+                : post
+                    .teacherId, //  isStudent ? post.studentId! : post.teacherId!,
             isMe: post.studentPost ?? false,
             type: isPost
                 ? 'post'

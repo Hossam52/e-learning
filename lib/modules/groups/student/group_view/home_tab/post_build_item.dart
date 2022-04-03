@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:e_learning/models/enums/enums.dart';
 import 'package:e_learning/models/teacher/groups/in_group/post_response_model.dart';
@@ -7,6 +9,7 @@ import 'package:e_learning/modules/groups/student/group_view/home_tab/post_butto
 import 'package:e_learning/modules/groups/teacher/group_view/post_comments/comment_modal_sheet.dart';
 import 'package:e_learning/shared/componants/componants.dart';
 import 'package:e_learning/shared/componants/constants.dart';
+import 'package:e_learning/shared/componants/shared_methods.dart';
 import 'package:e_learning/shared/componants/widgets/default_cached_image.dart';
 import 'package:e_learning/shared/componants/widgets/default_popup_menu.dart';
 import 'package:e_learning/shared/componants/widgets/membership_widgets/student_star.dart';
@@ -25,33 +28,37 @@ import 'package:url_launcher/url_launcher.dart';
 
 // ignore: must_be_immutable
 class PostBuildItem extends StatelessWidget {
-  PostBuildItem({
-    Key? key,
-    required this.deviceInfo,
-    required this.type,
-    required this.isStudent,
-    required this.isMe,
-    this.text,
-    this.images,
-    this.comments,
-    required this.postId,
-    required this.answer,
-    required this.cubit,
-    required this.likesCount,
-    required this.commentCount,
-    required this.groupId,
-    required this.onEdit,
-    required this.isLiked,
-    required this.date,
-    required this.ownerPostId,
-    this.name = 'محمد',
-    this.image,
-    this.onDelete,
-  }) : super(key: key);
+  PostBuildItem(
+      {Key? key,
+      required this.deviceInfo,
+      required this.type,
+      required this.isStudentPost,
+      required this.isStudent,
+      required this.isMe,
+      this.text,
+      this.images,
+      this.comments,
+      required this.postId,
+      required this.answer,
+      required this.cubit,
+      required this.likesCount,
+      required this.commentCount,
+      required this.groupId,
+      required this.onEdit,
+      required this.isLiked,
+      required this.date,
+      required this.ownerPostId,
+      this.name = 'محمد',
+      this.image,
+      this.onDelete,
+      this.showProfileWhenTap = true})
+      : super(key: key);
 
   final DeviceInformation deviceInfo;
-  final String ownerPostId;
+  final bool isStudentPost;
 
+  final int? ownerPostId;
+  bool showProfileWhenTap;
   final bool isStudent;
   final String type;
   final bool isMe;
@@ -102,9 +109,13 @@ class PostBuildItem extends StatelessWidget {
               children: [
                 GestureDetector(
                   onTap: () {
-                    print('Tapped');
-                    // AuthCubit.get(context).getPro
-                    // cubit.getTeacherDataById(teacherId, type)
+                    if (showProfileWhenTap) {
+                      SharedMethods.navigateToProfile(
+                          isStudent, isStudentPost, context, ownerPostId!);
+                      print('Tapped');
+                      // AuthCubit.get(context).getPro
+                      // cubit.getTeacherDataById(teacherId, type)
+                    }
                   },
                   child: Container(
                     width: deviceInfo.screenwidth * 0.13,

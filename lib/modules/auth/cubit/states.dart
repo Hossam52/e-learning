@@ -111,6 +111,13 @@ class GetProfileSuccessState extends AuthStates {}
 
 class GetProfileErrorState extends AuthStates {}
 
+//GET FOLLOWERS LIST
+class GetProfileFollowersLoadingState extends AuthStates {}
+
+class GetProfileFollowersSuccessState extends AuthStates {}
+
+class GetProfileFollowersErrorState extends AuthStates {}
+
 class ClassUpdateLoadingState extends AuthStates {}
 
 class ClassUpdateSuccessState extends AuthStates {}

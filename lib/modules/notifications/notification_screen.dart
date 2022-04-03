@@ -218,7 +218,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
     if (notification.studentSender != null)
       child = StudentProfileView(
         isFriend: false,
-        student: notification.studentSender!,
+        // student: notification.studentSender!,
+        id: notification.studentSender!.id,
       );
     else {
       child = TeacherProfileView(

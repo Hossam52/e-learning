@@ -126,7 +126,8 @@ class _MyFriendListScreenState extends State<MyFriendListScreen> {
                                       navigateTo(
                                           context,
                                           StudentProfileView(
-                                            student: friend,
+                                            // student: friend,
+                                            id: friend.id,
                                             isFriend: true,
                                           ));
                                     },

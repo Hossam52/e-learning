@@ -79,7 +79,7 @@ class _TeacherHomeScreenState extends State<TeacherHomeScreen> {
                 child: BlocBuilder<AppCubit, AppStates>(
                   builder: (context, state) {
                     return AppCubit.get(context).isStudentHighRateLoading
-                        ? CircularProgressIndicator()
+                        ? Center(child: CircularProgressIndicator())
                         : Swiper(
                             itemCount: AppCubit.get(context)
                                 .studentHighRateTeachersModel!
@@ -156,9 +156,13 @@ class _TeacherHomeScreenState extends State<TeacherHomeScreen> {
                                   StudentProfileView(
                                     isFriend: false,
                                     isTeacher: true,
-                                    student: AppCubit.get(context)
+                                    id: AppCubit.get(context)
                                         .bestStudentsModel!
-                                        .students![itemIndex],
+                                        .students![itemIndex]
+                                        .id,
+                                    // student: AppCubit.get(context)
+                                    //     .bestStudentsModel!
+                                    //     .students![itemIndex],
                                   ));
                             },
                           ),
@@ -244,7 +248,7 @@ class _TeacherHomeScreenState extends State<TeacherHomeScreen> {
                   ),
                   CategoryHomeBuildItem(
                     deviceInfo: deviceInfo,
-                    title: text.tests,
+                    title: text.exams,
                     image: 'assets/images/exam-2.png',
                     onPressed: () {
                       navigateTo(context, TestSubjectsScreen());
@@ -252,7 +256,7 @@ class _TeacherHomeScreenState extends State<TeacherHomeScreen> {
                   ),
                   CategoryHomeBuildItem(
                     deviceInfo: deviceInfo,
-                    title: text.exams,
+                    title: text.tests,
                     image: 'assets/images/exam.png',
                     onPressed: () {
                       navigateTo(

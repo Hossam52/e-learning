@@ -31,7 +31,7 @@ class _TabsBuildItemState extends State<TeacherTabBuild>
   int index = 0;
   @override
   void initState() {
-    _tabController = new TabController(length: 3, vsync: this);
+    _tabController = new TabController(length: 4, vsync: this);
     super.initState();
   }
 
@@ -70,11 +70,13 @@ class _TabsBuildItemState extends State<TeacherTabBuild>
                         Tab(text: context.tr.ask_teacher),
                         Tab(text: context.tr.groups),
                         Tab(text: context.tr.tests),
+                        Tab(text: context.tr.posts),
                       ]
                     : [
                         Tab(text: context.tr.my_account),
                         Tab(text: context.tr.posts),
                         Tab(text: context.tr.ask_teacher),
+                        Tab(text: context.tr.posts),
                       ],
               ),
             ),
@@ -91,11 +93,13 @@ class _TabsBuildItemState extends State<TeacherTabBuild>
             TeacherQuestionsTab(teacherId: teacher.id!),
             TeacherGroupsProfileTab(teacherId: teacher.id!),
             TeacherTestsProfileTab(teacherId: teacher.id!),
+            TeacherProfilePostsTab(teacher.id!),
           ]
         : [
             TeacherEditProfileTab(teacher: teacher),
             TeacherProfilePostsTab(teacher.id!),
             TeacherProfileQuestionTab(),
+            TeacherProfilePostsTab(teacher.id!),
           ];
 
     return widgets[index];

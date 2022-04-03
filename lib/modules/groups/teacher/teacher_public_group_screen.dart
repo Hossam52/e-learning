@@ -243,7 +243,6 @@ class _PublicGroupTeacherHomeScreenState
                                           itemCount:
                                               cubit.publicGroupPosts.length,
                                           shrinkWrap: true,
-                                          reverse: true,
                                           physics:
                                               const NeverScrollableScrollPhysics(),
                                           padding: const EdgeInsets.all(16),
@@ -251,12 +250,21 @@ class _PublicGroupTeacherHomeScreenState
                                             var post =
                                                 cubit.publicGroupPosts[index];
                                             return PostBuildItem(
+                                              isStudentPost:
+                                                  post.student == null,
+
                                               type: 'admin',
-                                              ownerPostId: post.adminPost!
-                                                  ? ''
-                                                  : post.studentId!.isEmpty
-                                                      ? post.teacherId!
-                                                      : post.studentId!,
+                                              ownerPostId: post.teacherId ??
+                                                  post.studentId,
+                                              //  post.adminPost!
+                                              //     ? ''
+                                              //     : post.studentId!.isEmpty
+                                              //         ? post.teacherId!
+                                              //         : post.studentId!,
+                                              // post.adminPost!
+                                              //     ? null
+                                              //     : post.studentId ??
+                                              //         post.teacherId,
                                               name: post.student ??
                                                   post.teacher ??
                                                   context.tr.unknown,
@@ -321,9 +329,7 @@ class _PublicGroupTeacherHomeScreenState
                                           onLoadingMore: () {
                                             GroupCubit.get(context)
                                                 .getMoreAllPublicGroupPosts(
-                                                    GroupCubit.get(context)
-                                                        .publicGroupModel!
-                                                        .id!,
+                                                    widget.group.id!,
                                                     isStudent: false);
                                           })
                                     ],

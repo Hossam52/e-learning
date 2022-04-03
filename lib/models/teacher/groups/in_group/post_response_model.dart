@@ -62,8 +62,8 @@ class Post {
   bool? authLikeTeacher;
   bool? authLikeStudent;
   String? date;
-  String? studentId;
-  String? teacherId;
+  int? studentId;
+  int? teacherId;
   List<Comments>? comments = [];
   List<String>? images = [];
 
@@ -97,8 +97,8 @@ class Post {
       student: json['student'],
       teacherImage: json['teacher_image'],
       studentImage: json['student_image'],
-      studentId: json['student_id'] ?? '',
-      teacherId: json['teacher_id'] ?? '',
+      studentId: json['student_id'],
+      teacherId: json['teacher_id'],
       adminPost: json['adminPost'],
       studentPost: json['studentPost'] ?? false,
       teacherPost: json['teacherPost'] ?? false,

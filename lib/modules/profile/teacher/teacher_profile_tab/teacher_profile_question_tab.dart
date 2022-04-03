@@ -2,6 +2,7 @@ import 'package:e_learning/modules/groups/cubit/cubit.dart';
 import 'package:e_learning/modules/groups/cubit/states.dart';
 import 'package:e_learning/modules/groups/student/group_view/home_tab/post_build_item.dart';
 import 'package:e_learning/shared/componants/widgets/default_loader.dart';
+import 'package:e_learning/shared/componants/widgets/load_more_data.dart';
 import 'package:e_learning/shared/componants/widgets/no_data_widget.dart';
 import 'package:e_learning/shared/responsive_ui/responsive_widget.dart';
 import 'package:flutter/material.dart';
@@ -45,35 +46,49 @@ class _TeacherProfileQuestionTabState extends State<TeacherProfileQuestionTab> {
                       onPressed: () => cubit.getAllProfilePostsAndQuestion(
                           'question',
                           isQuestion: true))
-                  : ListView.builder(
-                      itemCount: cubit.questionsList.length,
-                      shrinkWrap: true,
-                      padding: const EdgeInsets.all(22.0),
-                      physics: NeverScrollableScrollPhysics(),
-                      itemBuilder: (context, index) {
-                        var post = cubit.questionsList[index];
-                        return PostBuildItem(
-                          type: 'question',
-                          ownerPostId: post.studentId!,
-                          deviceInfo: deviceInfo,
-                          isMe: post.studentPost ?? false,
-                          isStudent: false,
-                          name: "${post.student}",
-                          image: post.studentImage,
-                          cubit: cubit,
-                          postId: post.id!,
-                          answer: post.answer,
-                          text: post.text,
-                          likesCount: cubit.questionLikeCount[post.id]!,
-                          isLiked: cubit.questionLikeBool[post.id]!,
-                          date: post.date!,
-                          commentCount: post.comments!.length,
-                          comments: post.comments,
-                          groupId: 0,
-                          images: post.images!.isNotEmpty ? post.images : null,
-                          onEdit: () {},
-                        );
-                      }),
+                  : Column(
+                      children: [
+                        ListView.builder(
+                            itemCount: cubit.questionsList.length,
+                            shrinkWrap: true,
+                            padding: const EdgeInsets.all(22.0),
+                            physics: NeverScrollableScrollPhysics(),
+                            itemBuilder: (context, index) {
+                              var post = cubit.questionsList[index];
+                              return PostBuildItem(
+                                isStudentPost: post.student == null,
+                                type: 'question',
+                                ownerPostId: post.studentId!,
+                                deviceInfo: deviceInfo,
+                                isMe: post.studentPost ?? false,
+                                isStudent: false,
+                                name: "${post.student}",
+                                image: post.studentImage,
+                                cubit: cubit,
+                                postId: post.id!,
+                                answer: post.answer,
+                                text: post.text,
+                                likesCount: cubit.questionLikeCount[post.id]!,
+                                isLiked: cubit.questionLikeBool[post.id]!,
+                                date: post.date!,
+                                commentCount: post.comments!.length,
+                                comments: post.comments,
+                                groupId: 0,
+                                images: post.images!.isNotEmpty
+                                    ? post.images
+                                    : null,
+                                onEdit: () {},
+                              );
+                            }),
+                        LoadMoreData(
+                            isLoading: state is MoreGroupGetPostLoadingState,
+                            onLoadingMore: () {
+                              cubit.getMoreAllProfilePostsAndQuestion(
+                                  'question',
+                                  isQuestion: true);
+                            })
+                      ],
+                    ),
             );
           },
         );
