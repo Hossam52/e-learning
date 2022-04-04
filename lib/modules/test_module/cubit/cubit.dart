@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
@@ -518,6 +519,7 @@ class TestCubit extends Cubit<TestStates> {
     if (isTryAgain == false) progress!.show();
     hasStudentEndTestError = false;
     emit(StudentTestEndLoadingState());
+    log('URL${isChampion ? STUDENT_SEND_CHAMPION_RESULT : STUDENT_SEND_TEST_RESULT}');
     try {
       Response response = await DioHelper.postFormData(
         url: isChampion
@@ -532,6 +534,7 @@ class TestCubit extends Cubit<TestStates> {
       );
       print(response.data);
       if (response.data['status']) {
+        log(response.data.toString());
         if (isTryAgain == false) progress.dismiss();
         hasStudentEndTestError = false;
         navigateToAndFinish(

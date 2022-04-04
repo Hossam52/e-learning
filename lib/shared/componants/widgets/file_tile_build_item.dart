@@ -86,7 +86,7 @@ class ChildWidget extends StatelessWidget {
               ),
               SizedBox(width: 8),
               VerticalDivider(thickness: 1, color: secondaryColor),
-              SizedBox(width: deviceInfo.screenwidth * 0.05),
+              // SizedBox(width: deviceInfo.screenwidth * 0.05),
               Text(
                 text,
                 style: thirdTextStyle(deviceInfo).copyWith(

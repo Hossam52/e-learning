@@ -1,6 +1,7 @@
 import 'package:e_learning/layout/student/cubit/cubit.dart';
 import 'package:e_learning/models/teacher/test/test_response_model.dart';
 import 'package:e_learning/modules/test_module/student_test/student_test_build_item.dart';
+import 'package:e_learning/modules/test_module/student_test/test_view/student_test_quetion.dart';
 import 'package:e_learning/shared/componants/componants.dart';
 import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/responsive_ui/device_information.dart';
@@ -10,15 +11,17 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'test_view/test_start_alert_screen.dart';
 
 class ExamTab extends StatelessWidget {
-  const ExamTab({
-    Key? key,
-    required this.deviceInfo,
-    required this.isChampion,
-    required this.tests,
-  }) : super(key: key);
+  const ExamTab(
+      {Key? key,
+      required this.deviceInfo,
+      required this.isChampion,
+      required this.tests,
+      this.onChampionTap})
+      : super(key: key);
 
   final DeviceInformation deviceInfo;
   final bool isChampion;
+  final void Function(int index)? onChampionTap;
   final List<Test> tests;
 
   @override
@@ -44,7 +47,10 @@ class ExamTab extends StatelessWidget {
                   showSnackBar(
                       context: context, text: context.tr.taken_exam_before);
                 } else if (isChampion) {
-                  TestLayoutCubit.get(context).changeSelectedTest(index);
+                  TestLayoutCubit.get(context).changeSelectedTest(index, tests);
+                  if (onChampionTap != null) {
+                    onChampionTap!(index);
+                  }
                 } else {
                   navigateTo(
                       context,

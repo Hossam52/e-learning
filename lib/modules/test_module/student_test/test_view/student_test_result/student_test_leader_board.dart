@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:e_learning/modules/test_module/cubit/cubit.dart';
 import 'package:e_learning/modules/test_module/cubit/states.dart';
+import 'package:e_learning/modules/test_module/student_test/test_widgets/student_leaderboard_list.dart';
 import 'package:e_learning/shared/componants/componants.dart';
 import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/componants/widgets/default_loader.dart';
@@ -73,27 +74,17 @@ class _StudentTestLeaderBoardState extends State<StudentTestLeaderBoard> {
                             .copyWith(color: Colors.black),
                         children: const <TextSpan>[
                           TextSpan(
-                              text: 'الترم الاول',
+                              text: '', // 'الترم الاول',
                               style: TextStyle(color: primaryColor)),
                         ],
                       ),
                     ),
                   ),
                   Expanded(
-                    child: ListView.separated(
-                      itemCount: persons.length,
-                      padding: EdgeInsets.symmetric(horizontal: 22),
-                      separatorBuilder: (context, index) => Divider(),
-                      itemBuilder: (context, index) =>
-                          StudentLeadBoardBuildItem(
-                        deviceInfo: deviceInfo,
-                        name: persons[index].student,
-                        place: 'Rank ${index + 1}',
-                        points: 'static',
-                        image: persons[index].student_image,
-                      ),
-                    ),
-                  ),
+                      child: StudentLeaderBoardList(
+                    deviceInfo: deviceInfo,
+                    persons: persons,
+                  )),
                 ],
               ),
             );

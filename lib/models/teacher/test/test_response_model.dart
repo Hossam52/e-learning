@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:e_learning/models/teacher/auth/teacher_data_model.dart';
 
 class TestResponseModel {
@@ -45,6 +47,7 @@ class Test {
   });
 
   Test.fromJson(Map<String, dynamic> json, bool isTeacher) {
+    log(json['teacher'].toString());
     id = json['id'];
     name = json['name'];
     subject = json['subject'];
@@ -53,7 +56,8 @@ class Test {
     term = json['term'];
     minuteNum = json['minute_num'].toString();
     groupId = json['group_id'];
-    teacher = Teacher.fromJson(json['teacher']);
+    teacher =
+        json['teacher'] == null ? null : Teacher.fromJson(json['teacher']);
     switch (isTeacher) {
       case true:
         if (json['result'] != null) {

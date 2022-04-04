@@ -348,8 +348,8 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                                     children: [
                                       CategoryHomeBuildItem(
                                         deviceInfo: deviceInfo,
-                                        title: text.exams,
-                                        image: 'assets/images/exam-2.png',
+                                        title: text.tests,
+                                        image: 'assets/images/exam.png',
                                         onPressed: () {
                                           navigateTo(context, TestLayout());
                                         },
@@ -406,8 +406,8 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                                       ),
                                       CategoryHomeBuildItem(
                                         deviceInfo: deviceInfo,
-                                        title: text.tests,
-                                        image: 'assets/images/exam.png',
+                                        title: text.exams,
+                                        image: 'assets/images/exam-2.png',
                                         onPressed: () {
                                           navigateTo(
                                               context,

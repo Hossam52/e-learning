@@ -1,4 +1,5 @@
 import 'package:e_learning/models/pagination.dart';
+import 'package:e_learning/models/student/tests/all_partecipation_records.dart';
 import 'package:e_learning/models/teacher/test/test_response_model.dart';
 
 class ChampionResponseModel {
@@ -38,7 +39,7 @@ class Champion {
 class ChampionData {
   bool? myChampion;
   String? status;
-  String? results;
+  List<PartecipationResult>? results;
   Test? test;
 
   ChampionData({this.myChampion, this.status, this.results, this.test});
@@ -46,7 +47,14 @@ class ChampionData {
   ChampionData.fromJson(Map<String, dynamic> json) {
     myChampion = json['mychampion'];
     status = json['status'];
-    results = json['results'];
+    if (json['results'] == null) {
+      results = null;
+    } else {
+      results = [];
+      json['results'].forEach((v) {
+        results!.add(new PartecipationResult.fromMap(v));
+      }); //json['results'];
+    }
     test = json['test'] != null ? new Test.fromJson(json['test'], false) : null;
   }
 }

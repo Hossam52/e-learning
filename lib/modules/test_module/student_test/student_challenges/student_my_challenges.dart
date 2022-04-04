@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:e_learning/layout/student/cubit/cubit.dart';
 import 'package:e_learning/layout/student/cubit/states.dart';
 import 'package:e_learning/models/enums/enums.dart';
@@ -36,6 +38,7 @@ class _StudentMyChallengesState extends State<StudentMyChallenges> {
 
   @override
   Widget build(BuildContext context) {
+    log('My challenges Challenge');
     return BlocConsumer<TestLayoutCubit, TestLayoutStates>(
       listener: (context, state) {
         if (state is StudentTestsSuccessState) {

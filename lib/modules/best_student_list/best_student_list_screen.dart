@@ -90,6 +90,7 @@ class BestStudentListScreen extends StatelessWidget {
                             place: '${index + 1}.st',
                             image: bestStudents[index].image!,
                             points: bestStudents[index].points!.toString(),
+                            profileId: bestStudents[index].id!,
                           ),
                         ),
                       ),

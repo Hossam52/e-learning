@@ -23,7 +23,7 @@ class TestLayout extends StatelessWidget {
               TestLayoutCubit appCubit = TestLayoutCubit.get(context);
               return Scaffold(
                 appBar: AppBar(
-                  title: Text(appCubit.selectedTitle()),
+                  title: Text(appCubit.selectedTitle(context)),
                   elevation: 1,
                   centerTitle: true,
                   leading: defaultBackButton(context, deviceInfo.screenHeight),

@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class StudentDefaultCard extends StatelessWidget {
-  const StudentDefaultCard({Key? key,
+  const StudentDefaultCard({
+    Key? key,
     required this.onTap,
     required this.image,
     required this.text,
@@ -16,14 +17,12 @@ class StudentDefaultCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Card(
+    return Card(
       color: Colors.white,
       margin: EdgeInsets.zero,
       clipBehavior: Clip.antiAliasWithSaveLayer,
       shape: RoundedRectangleBorder(
-          side: BorderSide.none,
-          borderRadius: BorderRadius.circular(5)
-      ),
+          side: BorderSide.none, borderRadius: BorderRadius.circular(5)),
       child: InkWell(
         onTap: onTap,
         child: Padding(
@@ -31,10 +30,12 @@ class StudentDefaultCard extends StatelessWidget {
           child: IntrinsicHeight(
             child: Row(
               children: [
-                Container(width: MediaQuery.of(context).size.width * 0.08, child: image),
+                Container(
+                    width: MediaQuery.of(context).size.width * 0.08,
+                    child: image),
                 SizedBox(width: 8),
                 VerticalDivider(thickness: 1, color: secondaryColor),
-                SizedBox(width: 25.w),
+                SizedBox(width: 10.w),
                 Text(
                   text,
                   style: thirdTextStyle(null).copyWith(

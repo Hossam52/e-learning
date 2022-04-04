@@ -1,3 +1,4 @@
+import 'package:e_learning/shared/componants/constants.dart';
 import 'package:e_learning/shared/responsive_ui/device_information.dart';
 import 'package:e_learning/shared/styles/colors.dart';
 import 'package:e_learning/shared/styles/styles.dart';
@@ -63,6 +64,7 @@ class StudentTestResultBuildItem extends StatelessWidget {
               padding: const EdgeInsets.all(7.0),
               child: Text(
                 result,
+                locale: Locale(lang!),
                 style: thirdTextStyle(deviceInfo).copyWith(color: textColor),
               ),
             ),

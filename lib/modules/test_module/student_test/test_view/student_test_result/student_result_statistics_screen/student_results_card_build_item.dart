@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:e_learning/models/teacher/test/test_response_model.dart';
 import 'package:e_learning/modules/test_module/cubit/cubit.dart';
 import 'package:e_learning/shared/componants/componants.dart';
@@ -29,6 +31,7 @@ class StudentResultsCardBuildItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    log(test.id.toString());
     final int testResultPercentage =
         ((cubit.correctAnswersCount / cubit.testCorrectionStudent.length) * 100)
             .toInt();

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:e_learning/layout/group_layout/student/group_layout.dart';
 import 'package:e_learning/layout/group_layout/teacher/teacher_group_layout.dart';
 import 'package:e_learning/models/teacher/groups/group_response_model.dart';
@@ -75,7 +77,8 @@ class GroupBuildItem extends StatelessWidget {
         elevation: 3,
         child: InkWell(
           onTap: () {
-            if (isJoined == null) {
+            // if (isJoined != null)
+            {
               if (isTeacher) {
                 if (typeGroup == 0)
                   navigateTo(

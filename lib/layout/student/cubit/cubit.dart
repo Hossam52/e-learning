@@ -16,6 +16,7 @@ import 'package:e_learning/modules/test_module/student_test/student_invitations_
 import 'package:e_learning/modules/test_module/student_test/test_view/student_test_quetion.dart';
 import 'package:e_learning/shared/componants/componants.dart';
 import 'package:e_learning/shared/componants/constants.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/network/end_points.dart';
 import 'package:e_learning/shared/network/remote/dio_helper.dart';
 import 'package:e_learning/shared/network/services/test_services.dart';
@@ -39,15 +40,16 @@ class TestLayoutCubit extends Cubit<TestLayoutStates> {
     StudentMyInvitationsScreen(),
   ];
 
-  String selectedTitle() {
+  String selectedTitle(BuildContext context) {
     if (currentIndex == 0)
-      return 'اختبار';
+      return context.tr.test; // 'اختبار';
     else if (currentIndex == 1)
-      return 'منافسة';
+      return context.tr.competition;
     else if (currentIndex == 2)
-      return 'بطولات';
+      return context.tr.championships; // 'بطولات';
     else
-      return 'دعواتي';
+      return context.tr.my_invitation;
+    // 'دعواتي';
   }
 
   // Change nav function
@@ -71,20 +73,20 @@ class TestLayoutCubit extends Cubit<TestLayoutStates> {
   void getStudentTests(TestType type) async {
     isGetTestsLoading = true;
     emit(StudentTestsLoadingState());
-    try {
-      Response response = await DioHelper.getData(
-        url: generateTestUrl(type),
-        token: studentToken,
-      );
-      if (response.data['status']) {
-        insertTestLists(type, response);
-        emit(StudentTestsSuccessState());
-      } else {
-        addErrorStates(type);
-        print(response.data['message']);
-        emit(StudentTestsErrorState());
-      }
-    } catch (e) {
+
+    Response response = await DioHelper.getData(
+      url: generateTestUrl(type),
+      token: studentToken,
+    );
+    if (response.data['status']) {
+      insertTestLists(type, response);
+      emit(StudentTestsSuccessState());
+    } else {
+      addErrorStates(type);
+      print(response.data['message']);
+      emit(StudentTestsErrorState());
+    }
+    try {} catch (e) {
       addErrorStates(type);
       emit(StudentTestsErrorState());
       throw e;
@@ -198,6 +200,7 @@ class TestLayoutCubit extends Cubit<TestLayoutStates> {
 
   void insertTestLists(TestType type, Response response) {
     List tests = [];
+    log(response.data.toString());
     switch (type) {
       case TestType.Test:
         tests = response.data['tests'];
@@ -228,9 +231,10 @@ class TestLayoutCubit extends Cubit<TestLayoutStates> {
   int? selectedTestIndex;
   int? selectedTestId;
 
-  void changeSelectedTest(int index) {
+  void changeSelectedTest(int index, List<Test> tests) {
     selectedTestIndex = index;
-    selectedTestId = studentTestsList[selectedTestIndex!].id;
+    // selectedTestId = studentTestsList[selectedTestIndex!].id;
+    selectedTestId = tests[selectedTestIndex!].id;
     emit(ChangeTestState());
   }
 

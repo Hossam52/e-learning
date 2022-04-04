@@ -54,52 +54,62 @@ class CreateChampionScreen extends StatelessWidget {
                         : Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                  top: 16.0,
-                                ),
-                                child: ButtonsTabBar(
-                                  backgroundColor: primaryColor,
-                                  contentPadding:
-                                      EdgeInsets.symmetric(horizontal: 15),
-                                  unselectedBackgroundColor:
-                                      primaryColor.withOpacity(0.4),
-                                  height: 50,
-                                  duration: 3,
-                                  labelStyle: TextStyle(
-                                    fontSize: 18,
-                                    color: Colors.white,
-                                    fontFamily: 'NeoSansArabic',
-                                  ),
-                                  unselectedLabelStyle: TextStyle(
-                                    fontSize: 18,
-                                    color: Colors.white,
-                                    fontFamily: 'NeoSansArabic',
-                                  ),
-                                  tabs: [
-                                    Tab(
-                                      text: 'اللغة العربية',
-                                    ),
-                                    Tab(
-                                      text: 'فيزياء',
-                                    ),
-                                  ],
-                                ),
-                              ),
+                              // Padding(
+                              //   padding: const EdgeInsets.only(
+                              //     top: 16.0,
+                              //   ),
+                              //   child: ButtonsTabBar(
+                              //     backgroundColor: primaryColor,
+                              //     contentPadding:
+                              //         EdgeInsets.symmetric(horizontal: 15),
+                              //     unselectedBackgroundColor:
+                              //         primaryColor.withOpacity(0.4),
+                              //     height: 50,
+                              //     duration: 3,
+                              //     labelStyle: TextStyle(
+                              //       fontSize: 18,
+                              //       color: Colors.white,
+                              //       fontFamily: 'NeoSansArabic',
+                              //     ),
+                              //     unselectedLabelStyle: TextStyle(
+                              //       fontSize: 18,
+                              //       color: Colors.white,
+                              //       fontFamily: 'NeoSansArabic',
+                              //     ),
+                              //     tabs: [
+                              //       Tab(
+                              //         text: 'اللغة العربية',
+                              //       ),
+                              //       Tab(
+                              //         text: 'فيزياء',
+                              //       ),
+                              //     ],
+                              //   ),
+                              // ),
+                              // Expanded(
+                              //   child: TabBarView(
+                              //     children: [
+                              //       ExamTab(
+                              //         deviceInfo: deviceInfo,
+                              //         tests: cubit.studentTestsList,
+                              //         isChampion: true,
+                              //       ),
+                              //       ExamTab(
+                              //         deviceInfo: deviceInfo,
+                              //         tests: cubit.studentTestsList,
+                              //         isChampion: true,
+                              //       ),
+                              //     ],
+                              //   ),
+                              // ),
+
                               Expanded(
-                                child: TabBarView(
-                                  children: [
-                                    ExamTab(
-                                      deviceInfo: deviceInfo,
-                                      tests: cubit.studentTestsList,
-                                      isChampion: true,
-                                    ),
-                                    ExamTab(
-                                      deviceInfo: deviceInfo,
-                                      tests: cubit.studentTestsList,
-                                      isChampion: true,
-                                    ),
-                                  ],
+                                child: SingleChildScrollView(
+                                  child: ExamTab(
+                                    deviceInfo: deviceInfo,
+                                    tests: cubit.studentTestsList,
+                                    isChampion: true,
+                                  ),
                                 ),
                               ),
                               Row(
