@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:e_learning/models/student/group/friends_response_model.dart';
@@ -98,6 +100,7 @@ class StudentCubit extends Cubit<StudentStates> {
         }),
       );
       if (response.data['status']) {
+        log('Add friend response ' + response.data.toString());
         showSnackBar(
           context: context,
           text: response.data['message'],

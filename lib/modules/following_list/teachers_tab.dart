@@ -75,7 +75,8 @@ class _TeachersTabState extends State<TeachersTab> {
                                         navigateTo(
                                             context,
                                             TeacherProfileView(
-                                              teacher: teacher,
+                                              // teacher: teacher,
+                                              teacherId: teacher.id,
                                               isAdd: widget.isAdd,
                                               cubit: cubit,
                                             ));

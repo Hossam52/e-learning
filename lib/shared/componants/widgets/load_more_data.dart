@@ -1,3 +1,4 @@
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:flutter/material.dart';
 
 class LoadMoreData extends StatelessWidget {
@@ -14,7 +15,7 @@ class LoadMoreData extends StatelessWidget {
           ? Center(
               child: CircularProgressIndicator(),
             )
-          : Text('Show more'),
+          : Text(context.tr.show_more),
     );
   }
 }

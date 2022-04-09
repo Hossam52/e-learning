@@ -1,12 +1,12 @@
 import 'dart:io';
 
 class TeacherModel {
-  late String name;
-  late String email;
+  String? name;
+  String? email;
   String? password;
   String? passwordConfirmation;
-  late int countryId;
-  late List<int> subjects;
+  int? countryId;
+  List<int>? subjects;
   File? avatar;
 
   TeacherModel({
@@ -17,5 +17,5 @@ class TeacherModel {
     required this.countryId,
     required this.subjects,
     this.avatar,
-});
+  });
 }

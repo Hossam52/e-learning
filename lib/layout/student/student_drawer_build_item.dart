@@ -44,8 +44,8 @@ class _StudentDrawerBuildItemState extends State<StudentDrawerBuildItem> {
     final authCubit = AuthCubit.get(context);
     if (authCubit.countryNamesList.isEmpty)
       await authCubit.getAllCountriesAndStages();
-    log(authCubit.studentProfileModel!.student!.country!);
-    log(authCubit.countryNamesList.toString());
+    // log(authCubit.studentProfileModel!.student!.country!);
+    // log(authCubit.countryNamesList.toString());
 
     authCubit.onChangeCountry(authCubit.studentProfileModel!.student!.country!);
   }

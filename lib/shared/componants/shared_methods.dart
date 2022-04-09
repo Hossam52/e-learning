@@ -1,38 +1,73 @@
 import 'dart:developer';
 
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:e_learning/modules/auth/cubit/cubit.dart';
+import 'package:e_learning/modules/following_list/teacher_view/teacher_profile_view.dart';
 import 'package:e_learning/modules/profile/student/profile_screen.dart';
 import 'package:e_learning/modules/profile/student_profile_view.dart';
 import 'package:e_learning/modules/profile/teacher/teacher_profile_screen.dart';
+import 'package:e_learning/modules/student/cubit/cubit/cubit.dart';
 import 'package:e_learning/shared/componants/componants.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
 class SharedMethods {
-  static Future<void> navigateToProfile(bool isStudent, bool displayProfile,
-      BuildContext context, int profileId) async {
-    final myProfileId = getMyProfileId(context: context, isStudent: isStudent);
-    if (profileId == myProfileId)
-      navigateTo(context, isStudent ? ProfileScreen() : TeacherProfileScreen());
-    else {
-      if (!displayProfile) return;
-
+  static Future<void> navigateToProfile(bool isCurrentLoggedInIsStudent,
+      bool isStudentItem, BuildContext context, int profileId) async {
+    final myProfileId = getMyProfileId(
+        context: context,
+        isCurrentLoggedInIsStudent: isCurrentLoggedInIsStudent);
+    if (profileId == myProfileId && isCurrentLoggedInIsStudent == isStudentItem)
       navigateTo(
           context,
-          StudentProfileView(
-            isFriend: true,
-            // student: student,
-            id: profileId,
-          ));
+          isCurrentLoggedInIsStudent
+              ? ProfileScreen()
+              : TeacherProfileScreen());
+    else {
+      if (isCurrentLoggedInIsStudent) {
+        if (isStudentItem) {
+          navigateTo(
+            context,
+            StudentProfileView(
+              id: profileId,
+            ),
+          );
+        } else {
+          navigateTo(
+              context,
+              TeacherProfileView(
+                // teacher: teacher,
+                teacherId: profileId, isAdd: false,
+                cubit: StudentCubit.get(context),
+              ));
+        }
+      } else {
+        if (isStudentItem)
+          navigateTo(
+            context,
+            StudentProfileView(
+              isTeacher: true,
+              id: profileId,
+            ),
+          );
+      }
     }
   }
 
   static int? getMyProfileId(
-      {required bool isStudent, required BuildContext context}) {
-    if (isStudent) {
+      {required bool isCurrentLoggedInIsStudent,
+      required BuildContext context}) {
+    if (isCurrentLoggedInIsStudent) {
       return AuthCubit.get(context).studentProfileModel!.student!.id;
     } else
       return AuthCubit.get(context).teacherProfileModel!.teacher!.id;
+  }
+
+  static Future<String> get getDeviceSerial async {
+    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+    final androidInfo = await deviceInfo.androidInfo;
+    log('Serial number is ${androidInfo.androidId}');
+    return androidInfo.androidId!;
   }
 
   static String? defaultValidation(String? value, {String? message}) {

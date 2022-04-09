@@ -204,6 +204,7 @@
 	"personal_profile": "Personal profile",
 	"personal_profile_teacher": "Personal teacher profile",
 	"posts": "Posts",
+	"all_posts": "All posts",
 	"subjects": "Subjects",
 	"percentage": "Percentage",
 	"homeworks": "Homeworks",
@@ -329,5 +330,7 @@
 	"create_test" : "Create test",
 	"edit_test" : "Edit test",
 	"sure_to_delete" : "Are you sure to delete",
-	"choose_image_from" : "Choose image from"
+	"choose_image_from" : "Choose image from",
+	"show_more": "Show more",
+	"group_created_successifully":"Group created successifully"
 }

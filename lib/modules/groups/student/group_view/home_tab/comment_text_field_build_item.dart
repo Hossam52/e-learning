@@ -52,7 +52,8 @@ class CommentTextFieldBuildItem extends StatelessWidget {
             controller: commentController,
             haveBackground: true,
             hintText: context.tr.write_comment_here,
-            suffix: authType ? Icons.photo : null,
+            // suffix: authType ? Icons.photo : null, //That removed
+            suffix: Icons.photo,
             suffixPressed: () {
               alertDialogImagePicker(
                   context: context, cubit: appCubit, onTap: () {});

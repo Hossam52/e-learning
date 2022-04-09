@@ -10,6 +10,7 @@ import 'package:e_learning/modules/following_list/teacher_view/teacher_profile_v
 import 'package:e_learning/modules/groups/cubit/cubit.dart';
 import 'package:e_learning/modules/groups/cubit/states.dart';
 import 'package:e_learning/modules/groups/student/group_view/discuss_tab/group_question_tab.dart';
+import 'package:e_learning/modules/profile/all_teachers_follow.dart';
 import 'package:e_learning/modules/profile/cubit/profile_cubit.dart';
 import 'package:e_learning/modules/profile/cubit/profile_states.dart';
 import 'package:e_learning/modules/profile/student/student_profile_info_build.dart';
@@ -39,13 +40,11 @@ class StudentProfileView extends StatefulWidget {
     // this.student,
     this.id,
     this.isTeacher = false,
-    required this.isFriend,
   }) : super(key: key);
 
   final int? id;
   // Student? student;
   bool? isTeacher;
-  final bool isFriend;
 
   @override
   State<StudentProfileView> createState() => _StudentProfileViewState();
@@ -157,17 +156,15 @@ class _StudentProfileViewState extends State<StudentProfileView> {
                               children: [
                                 _personalInfo(deviceInfo, cubit, context,
                                     widget.isTeacher!),
-                                _followPersons(deviceInfo),
+                                _followPersons(deviceInfo, context),
                               ],
                             ),
                           ),
                           SizedBox(height: 11.h),
-                          Text(
-                              'This layout is static until get the data from back end',
-                              style: TextStyle(fontSize: 16.sp)),
                           BlocBuilder<GroupCubit, GroupStates>(
                             builder: (context, state) {
                               return GroupStudentTab(
+                                displayProfileWhenTap: false,
                                 cubit: GroupCubit.get(context),
                                 deviceInfo: deviceInfo,
                                 groupId: 0,
@@ -207,6 +204,7 @@ class _StudentProfileViewState extends State<StudentProfileView> {
 
   StudentProfileInfoBuild _personalInfo(DeviceInformation deviceInfo,
       StudentCubit cubit, BuildContext context, bool isTeacher) {
+    log('Friend type' + student!.friend.toString());
     return StudentProfileInfoBuild(
       deviceInfo: deviceInfo,
       // image: "${widget.student!.image}",
@@ -293,7 +291,7 @@ class _StudentProfileViewState extends State<StudentProfileView> {
     }
   }
 
-  Widget _followPersons(deviceInfo) {
+  Widget _followPersons(deviceInfo, BuildContext buildContext) {
     return Padding(
       padding: EdgeInsets.all(18.w),
       child: Column(
@@ -302,9 +300,21 @@ class _StudentProfileViewState extends State<StudentProfileView> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text('Teachers follow', style: secondaryTextStyle(deviceInfo)),
-              Text(context.tr.view_all,
-                  style: secondaryTextStyle(deviceInfo)
-                      .copyWith(color: Colors.grey)),
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => AllTeachersFollow(
+                        profileCubit: ProfileCubit.instance(buildContext),
+                        profileId: widget.id!,
+                      ),
+                    ),
+                  );
+                },
+                child: Text(context.tr.view_all,
+                    style: secondaryTextStyle(deviceInfo)
+                        .copyWith(color: Colors.grey)),
+              ),
             ],
           ),
           SizedBox(height: 18.h),
@@ -333,7 +343,7 @@ class _StudentProfileViewState extends State<StudentProfileView> {
                 teacher: followingList[index],
               );
             },
-            itemCount: followingList.length,
+            itemCount: followingList.length < 10 ? followingList.length : 10,
             scrollDirection: Axis.horizontal,
           );
         })),
@@ -369,7 +379,8 @@ class _FollowerItem extends StatelessWidget {
         navigateTo(
             context,
             TeacherProfileView(
-              teacher: teacher,
+              // teacher: teacher,
+              teacherId: teacher.id,
               isAdd: false,
               cubit: StudentCubit.get(context),
             ));

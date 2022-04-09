@@ -282,5 +282,7 @@ const PUBLIC_GET_POSTS = 'student/publicGroup/getPublicPosts';
 const PUBLIC_GET_POSTS_TEACHER = 'teacher/publicGroup/getPublicPosts';
 
 const TEACHER_PROFILE_GET_ALL_POST = 'teacher/social/getAllPosts';
+const GET_ALL_TEACHER_POSTS_FOR_STUDENT =
+    'student/social/getAllPostsByTeacherId';
 
 const TEACHER_PROFILE_GET_ALL_QUESTION = 'teacher/getAllQuestionInMyProfile';

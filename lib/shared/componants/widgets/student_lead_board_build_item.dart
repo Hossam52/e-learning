@@ -26,8 +26,22 @@ class StudentLeadBoardBuildItem extends StatelessWidget {
   final String image;
   final String points;
   bool isMyProfile(BuildContext context) {
-    final myProfileId = AuthCubit.get(context).studentProfileModel!.student!.id;
+    final myProfileId =
+        AuthCubit.get(context).studentProfileModel?.student!.id ?? 0;
     return myProfileId == profileId;
+  }
+
+  bool isStudent(BuildContext context) {
+    if (AuthCubit.get(context).studentProfileModel != null) {
+      return true;
+    } else {
+      // if (AuthCubit.get(context).studentLoginDataModel != null)
+      //   return true;
+      // else
+      if (AuthCubit.get(context).teacherLoginDataModel != null) return false;
+      if (AuthCubit.get(context).teacherProfileModel != null) return false;
+      return false;
+    }
   }
 
   @override
@@ -43,7 +57,8 @@ class StudentLeadBoardBuildItem extends StatelessWidget {
         padding: const EdgeInsets.all(10.0),
         child: GestureDetector(
           onTap: () {
-            SharedMethods.navigateToProfile(true, true, context, profileId);
+            SharedMethods.navigateToProfile(
+                isStudent(context), true, context, profileId);
           },
           child: Row(
             children: [

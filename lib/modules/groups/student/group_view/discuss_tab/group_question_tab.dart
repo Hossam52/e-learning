@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 class GroupStudentTab extends StatelessWidget {
   const GroupStudentTab({
     Key? key,
+    this.displayProfileWhenTap = true,
     required this.isQuestion,
     required this.isStudent,
     required this.deviceInfo,
@@ -20,7 +21,7 @@ class GroupStudentTab extends StatelessWidget {
     this.postController,
     this.isPost = false,
   }) : super(key: key);
-
+  final bool displayProfileWhenTap;
   final bool isQuestion;
   final bool isPost;
 
@@ -43,7 +44,7 @@ class GroupStudentTab extends StatelessWidget {
         itemBuilder: (context, index) {
           var post = posts[index];
           return PostBuildItem(
-            isStudentPost: post.student == null,
+            isStudentPost: displayProfileWhenTap,
 
             ownerPostId: post.student != null
                 ? post.studentId

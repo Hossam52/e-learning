@@ -1,5 +1,9 @@
 import 'dart:developer';
 
+import 'package:e_learning/models/enums/enums.dart';
+import 'package:e_learning/models/teacher/auth/teacher_model.dart';
+import 'package:e_learning/modules/auth/cubit/cubit.dart';
+import 'package:e_learning/modules/profile/custom_profile_image.dart';
 import 'package:e_learning/modules/student/cubit/cubit/cubit.dart';
 import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/componants/widgets/default_cached_image.dart';
@@ -16,6 +20,7 @@ import 'teacher_info_column.dart';
 class TeacherProfileInfoBuild extends StatelessWidget {
   const TeacherProfileInfoBuild({
     Key? key,
+    this.isMe = false,
     required this.deviceInfo,
     required this.isStudent,
     required this.name,
@@ -29,6 +34,7 @@ class TeacherProfileInfoBuild extends StatelessWidget {
   }) : super(key: key);
 
   final DeviceInformation deviceInfo;
+  final bool isMe;
   final int teacherId;
   final bool isStudent;
   final String name;
@@ -58,16 +64,34 @@ class TeacherProfileInfoBuild extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
-                    child: Container(
-                  clipBehavior: Clip.antiAliasWithSaveLayer,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Color(0xffE2E2E2),
+                  child: CustomProfileImage(
+                    image: image,
+                    isMe: isMe,
+                    onChangePicture: (avatar) {
+                      AuthCubit.get(context).teacherRegisterAndUpdate(
+                        context: context,
+                        type: AuthType.Edit,
+                        model: TeacherModel(
+                          name: null,
+                          email: null,
+                          subjects: null,
+                          countryId: null,
+                          avatar: avatar,
+                        ),
+                      );
+                    },
                   ),
-                  child: DefaultCachedNetworkImage(
-                    imageUrl: image,
-                  ),
-                )),
+                  // Container(
+                  //   clipBehavior: Clip.antiAliasWithSaveLayer,
+                  //   decoration: BoxDecoration(
+                  //     shape: BoxShape.circle,
+                  //     color: Color(0xffE2E2E2),
+                  //   ),
+                  //   child: DefaultCachedNetworkImage(
+                  //     imageUrl: image,
+                  //   ),
+                  // ),
+                ),
                 SizedBox(width: 15.w),
                 Expanded(
                   flex: 2,

@@ -8,6 +8,7 @@ import 'package:e_learning/modules/auth/teacher/register/build_subjects_item.dar
 import 'package:e_learning/modules/profile/add_avatar_build_item.dart';
 import 'package:e_learning/shared/componants/componants.dart';
 import 'package:e_learning/shared/componants/extentions.dart';
+import 'package:e_learning/shared/componants/widgets/all_subjects_widget.dart';
 import 'package:e_learning/shared/componants/widgets/default_form_field.dart';
 import 'package:e_learning/shared/componants/widgets/default_gesture_widget.dart';
 import 'package:e_learning/shared/componants/widgets/default_progress_button.dart';
@@ -42,17 +43,17 @@ class _TeacherEditProfileTabState extends State<TeacherEditProfileTab> {
 
   @override
   void initState() {
-    AuthCubit.get(context).getAllSubjectsData();
+    // AuthCubit.get(context).getAllSubjectsData();
     AuthCubit.get(context).getAllCountriesAndStages();
     name.text = widget.teacher.name!;
     email.text = widget.teacher.email ?? '';
     national.text = widget.teacher.country!;
-    AuthCubit.get(context).selectedSubjectsList = List.generate(
-        widget.teacher.subjects!.length,
-        (index) => widget.teacher.subjects![index].name!);
-    AuthCubit.get(context).selectedSubjectsId = List.generate(
-        widget.teacher.subjects!.length,
-        (index) => widget.teacher.subjects![index].id!);
+    // AuthCubit.get(context).selectedSubjectsList = List.generate(
+    //     widget.teacher.subjects!.length,
+    //     (index) => widget.teacher.subjects![index].name!);
+    // AuthCubit.get(context).selectedSubjectsId = List.generate(
+    //     widget.teacher.subjects!.length,
+    //     (index) => widget.teacher.subjects![index].id!);
     super.initState();
   }
 
@@ -157,63 +158,64 @@ class _TeacherEditProfileTabState extends State<TeacherEditProfileTab> {
                           SizedBox(
                             height: 15,
                           ),
-                          Container(
-                            width: double.infinity,
-                            child: Column(
-                              // crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    Text(
-                                      text.subject,
-                                      textAlign: TextAlign.start,
-                                    ),
-                                  ],
-                                ),
-                                Conditional.single(
-                                  context: context,
-                                  conditionBuilder: (context) =>
-                                      state is! GetAllSubjectsLoadingState,
-                                  fallbackBuilder: (context) => Container(
-                                      width: 25,
-                                      height: 25,
-                                      child: Center(
-                                        child: CircularProgressIndicator(),
-                                      )),
-                                  widgetBuilder: (context) => Container(
-                                    width: double.infinity,
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 8.0),
-                                      child: Wrap(
-                                        spacing: 6.0,
-                                        runSpacing: 6.0,
-                                        alignment: WrapAlignment.start,
-                                        children: cubit.subjectsNamesList
-                                            .map((item) => BuildSubjectsItem(
-                                                  label: item,
-                                                  color: backgroundColor,
-                                                  deviceInfo: deviceInfo,
-                                                ))
-                                            .toList()
-                                            .cast<Widget>(),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                if (cubit.selectedSubjectsList.isEmpty)
-                                  Row(
-                                    children: [
-                                      Text(
-                                        text.choose_at_least_subject,
-                                        textAlign: TextAlign.start,
-                                        style: TextStyle(color: errorColor),
-                                      ),
-                                    ],
-                                  ),
-                              ],
-                            ),
-                          ),
+                          // Container(
+                          //   width: double.infinity,
+                          //   child: Column(
+                          //     // crossAxisAlignment: CrossAxisAlignment.start,
+                          //     children: [
+                          //       Row(
+                          //         children: [
+                          //           Text(
+                          //             text.subject,
+                          //             textAlign: TextAlign.start,
+                          //           ),
+                          //         ],
+                          //       ),
+                          //       Conditional.single(
+                          //         context: context,
+                          //         conditionBuilder: (context) =>
+                          //             state is! GetAllSubjectsLoadingState,
+                          //         fallbackBuilder: (context) => Container(
+                          //             width: 25,
+                          //             height: 25,
+                          //             child: Center(
+                          //               child: CircularProgressIndicator(),
+                          //             )),
+                          //         widgetBuilder: (context) => Container(
+                          //           width: double.infinity,
+                          //           child: Padding(
+                          //             padding: const EdgeInsets.symmetric(
+                          //                 vertical: 8.0),
+                          //             child: Wrap(
+                          //               spacing: 6.0,
+                          //               runSpacing: 6.0,
+                          //               alignment: WrapAlignment.start,
+                          //               children: cubit.subjectsNamesList
+                          //                   .map((item) => BuildSubjectsItem(
+                          //                         label: item,
+                          //                         color: backgroundColor,
+                          //                         deviceInfo: deviceInfo,
+                          //                       ))
+                          //                   .toList()
+                          //                   .cast<Widget>(),
+                          //             ),
+                          //           ),
+                          //         ),
+                          //       ),
+                          //       if (cubit.selectedSubjectsList.isEmpty)
+                          //         Row(
+                          //           children: [
+                          //             Text(
+                          //               text.choose_at_least_subject,
+                          //               textAlign: TextAlign.start,
+                          //               style: TextStyle(color: errorColor),
+                          //             ),
+                          //           ],
+                          //         ),
+                          //     ],
+                          //   ),
+                          // ),
+                          AllSubjectsWidget(),
                           SizedBox(
                             height: 35,
                           ),

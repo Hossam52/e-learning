@@ -29,3 +29,9 @@ class ProfileFollowersLoadingState extends ProfileStates {}
 class ProfileFollowersSuccessState extends ProfileStates {}
 
 class ProfileFollowersErrorState extends ProfileStates {}
+
+class MoreProfileFollowersLoadingState extends ProfileStates {}
+
+class MoreProfileFollowersSuccessState extends ProfileStates {}
+
+class MoreProfileFollowersErrorState extends ProfileStates {}

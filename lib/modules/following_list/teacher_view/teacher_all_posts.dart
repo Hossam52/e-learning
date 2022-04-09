@@ -14,22 +14,28 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_conditional_rendering/conditional.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-class AllTeachersPosts extends StatefulWidget {
+class TeacherAllPostsTabForStudent extends StatefulWidget {
   int teacherId;
-  AllTeachersPosts(this.teacherId, {Key? key}) : super(key: key);
+  TeacherAllPostsTabForStudent(this.teacherId, {Key? key}) : super(key: key);
 
   @override
-  _AllTeachersPostsState createState() => _AllTeachersPostsState();
+  _TeacherAllPostsTabForStudentState createState() =>
+      _TeacherAllPostsTabForStudentState();
 }
 
-class _AllTeachersPostsState extends State<AllTeachersPosts> {
+class _TeacherAllPostsTabForStudentState
+    extends State<TeacherAllPostsTabForStudent> {
   final RefreshController refreshController =
       RefreshController(initialRefresh: false);
 
   @override
   void initState() {
-    GroupCubit.get(context).getAllProfilePostsAndQuestion('post');
+    getPosts();
     super.initState();
+  }
+
+  void getPosts({bool loadMore = false}) {
+    GroupCubit.get(context).getAllTeacherPostsForStudent(widget.teacherId);
   }
 
   @override
@@ -47,9 +53,7 @@ class _AllTeachersPostsState extends State<AllTeachersPosts> {
               conditionBuilder: (context) => state is! GroupGetPostLoadingState,
               fallbackBuilder: (context) => DefaultLoader(),
               widgetBuilder: (context) => cubit.noPostData
-                  ? NoDataWidget(
-                      onPressed: () =>
-                          cubit.getAllProfilePostsAndQuestion('post'))
+                  ? NoDataWidget(onPressed: () => getPosts())
                   : Column(
                       children: [
                         ListView.builder(
@@ -66,7 +70,7 @@ class _AllTeachersPostsState extends State<AllTeachersPosts> {
                                 showProfileWhenTap: false,
                                 type: 'post',
                                 deviceInfo: deviceInfo,
-                                isMe: post.teacherPost ?? false,
+                                isMe: false,
                                 name: "${post.teacher}",
                                 image: post.teacherImage,
                                 isStudent: false,

@@ -89,7 +89,7 @@ class _NotificationPostScreenState extends State<NotificationPostScreen> {
                           child: SingleChildScrollView(
                             child: Column(children: [
                               PostBuildItem(
-                                isStudentPost: post.student == null,
+                                isStudentPost: post.student != null,
 
                                 date: post.date!,
                                 ownerPostId: post.studentId!,

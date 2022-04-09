@@ -149,19 +149,18 @@ class _TeacherHomeScreenState extends State<TeacherHomeScreen> {
                               .students![itemIndex]
                               .points!,
                           onTap: () {
-                            // navigateTo(
-                            //     context,
-                            //     StudentProfileView(
-                            //       isFriend: false,
-                            //       isTeacher: true,
-                            //       id: AppCubit.get(context)
-                            //           .bestStudentsModel!
-                            //           .students![itemIndex]
-                            //           .id,
-                            //       // student: AppCubit.get(context)
-                            //       //     .bestStudentsModel!
-                            //       //     .students![itemIndex],
-                            //     ));
+                            navigateTo(
+                                context,
+                                StudentProfileView(
+                                  isTeacher: true,
+                                  id: AppCubit.get(context)
+                                      .bestStudentsModel!
+                                      .students![itemIndex]
+                                      .id,
+                                  // student: AppCubit.get(context)
+                                  //     .bestStudentsModel!
+                                  //     .students![itemIndex],
+                                ));
                           },
                         ),
                         options: CarouselOptions(

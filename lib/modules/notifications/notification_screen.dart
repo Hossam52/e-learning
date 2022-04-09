@@ -217,13 +217,13 @@ class _NotificationScreenState extends State<NotificationScreen> {
     late Widget child;
     if (notification.studentSender != null)
       child = StudentProfileView(
-        isFriend: false,
         // student: notification.studentSender!,
         id: notification.studentSender!.id,
       );
     else {
       child = TeacherProfileView(
-          teacher: notification.teacherSender!,
+          // teacher: notification.teacherSender!,
+          teacherId: notification.teacherSender!.id,
           isAdd: false,
           cubit: StudentCubit.get(context));
     }

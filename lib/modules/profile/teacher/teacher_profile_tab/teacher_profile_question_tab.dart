@@ -56,7 +56,7 @@ class _TeacherProfileQuestionTabState extends State<TeacherProfileQuestionTab> {
                             itemBuilder: (context, index) {
                               var post = cubit.questionsList[index];
                               return PostBuildItem(
-                                isStudentPost: post.student == null,
+                                isStudentPost: false,
                                 type: 'question',
                                 ownerPostId: post.studentId!,
                                 deviceInfo: deviceInfo,

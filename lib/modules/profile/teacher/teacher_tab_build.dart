@@ -1,4 +1,5 @@
 import 'package:e_learning/models/teacher/auth/teacher_data_model.dart';
+import 'package:e_learning/modules/following_list/teacher_view/teacher_all_posts.dart';
 import 'package:e_learning/modules/following_list/teacher_view/teacher_groups_profile_view.dart';
 import 'package:e_learning/modules/following_list/teacher_view/teacher_questions_tab.dart';
 import 'package:e_learning/modules/following_list/teacher_view/teachers_tests_profile_tab.dart';
@@ -31,7 +32,8 @@ class _TabsBuildItemState extends State<TeacherTabBuild>
   int index = 0;
   @override
   void initState() {
-    _tabController = new TabController(length: 4, vsync: this);
+    _tabController =
+        new TabController(length: widget.isStudent ? 4 : 3, vsync: this);
     super.initState();
   }
 
@@ -70,13 +72,12 @@ class _TabsBuildItemState extends State<TeacherTabBuild>
                         Tab(text: context.tr.ask_teacher),
                         Tab(text: context.tr.groups),
                         Tab(text: context.tr.tests),
-                        Tab(text: context.tr.posts),
+                        Tab(text: context.tr.all_posts),
                       ]
                     : [
                         Tab(text: context.tr.my_account),
                         Tab(text: context.tr.posts),
                         Tab(text: context.tr.ask_teacher),
-                        Tab(text: context.tr.posts),
                       ],
               ),
             ),
@@ -93,13 +94,12 @@ class _TabsBuildItemState extends State<TeacherTabBuild>
             TeacherQuestionsTab(teacherId: teacher.id!),
             TeacherGroupsProfileTab(teacherId: teacher.id!),
             TeacherTestsProfileTab(teacherId: teacher.id!),
-            TeacherProfilePostsTab(teacher.id!),
+            TeacherAllPostsTabForStudent(teacher.id!),
           ]
         : [
             TeacherEditProfileTab(teacher: teacher),
             TeacherProfilePostsTab(teacher.id!),
             TeacherProfileQuestionTab(),
-            TeacherProfilePostsTab(teacher.id!),
           ];
 
     return widgets[index];

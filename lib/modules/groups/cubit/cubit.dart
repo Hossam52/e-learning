@@ -19,12 +19,14 @@ import 'package:e_learning/models/teacher/groups/videos/group_videos_response_mo
 import 'package:e_learning/models/teacher/test/test_response_model.dart';
 import 'package:e_learning/shared/componants/componants.dart';
 import 'package:e_learning/shared/componants/constants.dart';
+import 'package:e_learning/shared/componants/extentions.dart';
 import 'package:e_learning/shared/cubit/cubit.dart';
 import 'package:e_learning/shared/network/end_points.dart';
 import 'package:e_learning/shared/network/remote/dio_helper.dart';
 import 'package:e_learning/shared/network/services/student_services.dart';
 import 'package:e_learning/shared/styles/colors.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_absolute_path/flutter_absolute_path.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
@@ -154,9 +156,17 @@ class GroupCubit extends Cubit<GroupStates> {
           if (isEdit) 'group_id': groupModel.groupId,
         }),
       );
+      log(response.statusCode.toString());
+      log(response.data.toString());
       if (response.data['status']) {
+        if (!isEdit)
+          showSnackBar(
+              context: context,
+              text: context.tr.group_created_successifully,
+              backgroundColor: Colors.green);
         createGroupButtonState = ButtonState.success;
         navigateToAndFinish(context, TeacherLayout());
+        AppCubit.get(context).changeBottomNav(1);
         emit(GroupCreateSuccessState());
       } else {
         createGroupButtonState = ButtonState.fail;
@@ -219,6 +229,7 @@ class GroupCubit extends Cubit<GroupStates> {
     discoverGroups.clear();
     noGroupsData = false;
     emit(GroupsBySubjectIDGetLoadingState());
+    log('Selected subject id is $selectedSubjectIDToGetDiscoverGroups');
     try {
       final response = await StudentServices.filterInGroup(
           selectedSubjectIDToGetDiscoverGroups);
@@ -1257,6 +1268,43 @@ class GroupCubit extends Cubit<GroupStates> {
         noPostData = true;
       else
         noQuestionData = true;
+      emit(GroupGetPostErrorState());
+      throw e;
+    }
+  }
+
+  void getAllTeacherPostsForStudent(int teacherId) async {
+    try {
+      List<Post> posts = [];
+      emit(GroupGetPostLoadingState());
+
+      Response response = await DioHelper.postData(
+        url: GET_ALL_TEACHER_POSTS_FOR_STUDENT,
+        data: {'teacher_id': teacherId},
+        token: studentToken,
+      );
+      log(response.data.toString());
+      if (response.data['status']) {
+        final paginationPosts = Posts.fromJson(response.data);
+        posts = paginationPosts.postsData!;
+        insertPostLists(
+          type: 'post',
+          posts: posts,
+          response: response,
+          isStudent: false,
+        );
+
+        noPostData = false;
+
+        emit(GroupGetPostSuccessState());
+      } else {
+        noPostData = true;
+
+        emit(GroupGetPostErrorState());
+      }
+    } catch (e) {
+      noPostData = true;
+
       emit(GroupGetPostErrorState());
       throw e;
     }

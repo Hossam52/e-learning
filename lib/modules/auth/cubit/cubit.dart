@@ -241,7 +241,7 @@ class AuthCubit extends Cubit<AuthStates> {
     await DioHelper.postFormData(
       url: generateUrlStudent(type),
       token: type == AuthType.Edit ? studentToken : null,
-      formData: generateFormDataStudent(type, model),
+      formData: await generateFormDataStudent(type, model),
     ).then((value) {
       print(value.data);
       isStudentRegisterLoading = false;
@@ -257,15 +257,20 @@ class AuthCubit extends Cubit<AuthStates> {
         emit(StudentRegisterSuccessState());
       } else {
         studentRegisterState = ButtonState.fail;
+        final Map<String, dynamic>? errors = value.data['errors'];
         showSnackBar(
             context: context,
-            text: value.data['errors'],
+            text: errors?.entries.first.value.first ?? value.data['message'],
             backgroundColor: errorColor);
         emit(StudentRegisterErrorState());
       }
     }).catchError((error) {
       studentRegisterState = ButtonState.fail;
       isStudentRegisterLoading = false;
+      showSnackBar(
+          context: context,
+          text: error.toString(),
+          backgroundColor: errorColor);
       print(error.toString());
       emit(StudentRegisterErrorState());
     });
@@ -284,7 +289,10 @@ class AuthCubit extends Cubit<AuthStates> {
     return url;
   }
 
-  FormData generateFormDataStudent(AuthType type, StudentModel model) {
+  Future<FormData> generateFormDataStudent(
+      AuthType type, StudentModel model) async {
+    final deviceSerial = await SharedMethods.getDeviceSerial;
+
     FormData formData;
     switch (type) {
       case AuthType.Register:
@@ -295,6 +303,7 @@ class AuthCubit extends Cubit<AuthStates> {
           'password_confirmation': model.passwordConfirmation,
           'country_id': model.countryId,
           'classroom_id': model.classroomId,
+          'device_serial': deviceSerial
         });
         break;
       case AuthType.Edit:
@@ -337,9 +346,12 @@ class AuthCubit extends Cubit<AuthStates> {
           navigateToAndFinish(
               context,
               EmailVerifyScreen(
-                email: model.email,
+                email: model.email!,
                 isStudent: false,
               ));
+        else if (type == AuthType.Edit) {
+          teacherProfileModel = TeacherDataModel.fromJson(value.data);
+        }
         emit(TeacherRegisterSuccessState());
       } else {
         teacherRegisterState = ButtonState.fail;
@@ -498,14 +510,16 @@ class AuthCubit extends Cubit<AuthStates> {
         } else {
           teacherProfileModel =
               teacherLoginDataModel = TeacherDataModel.fromJson(value.data);
+
           saveTeacherTokenAnNavigate(context, teacherLoginDataModel!.token!);
         }
         emit(LoginSuccessState());
       } else {
         loginButtonState = ButtonState.fail;
+        final Map<String, dynamic>? errors = value.data['errors'];
         showSnackBar(
             context: context,
-            text: value.data['errors'],
+            text: errors?.entries.first.value.first ?? value.data['message'],
             backgroundColor: errorColor);
         emit(LoginErrorState());
       }
@@ -841,16 +855,22 @@ class AuthCubit extends Cubit<AuthStates> {
         url = STUDENT_Auth_REGISTER;
       else
         url = TEACHER_REGISTER_AUTH;
-      final response = await DioHelper.postData(
-          url: url, data: {'social_id': socialUser.id});
+      final response = await DioHelper.postData(url: url, data: {
+        'social_id': socialUser.id,
+        'device_token': await SharedMethods.getToken()
+      });
       log(response.data.toString());
       final registerResponse = SocialRegisterResponse.fromMap(response.data);
       if (registerResponse.registerType == SocialRegisterType.Register) {
         emit(RegisterState(user: socialUser));
       } else if (registerResponse.registerType == SocialRegisterType.Login) {
         if (isStudent) {
+          studentLoginDataModel = StudentDataModel.fromJson(response.data);
+          studentProfileModel = StudentDataModel.fromJson(response.data);
           saveStudentTokenAnNavigate(context, registerResponse.token!);
         } else {
+          teacherProfileModel =
+              teacherLoginDataModel = TeacherDataModel.fromJson(response.data);
           saveTeacherTokenAnNavigate(context, registerResponse.token!);
         }
         emit(LoginState());
@@ -889,7 +909,7 @@ class AuthCubit extends Cubit<AuthStates> {
           'country_id': model.countryId,
           'classroom_id': model.classroomId,
           'social_id': socialId,
-          'device_serial': 'test134',
+          'device_serial': await SharedMethods.getDeviceSerial,
         })).then((value) {
       print(value.data);
       isStudentRegisterLoading = false;
@@ -911,10 +931,12 @@ class AuthCubit extends Cubit<AuthStates> {
         emit(StudentRegisterSuccessState());
       } else {
         studentRegisterState = ButtonState.fail;
-        // showSnackBar(
-        //     context: context,
-        //     text: value.data['errors'],
-        //     backgroundColor: errorColor);
+        final Map<String, dynamic>? errors = value.data['errors'];
+        showSnackBar(
+            context: context,
+            text: errors?.entries.first.value.first ?? value.data['message'],
+            backgroundColor: errorColor);
+
         emit(StudentRegisterErrorState());
       }
     }).catchError((error) {
@@ -942,7 +964,7 @@ class AuthCubit extends Cubit<AuthStates> {
           'country_id': model.countryId,
           'subjects[]': model.subjects,
           'social_id': socialId,
-          'device_serial': 'test134',
+          'device_serial': await SharedMethods.getDeviceSerial
         })).then((value) {
       print(value.data);
       isTeacherRegisterLoading = false;
@@ -958,10 +980,11 @@ class AuthCubit extends Cubit<AuthStates> {
         emit(StudentRegisterSuccessState());
       } else {
         teacherRegisterState = ButtonState.fail;
-        // showSnackBar(
-        //     context: context,
-        //     text: value.data['errors'],
-        //     backgroundColor: errorColor);
+        final Map<String, dynamic>? errors = value.data['errors'];
+        showSnackBar(
+            context: context,
+            text: errors?.entries.first.value.first ?? value.data['message'],
+            backgroundColor: errorColor);
         emit(StudentRegisterErrorState());
       }
     }).catchError((error) {

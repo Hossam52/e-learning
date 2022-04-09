@@ -128,7 +128,6 @@ class _MyFriendListScreenState extends State<MyFriendListScreen> {
                                           StudentProfileView(
                                             // student: friend,
                                             id: friend.id,
-                                            isFriend: true,
                                           ));
                                     },
                                     tailing: TextButton(

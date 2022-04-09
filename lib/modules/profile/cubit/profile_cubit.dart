@@ -42,7 +42,13 @@ class ProfileCubit extends Cubit<ProfileStates> {
     return meta.currentPage == meta.lastPage ? true : false;
   }
 
-  void getProfile(int id, bool isStudent) async {
+  bool get isLastTeachersPage {
+    final meta = followingList?.teachers?.meta;
+    if (meta == null) return true;
+    return meta.currentPage == meta.lastPage ? true : false;
+  }
+
+  Future<void> getProfile(int id, bool isStudent) async {
     log('Hello');
     try {
       emit(ProfileLoadingState());
@@ -54,6 +60,7 @@ class ProfileCubit extends Cubit<ProfileStates> {
             {if (isStudent) 'student_id': id else 'teacher_id': id}),
       );
       if (response.data['status']) {
+        log(response.data.toString());
         if (isStudent)
           studentByIdModel = StudentDataModel.fromJson(response.data);
         else
@@ -129,6 +136,32 @@ class ProfileCubit extends Cubit<ProfileStates> {
         throw 'Error on followers';
     } catch (e) {
       emit(ProfileFollowersErrorState());
+      print(e.toString());
+    }
+  }
+
+  void getMoreStudentFollowingList(int id) async {
+    if (isLastTeachersPage) return;
+    final nextPage = followingList!.teachers!.meta!.currentPage! + 1;
+
+    try {
+      emit(MoreProfileFollowersLoadingState());
+      Response response = await DioHelper.postFormData(
+          url: STUDENT_GET_FOLLOWERS_BY_STD_ID,
+          formData: FormData.fromMap({'student_id': id, 'page': nextPage}),
+          token: studentToken ?? teacherToken);
+      log(response.data.toString());
+      if (response.data['status']) {
+        final newFollowingList = TeachersResponseModel.fromJson(response.data);
+
+        followingList!.teachers!.data!.addAll(newFollowingList.teachers!.data!);
+        followingList!.teachers!.meta = newFollowingList.teachers!.meta!;
+
+        emit(MoreProfileFollowersSuccessState());
+      } else
+        throw 'Error on followers';
+    } catch (e) {
+      emit(MoreProfileFollowersErrorState());
       print(e.toString());
     }
   }

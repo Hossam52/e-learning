@@ -251,7 +251,7 @@ class _PublicGroupTeacherHomeScreenState
                                                 cubit.publicGroupPosts[index];
                                             return PostBuildItem(
                                               isStudentPost:
-                                                  post.student == null,
+                                                  post.student != null,
 
                                               type: 'admin',
                                               ownerPostId: post.teacherId ??

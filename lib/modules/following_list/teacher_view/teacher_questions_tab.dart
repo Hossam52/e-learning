@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:e_learning/models/enums/enums.dart';
 import 'package:e_learning/modules/groups/cubit/cubit.dart';
 import 'package:e_learning/modules/groups/cubit/states.dart';
@@ -103,9 +105,10 @@ class _TeacherQuestionsTabState extends State<TeacherQuestionsTab> {
             padding: EdgeInsets.all(16),
             itemBuilder: (context, index) {
               var post = cubit.questionsList[index];
+              log(cubit.questionsList.last.student.toString());
               return PostBuildItem(
                 ownerPostId: post.studentId!,
-                isStudentPost: post.student == null,
+                isStudentPost: post.student != null,
                 deviceInfo: deviceInfo,
                 type: 'question',
                 isStudent: true,

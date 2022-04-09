@@ -49,6 +49,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
   void initState() {
     AppCubit.get(context).getHighRateTeachersList(true);
     AppCubit.get(context).getBestStudentsListAuthorized();
+    AppCubit.get(context).getBestStudentsList();
     TestLayoutCubit.get(context).getStudentTests(TestType.latestTest);
     super.initState();
   }
@@ -158,7 +159,8 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                                                     navigateTo(
                                                         context,
                                                         TeacherProfileView(
-                                                          teacher: teacher,
+                                                          // teacher: teacher,
+                                                          teacherId: teacher.id,
                                                           isAdd: false,
                                                           cubit:
                                                               StudentCubit.get(
@@ -215,21 +217,6 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                                                           context,
                                                           student.id!);
                                                   return;
-                                                  if (student.id ==
-                                                      AuthCubit.get(context)
-                                                          .studentProfileModel!
-                                                          .student!
-                                                          .id)
-                                                    navigateTo(context,
-                                                        ProfileScreen());
-                                                  else
-                                                    navigateTo(
-                                                        context,
-                                                        StudentProfileView(
-                                                          isFriend: true,
-                                                          // student: student,
-                                                          id: student.id!,
-                                                        ));
                                                 },
                                               );
                                             },

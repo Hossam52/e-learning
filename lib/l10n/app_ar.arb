@@ -121,7 +121,7 @@
 	"notifications" : "الاشعارات" ,
 	"password" : "كلمة المرور" ,
 	"pdf" : "PDF" ,
-	"pending" : "معلق" ,
+	"pending" : "طلبك معلق حتي الآن" ,
 	"private" : "خاص" ,
 	"question" : "سؤال" ,
 	"records" : "سجلات" ,
@@ -204,6 +204,8 @@
 	"personal_profile" : "الملف الشخصى" ,
 	"personal_profile_teacher" : "الملف الشخصى للمعلم" ,
 	"posts" : "المنشورات" ,
+	"all_posts": "كل المنشورات",
+
 	"subjects" : "المواد" ,
 	"percentage" : "النسبه المئوية" ,
 	"homeworks" : "الواجبات" ,
@@ -234,7 +236,7 @@
 	"done_subscription" : "تم اشتراك" ,
 	"success_adding" : "تم الاضافة بنجاح" ,
 	"success_register" : "تم التسجيل" ,
-	"copied_to_clipboard" : "تم النسخ الكود" ,
+	"copied_to_clipboard" : "تم نسخ الكود" ,
 	"file_downloaded_before" : "تم تحميل الملف من قبل" ,
 	"blocked_user" : "تم حذر هذا العضو" ,
 	"enable_users_write_to_my_profile" : "تمكين المستخدمين من الكتابة على بروفايلي" ,
@@ -329,7 +331,11 @@
 	"create_test": "انشاء اختبار",
 	"edit_test": "تعديل الاختبار",
 	"sure_to_delete" : "هل انت متأكد من انك تريد حذف",
-	"choose_image_from" : "اختر صورة من "
+	"choose_image_from" : "اختر صورة من ",
+	"show_more": "اظهار المزيد",
+	"group_created_successifully":"تم انشاء الجروب بنجاح"
+
+
 
 
 

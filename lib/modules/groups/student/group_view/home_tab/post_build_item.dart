@@ -109,13 +109,9 @@ class PostBuildItem extends StatelessWidget {
               children: [
                 GestureDetector(
                   onTap: () {
-                    if (showProfileWhenTap) {
-                      SharedMethods.navigateToProfile(
-                          isStudent, isStudentPost, context, ownerPostId!);
-                      print('Tapped');
-                      // AuthCubit.get(context).getPro
-                      // cubit.getTeacherDataById(teacherId, type)
-                    }
+                    SharedMethods.navigateToProfile(
+                        isStudent, isStudentPost, context, ownerPostId!);
+                    print('Tapped');
                   },
                   child: Container(
                     width: deviceInfo.screenwidth * 0.13,

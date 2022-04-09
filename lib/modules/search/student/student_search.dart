@@ -98,7 +98,8 @@ class StudentSearchScreen extends StatelessWidget {
                                               await navigateTo(
                                                   context,
                                                   TeacherProfileView(
-                                                    teacher: teacher,
+                                                    // teacher: teacher,
+                                                    teacherId: teacher.id,
                                                     isAdd: true,
                                                     cubit: cubit,
                                                   ));

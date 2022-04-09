@@ -61,7 +61,7 @@ class _TeacherProfilePostsTabState extends State<TeacherProfilePostsTab> {
                               //posts for Teacher or what?
                               var post = cubit.postsList[index];
                               return PostBuildItem(
-                                isStudentPost: post.student == null,
+                                isStudentPost: post.student != null,
                                 ownerPostId: post.teacherId!,
                                 showProfileWhenTap: false,
                                 type: 'post',
